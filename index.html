@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Booth Glocom Thought Leadership — Q3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light;
+--green:#0D4B3B;--teal:#589992;--lav:#CD9ACD;--sky:#DBEAF4;
+--lavd:#9c559c;--tealD:#3f7a72;
+--bg:#f3f6fc;
+--panel:#ffffff;
+--ink:#26303f;--muted:#6b7787;--line:#e6ebf2;
+--head:'Segoe UI','Open Sans',system-ui,sans-serif;--body:'Calibri','Carlito',system-ui,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:#0f1830;color:var(--ink);font-family:var(--body);line-height:1.5;position:relative;overflow-x:hidden}
+/* galaxy wash */
+body::before{content:"";position:fixed;inset:0;z-index:-2;background:
+  radial-gradient(1200px 720px at 82% 3%, rgba(88,153,146,.18), transparent 60%),
+  radial-gradient(1000px 640px at 6% 28%, rgba(205,154,205,.16), transparent 60%),
+  radial-gradient(1100px 820px at 50% 118%, rgba(37,31,68,.7), transparent 60%),
+  linear-gradient(180deg,#0f1830 0%, #131b38 55%, #10162e 100%);}
+/* starfield */
+body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background-image:
+   radial-gradient(1.7px 1.7px at 12% 18%, #fff, transparent),
+   radial-gradient(1.4px 1.4px at 27% 62%, rgba(255,255,255,.8), transparent),
+   radial-gradient(2px 2px at 43% 33%, #fff, transparent),
+   radial-gradient(1.3px 1.3px at 58% 78%, rgba(255,255,255,.7), transparent),
+   radial-gradient(1.8px 1.8px at 69% 22%, #fff, transparent),
+   radial-gradient(1.3px 1.3px at 82% 55%, rgba(255,255,255,.8), transparent),
+   radial-gradient(1.6px 1.6px at 91% 82%, #fff, transparent),
+   radial-gradient(1.3px 1.3px at 34% 88%, rgba(255,255,255,.7), transparent),
+   radial-gradient(1.4px 1.4px at 6% 74%, rgba(255,255,255,.75), transparent),
+   radial-gradient(1.5px 1.5px at 50% 12%, #fff, transparent),
+   radial-gradient(1.3px 1.3px at 20% 46%, rgba(255,255,255,.7), transparent),
+   radial-gradient(1.3px 1.3px at 74% 68%, rgba(255,255,255,.7), transparent),
+   radial-gradient(1.6px 1.6px at 16% 8%, #fff, transparent),
+   radial-gradient(1.4px 1.4px at 88% 14%, rgba(255,255,255,.75), transparent),
+   radial-gradient(1.3px 1.3px at 62% 94%, rgba(255,255,255,.7), transparent);
+  animation:twinkle 6s ease-in-out infinite alternate;}
+@keyframes twinkle{from{opacity:.55}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){body::after{animation:none}}
+/* shooting stars */
+.sky-fx{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.shoot{position:absolute;width:150px;height:2px;border-radius:99px;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.95));filter:drop-shadow(0 0 6px rgba(255,255,255,.85));opacity:0}
+.shoot.s1{top:9%;left:-170px;animation:shootfx 9s linear infinite}
+.shoot.s2{top:28%;left:-170px;transform:scale(.75);animation:shootfx 12s linear infinite;animation-delay:4.5s}
+.shoot.s3{top:58%;left:-170px;animation:shootfx 15s linear infinite;animation-delay:9s}
+@keyframes shootfx{0%{transform:translate(0,0) rotate(20deg);opacity:0}2%{opacity:1}12%{opacity:1}18%{transform:translate(86vw,32vh) rotate(20deg);opacity:0}100%{transform:translate(86vw,32vh) rotate(20deg);opacity:0}}
+@media (prefers-reduced-motion:reduce){.shoot{display:none}}
+/* flying UFO with abduction beam */
+.ufo-fly{position:fixed;top:26%;left:-210px;width:120px;z-index:40;pointer-events:none;animation:ufofly 20s linear infinite;animation-delay:5s}
+.ufo-ship{width:120px;display:block;position:relative;z-index:2;filter:drop-shadow(0 6px 14px rgba(0,0,0,.4));animation:ufobob 2.3s ease-in-out infinite}
+.beam{position:absolute;left:50%;top:54px;transform:translateX(-50%);width:62px;height:100px;background:linear-gradient(180deg,rgba(143,216,201,.6),rgba(143,216,201,0));clip-path:polygon(36% 0,64% 0,100% 100%,0 100%);z-index:1;animation:beampulse 1.4s ease-in-out infinite}
+.abductee{position:absolute;left:50%;top:150px;font-size:20px;z-index:1;animation:abduct 1.9s ease-in-out infinite}
+@keyframes ufofly{0%{transform:translateX(0)}45%{transform:translateX(calc(100vw + 240px))}100%{transform:translateX(calc(100vw + 240px))}}
+@keyframes ufobob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes beampulse{0%,100%{opacity:.35}50%{opacity:.85}}
+@keyframes abduct{0%{transform:translate(-50%,0);opacity:0}25%{opacity:1}100%{transform:translate(-50%,-84px) scale(.4);opacity:0}}
+@media (prefers-reduced-motion:reduce){.ufo-fly{display:none}}
+.wrap{max-width:1040px;margin:0 auto;padding:0 22px 60px}
+#how,#lanes-sec,#schedule,#baseline{scroll-margin-top:80px}
+/* top nav */
+.nav{position:sticky;top:0;z-index:60;backdrop-filter:blur(14px);background:rgba(15,24,48,.74);border-bottom:1px solid rgba(255,255,255,.12)}
+.nav-inner{max-width:1040px;margin:0 auto;padding:12px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:11px;cursor:pointer}
+.logo{font-family:var(--head);font-weight:800;font-size:18px;letter-spacing:.18em;color:#fff}
+.brandtag{font-family:var(--head);font-size:11px;color:#9fb0cf;border-left:1px solid rgba(255,255,255,.18);padding-left:11px;letter-spacing:.02em}
+.navlinks{display:flex;align-items:center;gap:22px}
+.navlinks a{font-family:var(--head);font-weight:600;font-size:13px;color:#b6c2dc;text-decoration:none;cursor:pointer;transition:.15s}
+.navlinks a:hover{color:#9fe6d6}
+.navbtn{font-family:var(--head);font-weight:700;font-size:13px;color:#fff!important;background:var(--teal);padding:8px 16px;border-radius:999px}
+.navbtn:hover{color:#fff!important;box-shadow:0 6px 18px rgba(88,153,146,.4)}
+/* hero */
+.hero{position:relative;overflow:hidden;color:#fff;padding:60px 22px 88px;margin-bottom:0;
+  background:radial-gradient(1200px 520px at 78% -12%, #21315e 0%, transparent 60%), radial-gradient(900px 520px at 8% 118%, #251f44 0%, transparent 60%), linear-gradient(180deg,#0f1830 0%, #141d3a 60%, #171f3c 100%);}
+.hero::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background-image:
+  radial-gradient(1.7px 1.7px at 10% 20%, #fff, transparent),
+  radial-gradient(1.4px 1.4px at 24% 66%, rgba(255,255,255,.8), transparent),
+  radial-gradient(2px 2px at 40% 30%, #fff, transparent),
+  radial-gradient(1.3px 1.3px at 55% 74%, rgba(255,255,255,.7), transparent),
+  radial-gradient(1.8px 1.8px at 66% 16%, #fff, transparent),
+  radial-gradient(1.3px 1.3px at 80% 52%, rgba(255,255,255,.85), transparent),
+  radial-gradient(1.6px 1.6px at 90% 80%, #fff, transparent),
+  radial-gradient(1.3px 1.3px at 33% 90%, rgba(255,255,255,.7), transparent),
+  radial-gradient(1.3px 1.3px at 48% 44%, rgba(255,255,255,.7), transparent),
+  radial-gradient(1.2px 1.2px at 72% 60%, rgba(255,255,255,.6), transparent),
+  radial-gradient(1.4px 1.4px at 16% 82%, rgba(255,255,255,.7), transparent),
+  radial-gradient(1.2px 1.2px at 60% 8%, rgba(255,255,255,.6), transparent),
+  radial-gradient(1.6px 1.6px at 5% 46%, #fff, transparent),
+  radial-gradient(1.3px 1.3px at 30% 12%, rgba(255,255,255,.7), transparent),
+  radial-gradient(1.9px 1.9px at 51% 62%, #fff, transparent),
+  radial-gradient(1.3px 1.3px at 63% 40%, rgba(255,255,255,.7), transparent),
+  radial-gradient(1.5px 1.5px at 86% 30%, #fff, transparent),
+  radial-gradient(1.2px 1.2px at 94% 58%, rgba(255,255,255,.7), transparent),
+  radial-gradient(1.3px 1.3px at 21% 38%, rgba(255,255,255,.6), transparent),
+  radial-gradient(1.4px 1.4px at 44% 22%, rgba(255,255,255,.75), transparent),
+  radial-gradient(1.2px 1.2px at 76% 86%, rgba(255,255,255,.6), transparent),
+  radial-gradient(1.6px 1.6px at 38% 78%, #fff, transparent);
+  animation:twinkle 5s ease-in-out infinite alternate}
+.hero::after{content:"";position:absolute;width:540px;height:540px;right:-130px;top:-170px;border-radius:50%;z-index:0;
+  background:radial-gradient(circle, rgba(205,154,205,.22), transparent 70%)}
+.hero-decor{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.d-planet{position:absolute;left:-4px;top:10px;width:78px;opacity:.95}
+.d-planet2{position:absolute;right:5%;bottom:12%;width:56px;opacity:.9;animation:drift 10s ease-in-out infinite}
+.hero-ufo{position:absolute;right:16px;top:-2px;width:120px;animation:drift 8s ease-in-out infinite}
+.d-ufo{display:block;width:120px;position:relative;z-index:2}
+.hero-beam{position:absolute;left:50%;top:52px;transform:translateX(-50%);width:56px;height:86px;background:linear-gradient(180deg,rgba(143,216,201,.55),transparent);clip-path:polygon(36% 0,64% 0,100% 100%,0 100%);z-index:1;animation:beampulse 1.4s ease-in-out infinite}
+.hero-cow{position:absolute;left:50%;top:126px;font-size:18px;z-index:1;animation:abduct 1.9s ease-in-out infinite}
+@keyframes drift{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-14px) rotate(3deg)}}
+@media (prefers-reduced-motion:reduce){.d-ufo{animation:none}}
+.hero-inner{max-width:1080px;margin:0 auto;position:relative;z-index:1;display:grid;grid-template-columns:1.02fr .98fr;gap:44px;align-items:center}
+.hero-copy{text-align:left}
+.hero .eyebrow{font-family:var(--head);font-weight:700;font-size:11.5px;letter-spacing:.2em;color:#9fe6d6;text-transform:uppercase;margin:0 0 16px}
+.hero h1{font-family:var(--head);font-weight:800;font-size:34px;line-height:1.1;margin:0 0 16px;letter-spacing:-.015em;color:#fff;text-shadow:0 2px 30px rgba(0,0,0,.35)}
+.accent{position:relative;white-space:nowrap;background:linear-gradient(180deg,transparent 62%, rgba(205,154,205,.6) 62%);padding:0 2px}
+.hero p{font-size:15px;color:#c8d2ea;max-width:500px;margin:0 0 24px;line-height:1.6}
+.herocta{display:flex;gap:12px;justify-content:flex-start;flex-wrap:wrap;margin-bottom:24px}
+/* spaceship control panel (intentionally a dark screen/device) */
+.hero-visual{position:relative;z-index:1}
+.console{width:100%;max-width:470px;margin:0 auto;background:linear-gradient(180deg,#1a2b24,#0d1a15);border:1px solid rgba(143,216,201,.35);border-radius:22px;padding:15px;box-shadow:0 30px 70px rgba(0,0,0,.5), 0 0 44px rgba(88,153,146,.28), inset 0 1px 0 rgba(255,255,255,.06);animation:float 6.5s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-11px)}}
+@media (prefers-reduced-motion:reduce){.console{animation:none}}
+.con-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px;padding:0 4px}
+.con-title{font-family:var(--head);font-weight:800;font-size:10px;letter-spacing:.18em;color:#9fe6d6;text-transform:uppercase;display:flex;align-items:center;gap:7px}
+.con-lights{display:flex;gap:6px}
+.con-lights i{width:8px;height:8px;border-radius:50%;display:block;background:#3a4a44}
+.con-lights i.g{background:#5bbf7a;box-shadow:0 0 8px #5bbf7a;animation:blink 2.4s infinite}
+.con-lights i.a{background:#e6b45b;box-shadow:0 0 8px #e6b45b;animation:blink 1.7s infinite}
+.con-lights i.r{background:#e06a5b;box-shadow:0 0 8px #e06a5b}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.viewport{position:relative;border-radius:14px;overflow:hidden;border:1px solid rgba(88,153,146,.4);height:250px;background:#f4f8f7}
+.viewport::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:5;
+  background:repeating-linear-gradient(180deg,rgba(255,255,255,0) 0,rgba(255,255,255,0) 3px,rgba(88,153,146,.06) 3px,rgba(88,153,146,.06) 4px)}
+.viewport::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:6;box-shadow:inset 0 0 40px rgba(6,20,15,.28)}
+.bloghead{position:absolute;top:0;left:0;right:0;z-index:2;background:var(--green);color:#fff;font-family:var(--head);font-weight:700;font-size:12px;padding:9px 14px;display:flex;align-items:center;gap:8px}
+.blogscroll{position:absolute;top:34px;left:0;right:0;bottom:0;overflow:hidden}
+.blogtrack{display:flex;flex-direction:column;gap:10px;padding:12px;animation:scrollup 20s linear infinite}
+.viewport:hover .blogtrack{animation-play-state:paused}
+@keyframes scrollup{0%{transform:translateY(0)}100%{transform:translateY(-50%)}}
+.acard{background:#fff;border:1px solid #e3ece9;border-radius:9px;padding:10px 12px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.acard .k{font-family:var(--head);font-weight:700;font-size:8.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--teal);margin-bottom:3px}
+.acard .h{font-family:var(--head);font-weight:700;font-size:12px;color:#12211d;line-height:1.25}
+.acard .m{font-size:10px;color:#5b6b66;margin-top:4px}
+.con-bottom{display:flex;align-items:center;gap:10px;margin-top:13px;padding:0 4px}
+.knob{width:26px;height:26px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#3d534a,#111c18);border:1px solid rgba(137,170,160,.3);position:relative;flex:0 0 auto}
+.knob::after{content:"";position:absolute;top:4px;left:50%;transform:translateX(-50%);width:2px;height:8px;background:#9fe6d6;border-radius:2px}
+.knob.k2::after{transform:translateX(-50%) rotate(52deg);transform-origin:bottom center}
+.readout{flex:1;background:#0a1512;border:1px solid rgba(137,170,160,.25);border-radius:8px;font-family:var(--head);font-size:10px;letter-spacing:.06em;color:#7fd4c4;padding:7px 11px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.readout .blink{width:7px;height:12px;background:#5bbf7a;box-shadow:0 0 8px #5bbf7a;animation:blink 1s steps(1) infinite;flex:0 0 auto}
+.bars{display:flex;gap:3px;align-items:flex-end;height:18px}
+.bars span{width:4px;background:var(--teal);border-radius:1px;animation:eq 1.2s ease-in-out infinite}
+.bars span:nth-child(2){animation-delay:.25s}.bars span:nth-child(3){animation-delay:.5s}.bars span:nth-child(4){animation-delay:.75s}
+@keyframes eq{0%,100%{height:5px}50%{height:17px}}
+.cta{font-family:var(--head);font-weight:700;font-size:14px;text-decoration:none;padding:13px 28px;border-radius:999px;background:linear-gradient(180deg,var(--teal),var(--green));color:#fff;box-shadow:0 6px 22px rgba(88,153,146,.34);transition:.16s;cursor:pointer;display:inline-block}
+.cta:hover{transform:translateY(-1px);box-shadow:0 12px 30px rgba(88,153,146,.5)}
+.cta.ghost{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.35);box-shadow:none;color:#fff}
+.cta.ghost:hover{border-color:#9fe6d6;color:#9fe6d6;transform:translateY(-1px)}
+.ladder{font-size:12px;color:#9aa8c8;margin:0}
+/* stat strip — light mission monitor */
+.statstrip{margin:-52px 0 40px;position:relative;z-index:5;background:linear-gradient(180deg,#1a2b24,#0d1a15);border:1px solid rgba(143,216,201,.35);border-radius:18px;padding:14px 16px;box-shadow:0 26px 60px rgba(0,0,0,.4), 0 0 40px rgba(88,153,146,.2)}
+.statbar-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding:0 3px}
+.statbar-top .con-title{color:#9fe6d6}
+.statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.stat{background:linear-gradient(180deg,rgba(143,216,201,.18),rgba(88,153,146,.08));border:1px solid rgba(143,216,201,.5);border-radius:12px;padding:14px 16px;position:relative;overflow:hidden;box-shadow:inset 0 0 20px rgba(143,216,201,.16), 0 0 16px rgba(88,153,146,.14)}
+.stat::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(180deg,rgba(255,255,255,0) 0,rgba(255,255,255,0) 3px,rgba(143,216,201,.06) 3px,rgba(143,216,201,.06) 4px)}
+.stat .sl{font-family:var(--head);font-weight:700;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#9fe6d6;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.stat .sl::before{content:"";width:6px;height:6px;border-radius:50%;background:#5bbf7a;box-shadow:0 0 7px #5bbf7a;animation:blink 2.2s infinite}
+.stat .n{font-family:var(--head);font-weight:800;font-size:22px;color:#b6f0e2;text-shadow:0 0 14px rgba(143,216,201,.55)}
+.stat .l{font-size:11.5px;color:#bcd6ce;margin-top:4px}
+@media(max-width:880px){.hero-inner{grid-template-columns:1fr;gap:36px}.hero-copy{text-align:left}.console{max-width:460px}}
+@media(max-width:640px){.brandtag{display:none}.navlinks{gap:14px}.navlinks a.hidemob{display:none}.hero h1{font-size:31px}.hero{padding:44px 22px 70px}}
+.stardiv{height:40px;margin:8px 0 30px;background-repeat:no-repeat;background-image:
+  radial-gradient(2.4px 2.4px at 4% 45%, #fff, transparent),
+  radial-gradient(2.2px 2.2px at 13% 70%, #e6bfe6, transparent),
+  radial-gradient(2.8px 2.8px at 22% 28%, #8fd8c9, transparent),
+  radial-gradient(2.2px 2.2px at 31% 60%, #fff, transparent),
+  radial-gradient(2.4px 2.4px at 41% 36%, #e6bfe6, transparent),
+  radial-gradient(2.2px 2.2px at 50% 66%, #8fd8c9, transparent),
+  radial-gradient(2.8px 2.8px at 60% 30%, #fff, transparent),
+  radial-gradient(2.2px 2.2px at 69% 58%, #e6bfe6, transparent),
+  radial-gradient(2.4px 2.4px at 78% 40%, #8fd8c9, transparent),
+  radial-gradient(2.2px 2.2px at 87% 64%, #fff, transparent),
+  radial-gradient(2.4px 2.4px at 95% 34%, #e6bfe6, transparent);
+  animation:starpulse 3.6s ease-in-out infinite alternate}
+@keyframes starpulse{from{opacity:.7}to{opacity:1}}
+.section{margin:0 0 30px}
+.h2{font-family:var(--head);font-weight:700;color:#c7efe6;font-size:19px;margin:0 0 5px;letter-spacing:.01em}
+.lead{color:#b6c2dc;font-size:13.5px;margin:0 0 14px;max-width:700px}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+.step{border:1px solid var(--line);border-radius:14px;padding:17px;background:var(--panel);box-shadow:0 3px 12px rgba(28,45,40,.05)}
+.step .num{font-family:var(--head);font-weight:700;color:var(--teal);font-size:12px;margin-bottom:6px;letter-spacing:.1em}
+.step .st{font-family:var(--head);font-weight:700;color:var(--green);font-size:14px;margin-bottom:4px}
+.step .sd{font-size:12.5px;color:var(--muted)}
+.lanes{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.lane{border:1px solid var(--line);border-radius:12px;padding:13px 15px;display:flex;flex-direction:column;gap:2px;cursor:pointer;transition:.16s;text-align:left;background:var(--panel);font-family:var(--body);box-shadow:0 2px 8px rgba(28,45,40,.04)}
+.lane:hover{border-color:var(--teal);box-shadow:0 8px 24px rgba(88,153,146,.16);transform:translateY(-2px)}
+.lane.live{border-color:rgba(88,153,146,.5);background:linear-gradient(180deg,#f1f8f6,#ffffff)}
+.lane .who{font-family:var(--head);font-weight:700;font-size:13.5px;color:var(--green)}
+.lane .fld{font-size:12px;color:var(--muted)}
+.lane .badge{align-self:flex-start;margin-top:7px;font-family:var(--head);font-weight:700;font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;padding:2px 9px;border-radius:999px}
+.lane .badge.on{background:var(--teal);color:#fff}
+.lane .badge.soon{background:#eef2f6;color:var(--muted)}
+.lognote{margin:26px 0 26px;border-radius:14px;overflow:hidden;background:#0b1512;border:1px solid rgba(143,216,201,.3);box-shadow:0 12px 30px rgba(28,45,40,.2), 0 0 30px rgba(88,153,146,.14);font-family:'VT323','Courier New',monospace}
+.log-top{display:flex;align-items:center;justify-content:space-between;background:#12211c;padding:6px 12px;border-bottom:1px solid rgba(143,216,201,.22)}
+.log-title{font-family:'VT323','Courier New',monospace;color:#8fd8c9;font-size:13px;letter-spacing:.1em}
+.log-top .con-lights i{width:6px;height:6px}
+.log-body{position:relative;padding:12px 15px}
+.log-body::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(180deg,transparent 0,transparent 3px,rgba(143,216,201,.05) 3px,rgba(143,216,201,.05) 4px)}
+.log-h{font-family:'VT323','Courier New',monospace;color:#e6d06a;font-size:15px;letter-spacing:.06em;margin:0 0 5px}
+.log-p{font-family:'VT323','Courier New',monospace;color:#9fe6d6;font-size:14px;line-height:1.35;margin:0;letter-spacing:.02em}
+.cursor{display:inline-block;width:7px;height:11px;background:#8fd8c9;margin-left:3px;vertical-align:-1px;animation:blink 1s steps(1) infinite}
+.ic{display:inline-flex;align-items:center;vertical-align:-3px;margin-right:8px}
+.ic svg{width:18px;height:18px}
+.bstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.bstat{border:1px solid var(--line);border-radius:14px;padding:15px 17px;background:var(--panel);box-shadow:0 3px 12px rgba(28,45,40,.05)}
+.bstat .be{font-family:var(--head);font-weight:700;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.bstat .bn{font-family:var(--head);font-weight:700;font-size:32px;color:var(--green);line-height:1.1;margin:4px 0 2px}
+.bstat .bmax{font-size:15px;font-weight:700;color:#9fb3ad;margin-left:2px}
+.bstat .bl{font-size:12px;color:var(--muted)}
+.sched{position:relative;border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-bottom:24px;background:linear-gradient(180deg,#f1f8f6,#f6f9fe)}
+.sched-alien{position:absolute;right:14px;top:-58px;width:60px;height:66px;z-index:3;cursor:pointer}
+.sched-alien:hover .alien-head{filter:drop-shadow(0 4px 8px rgba(143,216,201,.6))}
+.alien-peeker{position:absolute;inset:0;overflow:hidden;z-index:1}
+.alien-head{position:absolute;left:0;bottom:0;width:60px;transform:translateY(100%);animation:peeknow 3s ease-in-out infinite}
+.alien-hands{position:absolute;left:0;bottom:-9px;width:60px;z-index:2;pointer-events:none}
+.alien-bubble{position:absolute;top:2px;right:72px;background:#0d1a15;border:1px solid rgba(143,216,201,.45);color:#9fe6d6;font-family:var(--head);font-weight:700;font-size:11px;white-space:nowrap;padding:7px 11px;border-radius:9px;pointer-events:none;box-shadow:0 6px 18px rgba(0,0,0,.4);opacity:0;animation:bubbleshow 3s ease-in-out infinite}
+@keyframes bubbleshow{0%,42%{opacity:0}48%,78%{opacity:1}86%,100%{opacity:0}}
+@media(max-width:640px){.alien-bubble{display:none}}
+.slot.slot-open{cursor:pointer;transition:.15s}
+.slot.slot-open:hover{border-color:rgba(143,216,201,.7);background:rgba(143,216,201,.08)}
+.sched-alien .alien-eyes{transform-box:fill-box;transform-origin:center;animation:alienblink 4.5s infinite}
+@keyframes alienbob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-8px) rotate(3deg)}}
+@keyframes peeknow{0%,22%{transform:translateY(100%)}42%,80%{transform:translateY(6%)}100%{transform:translateY(100%)}}
+@keyframes alienblink{0%,90%,100%{transform:scaleY(1)}95%{transform:scaleY(.12)}}
+@media (prefers-reduced-motion:reduce){.alien-head{animation:none;transform:translateY(6%)}.sched-alien .alien-eyes{animation:none}.alien-bubble{animation:none;opacity:1}}
+@media(max-width:640px){.sched-alien{width:48px;top:-38px;right:4px}}
+.sched h2{font-family:var(--head);font-weight:700;color:var(--green);font-size:15px;margin:0 0 3px}
+.sched .cap{font-size:12.5px;color:var(--muted);margin:0 0 13px}
+.slots{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.slot{background:#fff;border:1px dashed #cdd7de;border-radius:12px;padding:11px 13px;min-height:82px;position:relative}
+.slot.full{border-style:solid;border-color:var(--teal);box-shadow:0 4px 14px rgba(88,153,146,.14)}
+.slot .d{font-family:var(--head);font-weight:700;font-size:12px;color:var(--teal);margin-bottom:5px}
+.slot .ti{font-size:12px;color:var(--ink);line-height:1.3}
+.slot .au{font-size:11px;color:var(--muted);margin-top:3px}
+.slot .open{font-size:12.5px;color:var(--muted);font-style:italic}
+.slot .x{position:absolute;top:7px;right:9px;cursor:pointer;color:var(--muted);font-size:13px;font-weight:700;line-height:1}
+.slot .x:hover{color:#c0503d}
+.back{display:inline-flex;align-items:center;gap:6px;font-family:var(--head);font-weight:700;font-size:13px;color:#9fe6d6;background:none;border:none;cursor:pointer;padding:16px 0 6px}
+.back:hover{color:#e2b9e2}
+.ahead{font-family:var(--head);font-weight:700;color:#fff;font-size:27px;margin:2px 0 2px}
+.asub{font-family:var(--head);font-weight:700;color:#e2b9e2;font-size:15px;margin:0 0 8px}
+.namebar{display:flex;align-items:center;gap:10px;margin:6px 0 18px;flex-wrap:wrap}
+.namebar label{font-size:13px;color:#b6c2dc}
+.namebar input{font-family:var(--body);font-size:14px;padding:9px 13px;border:1px solid var(--line);border-radius:999px;min-width:220px;outline:none;background:#fff;color:var(--ink)}
+.namebar input::placeholder{color:#9aa6b1}
+.namebar input:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(88,153,146,.16)}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px;border-bottom:1px solid rgba(255,255,255,.14);padding-bottom:14px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{font-family:var(--head);font-weight:600;font-size:12.5px;padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;transition:.15s}
+.chip:hover{border-color:var(--teal)}
+.chip.active{background:var(--green);color:#fff;border-color:var(--green)}
+.count{font-family:var(--head);font-weight:700;font-size:13px;color:#9fe6d6;white-space:nowrap}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.card{border:1px solid var(--line);border-radius:16px;padding:19px;background:var(--panel);display:flex;flex-direction:column;transition:.16s;position:relative;box-shadow:0 3px 12px rgba(28,45,40,.05)}
+.card:hover{box-shadow:0 12px 30px rgba(88,153,146,.16);transform:translateY(-2px);border-color:rgba(88,153,146,.4)}
+.card.sel{border-color:var(--teal);background:linear-gradient(180deg,#f1f8f6,#ffffff);box-shadow:0 6px 20px rgba(88,153,146,.16)}
+.card.suggest{border:1.5px dashed var(--teal);background:linear-gradient(180deg,#f3faf8,#ffffff)}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:9px}
+.tag{font-family:var(--head);font-weight:700;font-size:10px;letter-spacing:.04em;text-transform:uppercase;padding:3px 9px;border-radius:999px}
+.tag.cat{background:var(--sky);color:var(--green)}
+.tag.idea{background:var(--teal);color:#fff}
+.rankbadge{position:absolute;top:12px;right:13px;font-size:16px;line-height:1;filter:drop-shadow(0 2px 5px rgba(230,180,60,.6))}
+.legend{display:flex;align-items:center;gap:6px;font-size:12px;color:#b6c2dc;margin:0 0 12px}
+.legend .star{font-size:14px}
+.tag.ai{background:#f0e2f0;color:var(--lavd)}
+.tag.noai{background:#eef2f1;color:var(--muted)}
+.card h3{font-family:var(--head);font-weight:700;color:var(--green);font-size:16px;margin:0 0 2px;line-height:1.25}
+.tentative{font-size:10.5px;color:var(--muted);font-style:italic;margin:0 0 8px}
+.about{font-size:13.5px;color:var(--ink);margin:0 0 8px}
+.anchor{font-size:12px;color:var(--muted);margin:0 0 14px}
+.anchor b{color:var(--teal);font-weight:700}
+.controls{margin-top:auto;display:flex;flex-direction:column;gap:9px}
+.seg{display:flex;gap:6px}
+.seg button{flex:1;font-family:var(--head);font-weight:600;font-size:12px;padding:8px;border:1px solid var(--line);background:#fff;border-radius:9px;cursor:pointer;color:var(--muted)}
+.seg button.on{background:var(--teal);color:#fff;border-color:var(--teal)}
+.datesel,textarea.sugtext{font-family:var(--body);font-size:13px;padding:9px 11px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--ink);width:100%}
+.datesel option{background:#fff;color:var(--ink)}
+textarea.sugtext{resize:vertical;min-height:58px}
+textarea.sugtext::placeholder{color:#9aa6b1}
+.choose{font-family:var(--head);font-weight:700;font-size:13.5px;padding:11px;border:none;border-radius:999px;background:linear-gradient(180deg,var(--teal),var(--green));color:#fff;cursor:pointer;transition:.16s;box-shadow:0 4px 16px rgba(88,153,146,.26)}
+.choose:hover{box-shadow:0 8px 24px rgba(88,153,146,.42);transform:translateY(-1px)}
+.choose:disabled{background:#e3e8ee;color:#9aa6b1;cursor:not-allowed;box-shadow:none}
+.card.sel .choose{background:#fff;color:var(--green);border:1.5px solid var(--teal);box-shadow:none}
+.soon{border:1px dashed var(--line);border-radius:16px;padding:34px;text-align:center;color:var(--muted);font-size:14px;background:var(--panel)}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:linear-gradient(180deg,var(--teal),var(--green));color:#fff;font-family:var(--head);font-weight:600;font-size:13.5px;padding:12px 20px;border-radius:999px;box-shadow:0 10px 34px rgba(88,153,146,.4);opacity:0;pointer-events:none;transition:.28s;max-width:90%;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.err{background:linear-gradient(180deg,#c0503d,#8a3222)}
+.empty{color:#b6c2dc;font-size:14px;padding:30px 0}
+.hint{font-size:11px;color:#c6d1e6;margin-top:4px;line-height:1.45}
+.hint b{color:#9fe6d6;font-weight:700}
+.particle{position:fixed;width:9px;height:9px;border-radius:50%;z-index:9999;pointer-events:none;animation:burst .7s ease-out forwards}
+@keyframes burst{0%{transform:translate(-50%,-50%) scale(1);opacity:1}100%{transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(.2);opacity:0}}
+.rocket{position:fixed;z-index:9999;pointer-events:none;font-size:26px;transform:translate(-50%,-50%);animation:rocketup 1s ease-in forwards}
+@keyframes rocketup{0%{transform:translate(-50%,-50%) scale(.6) rotate(-45deg);opacity:0}15%{opacity:1}100%{transform:translate(-50%,-560%) scale(1.1) rotate(-45deg);opacity:0}}
+.hidden{display:none}
+.foot{margin-top:24px;padding:34px 22px 26px;border-top:1px solid rgba(255,255,255,.12)}
+.foot-inner{max-width:1040px;margin:0 auto;display:flex;flex-wrap:wrap;gap:30px;justify-content:space-between}
+.foot-brand{max-width:340px}
+.foot-logo{font-family:var(--head);font-weight:800;letter-spacing:.18em;font-size:18px;color:#fff}
+.foot-tag{font-family:var(--head);font-weight:700;font-size:12px;color:#9fe6d6;margin-top:5px;letter-spacing:.02em}
+.foot-sub{font-size:12px;color:#9aa8c8;margin-top:9px;line-height:1.55}
+.foot-col{display:flex;flex-direction:column;gap:8px}
+.foot-h{font-family:var(--head);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:#c7efe6;margin-bottom:2px}
+.foot-col a{font-family:var(--body);font-size:13px;color:#c6d1e6;text-decoration:none;cursor:pointer}
+.foot-col a:hover{color:#9fe6d6}
+.foot-muted{font-size:12px;color:#8ea0bd}
+.foot-bar{max-width:1040px;margin:24px auto 0;padding-top:16px;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-family:var(--head);font-size:11.5px;color:#8ea0bd}
+.foot-note{color:#9fe6d6}
+/* --- galaxy glass surfaces --- */
+.step,.lane,.bstat,.sched,.slot,.card,.soon{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.15);backdrop-filter:blur(9px);box-shadow:0 6px 22px rgba(0,0,0,.22)}
+.lane.live{background:linear-gradient(180deg,rgba(143,216,201,.16),rgba(255,255,255,.05));border-color:rgba(143,216,201,.45)}
+.card.sel{background:linear-gradient(180deg,rgba(143,216,201,.16),rgba(255,255,255,.05));border-color:rgba(143,216,201,.55)}
+.card.suggest{background:linear-gradient(180deg,rgba(143,216,201,.08),rgba(255,255,255,.04));border-color:rgba(143,216,201,.5)}
+.slot{border-style:dashed;border-color:rgba(255,255,255,.2)}
+.slot.full{border-style:solid;border-color:rgba(143,216,201,.6)}
+.step .st,.lane .who,.card h3{color:#eaf5f1}
+.step .sd,.lane .fld,.bstat .be,.bstat .bl,.sched .cap,.slot .au,.slot .open,.anchor,.tentative{color:#c6d1e6}
+.about{color:#dbe4f0}
+.sched h2,.slot .d,.anchor b,.step .num{color:#9fe6d6}
+.slot .ti{color:#eaf5f1}
+.slot .au{color:#c6d1e6}
+.bstat .bn{color:#b6f0e2;text-shadow:0 0 14px rgba(143,216,201,.5)}
+.tag.cat{background:rgba(219,234,244,.16);color:#cfe4f6}
+.tag.noai{background:rgba(255,255,255,.1);color:#c6d1e6}
+.seg button,.datesel,textarea.sugtext,.chip,.namebar input{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18);color:#dbe4f0}
+.seg button.on,.chip.active{background:var(--teal);color:#04130f;border-color:var(--teal)}
+.datesel option{background:#12203a;color:#e7eef8}
+.namebar input::placeholder,textarea.sugtext::placeholder{color:#8ea0bd}
+.soon{color:#c6d1e6}
+.tag.score{background:rgba(143,216,201,.16);border:1px solid rgba(143,216,201,.45);color:#c7efe6}
+/* topic 'Initiate sequence' button: glass + outline */
+.choose[data-choose]{background:rgba(143,216,201,.12);border:1.5px solid rgba(143,216,201,.5);color:#c7efe6;box-shadow:none;backdrop-filter:blur(6px)}
+.choose[data-choose]:hover{background:rgba(143,216,201,.2);border-color:#9fe6d6;box-shadow:0 0 16px rgba(143,216,201,.25);transform:translateY(-1px)}
+.choose[data-choose]:disabled{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.15);color:#8ea0bd;box-shadow:none}
+/* baseline insight panel */
+.insightbox{margin-top:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-left:3px solid var(--teal);border-radius:12px;padding:2px 18px;backdrop-filter:blur(9px)}
+.insight-row{display:grid;grid-template-columns:158px 1fr;gap:16px;padding:14px 0}
+.insight-row+.insight-row{border-top:1px solid rgba(255,255,255,.1)}
+.insight-k{font-family:var(--head);font-weight:700;font-size:12px;letter-spacing:.03em;color:#9fe6d6;text-transform:uppercase}
+.insight-row p{margin:0;font-size:13px;color:#c6d1e6;line-height:1.55}
+.insight-row p b{color:#eaf5f1}
+@media(max-width:640px){.insight-row{grid-template-columns:1fr;gap:5px;padding:12px 0}}
+/* suggest-a-topic: full Booth Orbital Feed console */
+.card.suggest{background:linear-gradient(180deg,#1a2b24,#0d1a15)!important;border:1px solid rgba(143,216,201,.35)!important;box-shadow:0 20px 50px rgba(0,0,0,.4), 0 0 40px rgba(88,153,146,.28)!important;padding:0!important;overflow:hidden}
+.sug-top{display:flex;align-items:center;justify-content:space-between;background:#12211c;padding:8px 14px;border-bottom:1px solid rgba(143,216,201,.22)}
+.sug-title{font-family:var(--head);font-weight:800;font-size:11px;letter-spacing:.16em;color:#9fe6d6;text-transform:uppercase}
+.sug-top .con-lights i{width:7px;height:7px}
+.sug-screen{position:relative;flex:1;display:flex;flex-direction:column;padding:16px 18px}
+.sug-screen::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(180deg,transparent 0,transparent 3px,rgba(143,216,201,.05) 3px,rgba(143,216,201,.05) 4px)}
+.sug-screen>*{position:relative;z-index:1}
+.card.suggest h3{color:#9fe6d6}
+.card.suggest .about{color:#bcd6ce}
+.card.suggest .tentative{color:#7fb8ad}
+.card.suggest .tag.idea{background:var(--teal);color:#04130f}
+.card.suggest .seg button,.card.suggest .datesel,.card.suggest textarea.sugtext{background:rgba(143,216,201,.1);border-color:rgba(143,216,201,.3);color:#e9f5f1}
+.card.suggest textarea.sugtext::placeholder{color:#7fb8ad}
+.card.suggest .seg button.on{background:var(--teal);color:#04130f;border-color:var(--teal)}
+.card.suggest .datesel option{background:#0d1a16;color:#e9f5f1}
+</style>
+</head>
+<body>
+<div class="sky-fx" aria-hidden="true"><span class="shoot s1"></span><span class="shoot s2"></span><span class="shoot s3"></span></div>
+<div class="ufo-fly" aria-hidden="true">
+  <div class="beam"></div>
+  <div class="abductee">🐄</div>
+  <svg class="ufo-ship" viewBox="0 0 150 120" fill="none"><ellipse cx="75" cy="60" rx="60" ry="18" fill="#3f7a72"/><ellipse cx="75" cy="54" rx="60" ry="16" fill="#589992"/><path d="M50 50a25 22 0 0 1 50 0Z" fill="#DBEAF4"/><ellipse cx="75" cy="50" rx="25" ry="6" fill="#bcd9ef"/><circle cx="45" cy="56" r="3.6" fill="#CD9ACD"/><circle cx="60" cy="60" r="3.6" fill="#e6d06a"/><circle cx="75" cy="61" r="3.6" fill="#CD9ACD"/><circle cx="90" cy="60" r="3.6" fill="#e6d06a"/><circle cx="105" cy="56" r="3.6" fill="#CD9ACD"/></svg>
+</div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="brand" id="brandHome"><span class="logo">BOOTH</span><span class="brandtag">Thought Leadership Campaign</span></div>
+    <nav class="navlinks">
+      <a class="navlink hidemob" data-sec="how">How it works</a>
+      <a class="navlink hidemob" data-sec="lanes-sec">Author lanes</a>
+      <a class="navlink hidemob" data-sec="schedule">Schedule</a>
+      <a class="navlink navbtn" data-sec="lanes-sec">Find your lane</a>
+    </nav>
+  </div>
+</header>
+
+<div id="homeView">
+  <div class="hero">
+    <div class="hero-decor" aria-hidden="true">
+      <svg class="d-planet" viewBox="0 0 100 100" fill="none"><ellipse cx="50" cy="52" rx="46" ry="12" stroke="#8fd8c9" stroke-width="4" opacity=".85" transform="rotate(-20 50 50)"/><circle cx="50" cy="50" r="24" fill="#CD9ACD"/><circle cx="42" cy="43" r="7" fill="#e2c0e2" opacity=".7"/></svg>
+      <div class="hero-ufo"><div class="hero-beam"></div><div class="hero-cow">🐄</div><svg class="d-ufo" viewBox="0 0 150 120" fill="none"><ellipse cx="75" cy="60" rx="60" ry="18" fill="#3f7a72"/><ellipse cx="75" cy="54" rx="60" ry="16" fill="#589992"/><path d="M50 50a25 22 0 0 1 50 0Z" fill="#DBEAF4"/><ellipse cx="75" cy="50" rx="25" ry="6" fill="#bcd9ef"/><circle cx="45" cy="56" r="3.6" fill="#CD9ACD"/><circle cx="60" cy="60" r="3.6" fill="#e6d06a"/><circle cx="75" cy="61" r="3.6" fill="#CD9ACD"/><circle cx="90" cy="60" r="3.6" fill="#e6d06a"/><circle cx="105" cy="56" r="3.6" fill="#CD9ACD"/></svg></div>
+      <svg class="d-planet2" viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="20" fill="#589992"/><circle cx="24" cy="24" r="6" fill="#8fd8c9" opacity=".7"/><circle cx="38" cy="34" r="4" fill="#3f7a72" opacity=".6"/></svg>
+    </div>
+    <div class="hero-inner">
+    <div class="hero-copy">
+      <p class="eyebrow">Booth · Thought Leadership Campaign · Q3 2026</p>
+      <h1>Make Booth the name buyers <span class="accent">find and trust</span> when they research.</h1>
+      <p>Booth's leaders publish on the questions mid-market buyers are actually asking, on the channels we own. You bring the point of view; Marketing runs the engine.</p>
+      <div class="herocta">
+        <a class="cta navlink" data-sec="lanes-sec">Find your lane →</a>
+        <a class="cta ghost navlink" data-sec="how">See how it works</a>
+      </div>
+      <p class="ladder">Ladders up to BoothGrowth (2026 Annual Rock), then the 2029 Painted Picture.</p>
+    </div>
+    <div class="hero-visual">
+      <div class="console">
+        <div class="con-top">
+          <div class="con-title">🛸 Booth Orbital Feed</div>
+          <div class="con-lights"><i class="g"></i><i class="a"></i><i class="r"></i></div>
+        </div>
+        <div class="viewport">
+          <div class="bloghead">🛸 Booth Blog</div>
+          <div class="blogscroll"><div class="blogtrack" id="blogTrack"></div></div>
+        </div>
+        <div class="con-bottom">
+          <div class="knob"></div><div class="knob k2"></div>
+          <div class="readout"><span>hirebooth.com/blog</span><span class="blink"></span></div>
+          <div class="bars"><span></span><span></span><span></span><span></span></div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="wrap">
+    <div class="statstrip">
+      <div class="statbar-top"><span class="con-title">🛰️ Mission Parameters</span><div class="con-lights"><i class="g"></i><i class="a"></i><i class="r"></i></div></div>
+      <div class="statgrid">
+        <div class="stat"><div class="sl">Output</div><div class="n">📝 6+ posts</div><div class="l">Glocom-authored, this quarter</div></div>
+        <div class="stat"><div class="sl">Target</div><div class="n">🚀 +33%</div><div class="l">Share of voice across AI engines</div></div>
+        <div class="stat"><div class="sl">Cadence</div><div class="n">🗓️ Every 2 weeks</div><div class="l">Tuesdays, Jul 28 to Sep 29</div></div>
+      </div>
+    </div>
+    <div class="section" id="how">
+      <p class="h2"><span style="margin-right:8px">👾</span>How it works</p>
+      <p class="lead">Three steps. <em>No probing, no abductions, no tractor beams.</em></p>
+      <div class="steps">
+        <div class="step"><div class="num">01</div><div class="st">Open your lane</div><div class="sd">Click your name below to see the topics written for your lane, or pitch your own.</div></div>
+        <div class="step"><div class="num">02</div><div class="st">Write it or send bullets</div><div class="sd">Write it yourself and we'll edit and polish it for you, or hand over bullet points and we'll draft the whole thing.</div></div>
+        <div class="step"><div class="num">03</div><div class="st">Slot a publish date</div><div class="sd">Pick a date and Isabella gets the signal instantly. <em>The mothership takes it from there.</em></div></div>
+      </div>
+    </div>
+    <div class="stardiv" aria-hidden="true"></div>
+    <div class="section" id="lanes-sec">
+      <p class="h2"><span style="margin-right:8px">🪐</span>Author lanes</p>
+      <p class="lead">Click your name to open your topics. Write where you have real expertise and a point of view. The lane guides you, it doesn't box you in.</p>
+      <div class="lanes" id="lanes"></div>
+      <div class="lognote">
+        <div class="log-top"><span class="log-title">▚ BOOTH LOG · 0731-Q3</span><div class="con-lights"><i class="g"></i><i class="a"></i><i class="r"></i></div></div>
+        <div class="log-body">
+          <p class="log-h">&gt; WHY THESE TOPICS LANDED</p>
+          <p class="log-p">Every topic here was built the same way, on purpose. We start from the questions our buyers are actually asking and the categories we most need to own: Managed Solutions, outcome-based pricing, global hiring, and AI inside the workflow. Then we match each topic to the author with the most credibility to answer it. Audience first, lane second. Many are scored for their potential to rank on Google and get picked up by AI engines. That's what the "Top for search" tag flags, and we'll sharpen the scoring with live HubSpot search data as we go.<span class="cursor"></span></p>
+        </div>
+      </div>
+    </div>
+    <div class="stardiv" aria-hidden="true"></div>
+    <div class="section" id="baseline">
+      <p class="h2"><span style="margin-right:8px">📡</span>Where we're starting</p>
+      <p class="lead">Our AI-search baseline, July 2026 (HubSpot AEO Grader). This is the line we're here to move.</p>
+      <div class="bstats">
+        <div class="bstat"><div class="be">ChatGPT</div><div class="bn">28<span class="bmax">/100</span></div><div class="bl">AEO score · SoV 1/10</div></div>
+        <div class="bstat"><div class="be">Perplexity</div><div class="bn">38<span class="bmax">/100</span></div><div class="bl">AEO score · SoV 1/10</div></div>
+        <div class="bstat"><div class="be">Gemini</div><div class="bn">39<span class="bmax">/100</span></div><div class="bl">AEO score · SoV 0/10</div></div>
+      </div>
+      <p class="lead" style="margin-top:10px;font-size:12px">The <b style="color:#9fe6d6">AEO score</b> (0–100, higher is better) is how visible and well-represented Booth is in each engine's answers. <b style="color:#9fe6d6">SoV</b> = share of voice, how often Booth shows up versus competitors.</p>
+      <div class="insightbox">
+        <div class="insight-row">
+          <div class="insight-k">The gap</div>
+          <p>It isn't perception — AI engines already describe Booth favorably, and on people-first questions we're the name they give. It's <b>presence</b>. That's why we lead with definitional pieces that teach the engines who Booth is, and re-check the score monthly against the +33% goal.</p>
+        </div>
+        <div class="insight-row">
+          <div class="insight-k">👀 How we show up today</div>
+          <p>On the questions that fit Booth, ChatGPT already ranks Booth <b>#1</b> for both people-first and mid-market managed outsourcing, and Perplexity names <b>only Booth</b> for a people-first partner. On generic and enterprise-BPO queries we're still absent — and the definitional questions (what is an EOR, managed vs. staff augmentation) name no vendor yet, which is exactly our opening.</p>
+        </div>
+      </div>
+    </div>
+    <div class="stardiv" aria-hidden="true"></div>
+    <div class="sched" id="schedule">
+      <div class="sched-alien" id="schedAlien" role="button" tabindex="0" aria-label="Pick your launch window — go to author lanes">
+        <div class="alien-bubble">Pick your launch window 🛸</div>
+        <div class="alien-peeker">
+          <svg class="alien-head" viewBox="0 0 60 66" fill="none" aria-hidden="true">
+            <line x1="22" y1="16" x2="16" y2="3" stroke="#6fb35a" stroke-width="2.6" stroke-linecap="round"/><circle cx="15" cy="2" r="3.6" fill="#cd9acd"/>
+            <line x1="38" y1="16" x2="44" y2="3" stroke="#6fb35a" stroke-width="2.6" stroke-linecap="round"/><circle cx="45" cy="2" r="3.6" fill="#cd9acd"/>
+            <ellipse cx="30" cy="40" rx="26" ry="27" fill="#8fd36a"/><ellipse cx="30" cy="38" rx="21" ry="23" fill="#a2e07f"/>
+            <g class="alien-eyes"><ellipse cx="22" cy="40" rx="5.5" ry="9" fill="#0d1a15" transform="rotate(-15 22 40)"/><ellipse cx="38" cy="40" rx="5.5" ry="9" fill="#0d1a15" transform="rotate(15 38 40)"/><circle cx="20.5" cy="36" r="1.7" fill="#fff"/><circle cx="36.5" cy="36" r="1.7" fill="#fff"/></g>
+            <path d="M24 54 q6 5 12 0" stroke="#4f8a3e" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <svg class="alien-hands" viewBox="0 0 60 22" fill="none" aria-hidden="true">
+          <ellipse cx="11" cy="7" rx="8" ry="5.5" fill="#8fd36a"/><rect x="5" y="8" width="3.4" height="10" rx="1.7" fill="#7ec258"/><rect x="9.3" y="9" width="3.4" height="10" rx="1.7" fill="#7ec258"/><rect x="13.6" y="8" width="3.4" height="10" rx="1.7" fill="#7ec258"/>
+          <ellipse cx="49" cy="7" rx="8" ry="5.5" fill="#8fd36a"/><rect x="43" y="8" width="3.4" height="10" rx="1.7" fill="#7ec258"/><rect x="47.3" y="9" width="3.4" height="10" rx="1.7" fill="#7ec258"/><rect x="51.6" y="8" width="3.4" height="10" rx="1.7" fill="#7ec258"/>
+        </svg>
+      </div>
+      <h2><span style="margin-right:8px">🛸</span>Q3 publishing schedule</h2>
+      <p class="cap" id="capHome"></p>
+      <div class="slots" id="slotsHome"></div>
+      <p class="cap" style="margin:12px 0 0">There are six publication slots available this quarter, with nine authors in the queue. Reserve the slot that works best for you. Once all six Q3 spots are filled, any remaining articles will be scheduled for publication after Q3.</p>
+    </div>
+  </div>
+</div>
+
+<div id="authorView" class="hidden">
+  <div class="wrap">
+    <button class="back" id="backBtn">← All lanes</button>
+    <p class="ahead" id="aName">Author</p>
+    <p class="asub" id="aField">Lane</p>
+    <div class="sched">
+      <h2><span style="margin-right:8px">🛸</span>Q3 publishing schedule</h2>
+      <p class="cap" id="capAuthor"></p>
+      <div class="slots" id="slotsAuthor"></div>
+      <p class="cap" style="margin:12px 0 0">There are six publication slots available this quarter, with nine authors in the queue. Reserve the slot that works best for you. Once all six Q3 spots are filled, any remaining articles will be scheduled for publication after Q3.</p>
+    </div>
+    <div id="authorBody"></div>
+  </div>
+</div>
+
+<footer class="foot">
+  <div class="foot-inner">
+    <div class="foot-brand">
+      <div class="foot-logo">BOOTH</div>
+      <div class="foot-tag">Thought Leadership Campaign · Q3 2026</div>
+      <div class="foot-sub">A Booth Marketing initiative to make Booth the name buyers find and trust. Ladders up to BoothGrowth → the 2029 Painted Picture.</div>
+    </div>
+    <div class="foot-col">
+      <div class="foot-h">Explore</div>
+      <a class="navlink" data-sec="how">How it works</a>
+      <a class="navlink" data-sec="lanes-sec">Author lanes</a>
+      <a class="navlink" data-sec="schedule">Schedule</a>
+    </div>
+    <div class="foot-col">
+      <div class="foot-h">🖖 Hailing frequencies open</div>
+      <a href="mailto:isabella.malonzo@hirebooth.com">isabella.malonzo@hirebooth.com</a>
+      <span class="foot-muted">Spiral Nebula Messier 101</span>
+    </div>
+  </div>
+  <div class="foot-bar"><span>© 2026 Booth · Internal use only</span><span class="foot-note">🛸 Made with love by Booth Marketing</span></div>
+</footer>
+<div class="toast" id="toast"></div>
+<script>
+const NOTIFY_TO="isabella.kubota@hirebooth.com";
+const CAP="Tuesdays, chosen for peak US B2B engagement, all within Q3.";
+const SLOTS=["Tue, Jul 28","Tue, Aug 11","Tue, Aug 25","Tue, Sep 8","Tue, Sep 22","Tue, Sep 29"];
+// AEO opportunity scores (0-100) keyed by exact topic title. Populated from HubSpot data; blank = not scored yet.
+const SCORES={
+"What Is an EOR, and When Do You Actually Need One?":73,
+"What Is Outcome-Based Pricing, and Why Is It Replacing Cost-Per-Seat?":64,
+"Operating Partner or Staffing Vendor? Know What You're Actually Buying.":67,
+"Why 'Managed' Beats 'Staffed' for the Next Generation of Companies":68,
+};
+const ELAINE=[
+{t:"What a Stay Interview Tells You That an Exit Interview Never Will",a:"Ask why people stay while they're still here, not why they left.",cat:"HR",anc:"Managers who want to prevent attrition, not just explain it.",ai:false,pri:"High"},
+{t:"The First 90 Days Decide Whether Someone Stays",a:"Onboarding is a retention decision, not an HR formality.",cat:"HR",anc:"Buyers onboarding outsourced or newly-hired global staff, Booth's handoff moment.",ai:false,pri:"High"},
+{t:"Helping Someone Grow When There's No Obvious Next Rung",a:"Growth is scope and skill, not just promotion.",cat:"People",anc:"Lean or flat teams. Reassures buyers Booth develops the people on their account.",ai:false,pri:"High"},
+{t:"Building Belonging Across Time Zones, Not Just Offsites",a:"Belonging for distributed teams is engineered daily, not once a year.",cat:"Culture",anc:"One team across multiple time zones and the client's HQ. Pure Booth territory.",ai:false,pri:"High"},
+{t:"What Talent Really Wants From an Employer in 2026",a:"Pay opens the door; growth, flexibility and feeling valued keep people.",cat:"HR",anc:"Employers competing for scarce global talent, Booth's core promise.",ai:false,pri:"High"},
+{t:"Why AI Adoption on People Teams Stalls, and What Moves It",a:"The blocker is rarely the tool. It's trust, training and habit.",cat:"AI in talent & workforce",anc:"Buyers whose teams quietly ignore the AI they were handed.",ai:true,pri:"High"},
+{t:"AI Readiness Starts With Leadership, Not Software",a:"Teams adopt AI when leaders model it, not when licenses get bought.",cat:"AI in talent & workforce",anc:"Leaders whose AI rollout stalled. Positions Booth as the people-first AI partner.",ai:true,pri:"Medium"},
+{t:"How the Best Leaders Build a Culture Where High Performance Feels Normal",a:"Excellence is a culture you build, not a hire you make.",cat:"Culture",anc:"Leaders who want results without burning out dispersed teams.",ai:false,pri:"Medium"},
+{t:"The State of AI on People Teams: What We're Seeing in 2026",a:"A grounded look at where AI genuinely helps people work, and where it doesn't.",cat:"AI in talent & workforce",anc:"People and ops leaders deciding where AI genuinely helps their teams.",ai:true,pri:"Medium"},
+{t:"What High-Growth Companies Get Right About Their People",a:"Fast growth exposes weak people practices before it rewards strong ones.",cat:"HR",anc:"Founders and ops leaders scaling headcount, the moment they consider Booth.",ai:false,pri:"Medium"},
+{t:"Recognition Isn't a Campaign. It's a Habit Most Leaders Skip.",a:"The best recognition is specific, frequent and free.",cat:"People",anc:"Busy managers of remote or outsourced staff who think recognition needs budget.",ai:false,pri:"Medium"},
+{t:"Does Your Growing Team Actually Need a Performance Management System?",a:"The case for a real performance system, when to put one in, and how Booth runs ours.",cat:"HR",anc:"Leaders of scaling or distributed teams deciding whether to formalize performance.",ai:false,pri:"High"},
+];
+const KATHY=[
+{t:"What Is an EOR, and When Do You Actually Need One?",a:"A plain-English definition of Employer of Record and the moment it makes sense.",cat:"Operations & delivery",anc:"Buyers weighing global hiring options.",ai:false,pri:"High"},
+{t:"The Real Cost of a Cheap Team: Where Offshore Campaigns Leak Money",a:"The rework, attrition and oversight that make cheap the expensive option.",cat:"Operations & delivery",anc:"CFOs and ops leaders comparing bids.",ai:false,pri:"High"},
+{t:"How to Move a Messy Process Offshore Without Quality Falling Off",a:"Transition design and the first-quarter dip, handled.",cat:"Operations & delivery",anc:"COOs with a process that isn't clean enough to just hand over.",ai:false,pri:"High"},
+{t:"SLAs vs. Outcomes: What Should You Actually Hold a Vendor To?",a:"Activity targets versus result targets, and why outcome accountability wins.",cat:"Operations & delivery",anc:"Buyers writing or renewing an outsourcing contract.",ai:false,pri:"High"},
+{t:"Handing Off a Function Doesn't Mean Losing Control",a:"Control comes from process and governance, not location.",cat:"Operations & delivery",anc:"COOs afraid to let go of a whole function.",ai:false,pri:"High"},
+{t:"Why Attrition Is an Operations Problem, Not Just HR's",a:"Retention is a delivery risk before it's an HR metric.",cat:"Operations & delivery",anc:"Buyers relying on a stable offshore team.",ai:false,pri:"High"},
+{t:"How Do You Know an Outsourced Operation Is Actually Healthy?",a:"The leading indicators that predict problems before customers feel them, not lagging month-end reports.",cat:"Operations & delivery",anc:"Ops leaders who only see rear-view dashboards.",ai:false,pri:"High"},
+{t:"Coverage Models Explained: 24/7, Follow-the-Sun, and What You Actually Need",a:"Matching coverage to real demand without overpaying.",cat:"Operations & delivery",anc:"Ops leaders scoping a new team.",ai:false,pri:"Medium"},
+{t:"How Much Should You Actually Manage an Outsourced Team?",a:"Too hands-off fails, too hands-on defeats the point; the calibration.",cat:"Operations & delivery",anc:"First-time outsourcers unsure how involved to be.",ai:false,pri:"Medium"},
+{t:"Why Outsourced Operations Break at Scale, and How to Prevent It",a:"The cracks that appear going from 10 to 100 seats.",cat:"Operations & delivery",anc:"Buyers scaling a working pilot.",ai:false,pri:"Medium"},
+{t:"How to Choose Between EOR, BPO, Staff Augmentation, and a Managed Team",a:"A plain decision guide for which delivery model fits which need.",cat:"Operations & delivery",anc:"Buyers lost in the model soup.",ai:false,pri:"High"},
+{t:"Is My Data Safe Offshore? What a Managed Environment Actually Means",a:"The physical and operational safeguards a managed workspace provides that a laptop on home WiFi doesn't.",cat:"Operations & delivery",anc:"Security-conscious buyers weighing offshore risk.",ai:false,pri:"High"},
+{t:"When AI Does Part of the Work, Who Owns the Quality?",a:"Humans own the quality call; QA runs at full coverage, not spot checks. Part of the Agentic Operator series.",cat:"AI in ops and service transformation",anc:"Ops leaders nervous about AI in a delivery workflow.",ai:true,pri:"High"},
+{t:"Which Delivery Metrics Still Matter Once AI Handles the Routine?",a:"Quality-adjusted output beats the old volume and handle-time vanity metrics.",cat:"AI in ops and service transformation",anc:"COOs renegotiating contracts.",ai:true,pri:"High"},
+{t:"What Happens to Offshore Teams When AI Takes the Routine Work?",a:"People move up the value chain into judgment and exception work.",cat:"AI in ops and service transformation",anc:"Buyers wanting specialized offshore, not call-center.",ai:true,pri:"Medium"},
+];
+const CHAD=[
+{t:"What Is BoothAgent? Booth's AI Product Line, Explained.",a:"A plain definition of Booth's AI-enabled service line and how it fits inside managed work.",cat:"Inside Booth's AI",anc:"Buyers and AI engines trying to understand what BoothAgent is.",ai:true,pri:"High"},
+{t:"What 'Services-as-Software' Actually Means for the Work You Outsource",a:"The unbundling of BPO explained: AI encoded into delivery, priced on outcomes.",cat:"AI in practice",anc:"Buyers hearing the buzzword in vendor pitches.",ai:true,pri:"High"},
+{t:"Build Your Own AI Agents, or Have Someone Run Them for You?",a:"The build-vs-buy-vs-managed decision most articles skip.",cat:"AI in practice",anc:"Heads of ops and transformation weighing AI.",ai:true,pri:"High"},
+{t:"The Real ROI of AI in the Back Office",a:"An honest, number-dense look at finance, recruitment and support automation.",cat:"AI in practice",anc:"CEOs and ops leaders who want proof, not hype.",ai:true,pri:"High"},
+{t:"The Questions to Ask a Vendor Who Says They 'Do AI'",a:"A buyer's due-diligence checklist for real versus cosmetic AI.",cat:"AI in practice",anc:"Buyers vetting vendor AI claims.",ai:true,pri:"High"},
+{t:"What an AI-Augmented Team Actually Does All Day",a:"The system in motion: AI on the volume, people on the exceptions and judgment. Part of the Agentic Operator series.",cat:"Building augmented teams",anc:"Buyers who only hear vague 'AI transforms BPO' claims.",ai:true,pri:"High"},
+{t:"Designing the Handoff: Where the Agent Stops and the Human Starts",a:"The escalation design that actually makes augmented teams work.",cat:"Building augmented teams",anc:"Ops and innovation leaders building human-plus-agent workflows.",ai:true,pri:"Medium"},
+{t:"The Hardest Part of an AI-Augmented Team Isn't the AI",a:"Orchestration, data and handoff design are the real engineering challenge.",cat:"Building augmented teams",anc:"Technical leaders underestimating the plumbing.",ai:true,pri:"Medium"},
+{t:"When Should You Keep a Human in the Loop?",a:"A decision rule for where humans stay, and why oversight is the premium tier.",cat:"Building augmented teams",anc:"Leaders drawing the automation line.",ai:true,pri:"Medium"},
+{t:"Why AI Projects Fail Without a Data Foundation (and How We Built Ours)",a:"Why so many AI projects stall, and the process-data foundation that fixes it; the BoothBrain story.",cat:"Inside Booth's AI",anc:"Leaders whose AI pilots stalled on messy data.",ai:true,pri:"High"},
+{t:"AI Can Run the Workflow. It Can't Sign the Contract.",a:"AI executes the work but can't navigate cross-border law or take accountability; why EOR still matters.",cat:"Inside Booth's AI",anc:"Buyers scaling AI-run work across borders.",ai:true,pri:"Medium"},
+];
+const JEN=[
+{t:"What Is Outcome-Based Pricing, and Why Is It Replacing Cost-Per-Seat?",a:"A clear definition of the pricing model buyers keep hearing about, and why it's rising.",cat:"Growth & market strategy",anc:"Buyers trying to understand outcome-based pricing.",ai:false,pri:"High"},
+{t:"Stop Buying Headcount. Start Buying Outcomes.",a:"The shift from paying per seat to paying per result.",cat:"Growth & market strategy",anc:"Buyers rethinking how they contract for outsourcing.",ai:false,pri:"High"},
+{t:"Cost-First Outsourcing Is Dead. Here's What Buyers Want Now.",a:"Cost as the top driver fell from 70% to 34%; proximity, quality and outcomes won.",cat:"Growth & market strategy",anc:"Ops leaders and founders rethinking a cost-only vendor.",ai:false,pri:"Medium"},
+{t:"What Mid-Market Companies Get Right That Enterprises Can't",a:"Speed, flat decisions and no legacy drag are a real advantage, if you use them.",cat:"Growth & market strategy",anc:"Mid-market CEOs and growth leaders.",ai:false,pri:"Medium"},
+{t:"Everyone's Using AI to Cut Costs. The Real Prize Is Growth.",a:"The winners reinvest AI savings into growth, not just a smaller cost line.",cat:"Growth & market strategy",anc:"CEOs weighing AI beyond efficiency.",ai:true,pri:"Medium"},
+{t:"AI Isn't a Revenue Strategy. Where You Point It Is.",a:"AI as a competitive driver: the advantage is judgment about where to aim it, not the tool itself.",cat:"Growth & market strategy",anc:"CEOs and growth leaders past the AI-hype stage.",ai:true,pri:"Medium"},
+{t:"Operating Partner or Staffing Vendor? Know What You're Actually Buying.",a:"The difference between renting seats and handing a partner the outcome, and how to tell them apart before you sign.",cat:"Growth & market strategy",anc:"Buyers choosing between a staffing vendor and an operating partner.",ai:false,pri:"High"},
+{t:"Your Next Buyer Is Asking ChatGPT About You. Are You in the Answer?",a:"B2B research moved into AI engines; if you're not cited, you're not in the deal.",cat:"Growth & market strategy",anc:"Growth leaders whose buyers self-research before any call.",ai:true,pri:"High"},
+{t:"The Agentic Operator, One Year In: What We Got Right and Wrong",a:"A candid reflection on leading a team that's part human, part agent.",cat:"The Agentic Operator",anc:"Leaders following Booth's Agentic Operator series.",ai:true,pri:"Medium"},
+{t:"How Do You Measure a Team That's Half AI?",a:"The scorecard for blended human-and-agent teams the playbooks skip.",cat:"The Agentic Operator",anc:"Leaders accountable for output when AI does part of the work.",ai:true,pri:"High"},
+];
+const CHRIS=[
+{t:"What 'Outcome-Owned' Really Means for You as a Client",a:"Managed Solutions from your chair: one partner accountable for the result, not the activity.",cat:"Inside Booth",anc:"Buyers deciding between staffing and managed.",ai:false,pri:"High"},
+{t:"Can You Outsource Customer-Facing Work Without Losing Your Brand?",a:"Protecting quality, voice and culture when customers talk to an outsourced team.",cat:"Client relationships & retention",anc:"Brand-protective founders and CX leaders.",ai:false,pri:"High"},
+{t:"Everyone Says “Partner.” Here's How You Know It's Real.",a:"Partnership is a two-sided commitment, not a tagline; the signals that prove it.",cat:"Client relationships & retention",anc:"Buyers burned by vendors who vanish after the sale.",ai:false,pri:"High"},
+{t:"Why Clients Leave (and It's Rarely the Work)",a:"Churn is usually a relationship and alignment problem, not a quality one.",cat:"Client relationships & retention",anc:"Buyers evaluating who they can trust long-term.",ai:false,pri:"High"},
+{t:"What Great Client Onboarding Actually Looks Like",a:"The first 90 days of a client relationship decide whether it lasts.",cat:"Client relationships & retention",anc:"Buyers starting an outsourcing engagement.",ai:false,pri:"High"},
+{t:"What to Cover in Your First Conversation With an Outsourcing Partner",a:"Expectations, context and trust up front, before anyone touches the work.",cat:"Client relationships & retention",anc:"Buyers kicking off a new partner relationship.",ai:false,pri:"Medium"},
+{t:"Outsourced vs. In-House Customer Service: What Actually Changes?",a:"The real trade-offs in cost, control, quality and speed when you make the switch.",cat:"Client relationships & retention",anc:"Founders and CX leaders weighing the move.",ai:false,pri:"High"},
+{t:"What's a Good CSAT or NPS Score for Outsourced Support?",a:"The benchmarks that tell you whether your outsourced CX is actually working.",cat:"Client relationships & retention",anc:"Leaders judging outsourced customer-experience performance.",ai:false,pri:"High"},
+{t:"The Red Flags Your Outsourcing Relationship Is in Trouble",a:"The early warning signs a partnership is failing, before the churn.",cat:"Client relationships & retention",anc:"Buyers worried a relationship is quietly slipping.",ai:false,pri:"High"},
+{t:"Can You Outsource Customer Support to AI Without Losing Trust?",a:"Where AI helps, where it erodes trust, and the hybrid that keeps customers.",cat:"AI in customer experience",anc:"CX leaders weighing AI in customer-facing support.",ai:true,pri:"High"},
+{t:"When AI Answers Your Customers, Who's Protecting the Relationship?",a:"The brand owns the relationship, not the AI; how to keep it that way.",cat:"AI in customer experience",anc:"Leaders putting AI in front of customers.",ai:true,pri:"Medium"},
+{t:"The Human Touch Just Became a Premium. Here's How to Use It.",a:"As AI handles the basics, human contact becomes the high-value tier.",cat:"AI in customer experience",anc:"CX leaders deciding where humans still matter most.",ai:true,pri:"Medium"},
+{t:"AI vs. Human Customer Service: What Do Customers Actually Prefer?",a:"What the data says customers want, and where each one wins.",cat:"AI in customer experience",anc:"CX leaders deciding the AI-and-human mix.",ai:true,pri:"High"},
+{t:"How We Turn a First Project Into a Seven-Year Relationship",a:"The land-and-expand story: earning the next function by nailing the first.",cat:"Inside Booth",anc:"Buyers evaluating a long-term partner.",ai:false,pri:"Medium"},
+{t:"The Quiet Advantage of a Provider Whose People Don't Quit",a:"People-first retention is a client benefit: your team keeps its institutional knowledge.",cat:"Inside Booth",anc:"Buyers burned by churn on their account.",ai:false,pri:"Medium"},
+];
+const JAMIE=[
+{t:"What the Tougher New B Corp Standards Mean (and Why We Welcomed Them)",a:"B Lab's 2025 overhaul raised the bar; what changed, and why it's good for buyers.",cat:"Planet & B Corp",anc:"Procurement and founders who screen for verified values.",ai:false,pri:"High"},
+{t:"Does a B Corp Certification Actually Matter When You're Choosing a Vendor?",a:"What the badge actually verifies, and why it de-risks a vendor decision.",cat:"Planet & B Corp",anc:"Buyers scoring RFPs and weighing values claims.",ai:false,pri:"High"},
+{t:"Sustainability Isn't a Department. It's a Leadership Decision.",a:"Why climate and impact belong in the founder's chair, not a side team.",cat:"Planet & B Corp",anc:"Leaders deciding how seriously to take sustainability.",ai:false,pri:"Medium"},
+{t:"Responsible AI Is a Leadership Call, Not an IT Project.",a:"Where human judgment stays, what gets automated, and who's accountable.",cat:"Responsible AI",anc:"CEOs and boards deciding how far to push AI.",ai:true,pri:"High"},
+{t:"How Should a Company Actually Use AI? A Founder's Framework.",a:"A plain framework for where to point AI, and where not to.",cat:"Responsible AI",anc:"CEOs and leaders past the AI-hype stage.",ai:true,pri:"High"},
+{t:"Does AI Replace People, or Augment Them?",a:"Booth's stance: automate the task, not the person, and what that means in practice.",cat:"Responsible AI",anc:"Leaders anxious about AI-driven displacement.",ai:true,pri:"Medium"},
+{t:"Offshore Vendor or Global Partner? Why the Distinction Matters.",a:"The difference between renting a cheap team and gaining a partner accountable for outcomes.",cat:"Vision & leadership",anc:"Buyers who assume all outsourcing is the same.",ai:false,pri:"Medium"},
+{t:"Growth Without Compromise Isn't a Slogan. It's How We Say No.",a:"The discipline of turning down growth that costs your people or the planet.",cat:"Vision & leadership",anc:"Leaders who suspect 'purpose' is cosmetic.",ai:false,pri:"Medium"},
+{t:"Growth for Growth's Sake Is a Trap. Here's What We Chose Instead.",a:"The anti-hypergrowth stance: sustainable, independent growth over growth at any cost.",cat:"Vision & leadership",anc:"Founders and leaders questioning grow-at-all-costs.",ai:false,pri:"Medium"},
+{t:"Hiring Across Borders Is Becoming the Default. The Ready Companies Win.",a:"Global hiring is going mainstream; readiness is a choice you make now, not later.",cat:"Vision & leadership",anc:"Leaders deciding whether to build teams across borders.",ai:false,pri:"High"},
+{t:"Why 'Managed' Beats 'Staffed' for the Next Generation of Companies",a:"Why owning outcomes is beating renting headcount for the companies being built now.",cat:"Vision & leadership",anc:"Leaders choosing how to bring on a team.",ai:false,pri:"High"},
+{t:"What Borderless Teams Understand That Local Ones Miss",a:"The advantage a company gains when it builds without borders by design.",cat:"Vision & leadership",anc:"Leaders deciding how and where to build their teams.",ai:false,pri:"Medium"},
+{t:"The Real Reason Companies Go Global (and It's Not Cost)",a:"Why leaders build across borders now, and why cost is no longer the driver.",cat:"Vision & leadership",anc:"Leaders weighing whether to build globally.",ai:false,pri:"High"},
+];
+const CARMEN=[
+{t:"The Office Isn't Dead. It Just Has a New Job.",a:"Why we still build physical hubs for distributed teams, and what an office is actually for now.",cat:"Workspaces & hubs",anc:"Leaders stuck in the return-to-office vs. remote binary.",ai:false,pri:"High"},
+{t:"When Does a Distributed Team Actually Need a Managed Workspace?",a:"Fully remote works until it doesn't; where a managed hub earns its keep for a global team.",cat:"Workspaces & hubs",anc:"Leaders weighing whether to give remote people a home base.",ai:false,pri:"High"},
+{t:"Values Aren't Wall Art. Here's How Ours Actually Get Used.",a:"How a company's values show up in real decisions, instead of living on a wall.",cat:"One company & culture",anc:"Founders and people leaders formalizing culture as they scale.",ai:false,pri:"High"},
+{t:"What Nobody Tells You About Scaling Past 100 People",a:"The operating shifts that hit when informal coordination stops working.",cat:"The Integrator role",anc:"Founders and operators scaling past ~100 people.",ai:false,pri:"High"},
+{t:"Culture Doesn't Scale by Accident: How We Built One Company Across Time Zones",a:"The rituals and systems that keep a multi-country team feeling like one.",cat:"One company & culture",anc:"Founders and COOs scaling culture past ~100 people globally.",ai:false,pri:"High"},
+{t:"You Can't Copy-Paste Culture Across Borders",a:"Why the same values look different in each country, and why that's the point.",cat:"One company & culture",anc:"Leaders scaling culture across multiple countries.",ai:false,pri:"Medium"},
+{t:"People-First Isn't a Perk. It's the Operating Model.",a:"What it really takes to run a people-first company at global scale, beyond the badge.",cat:"One company & culture",anc:"Values-driven founders and services leaders.",ai:false,pri:"Medium"},
+];
+const MICHELLE=[
+{t:"What Is a B Corp, and What Does the Certification Actually Verify?",a:"A plain definition of B Corp and what the certification actually checks.",cat:"B Corp & CSR",anc:"Buyers and procurement screening for verified values.",ai:false,pri:"High"},
+{t:"What Does \"Ethical Outsourcing\" Actually Require?",a:"The concrete standards ethical outsourcing demands, beyond the label.",cat:"Impact & ethical outsourcing",anc:"Buyers who want savings without someone else's exploitation.",ai:false,pri:"High"},
+{t:"Sustainable Outsourcing Isn't Just Carbon. It's How You Treat People and Data.",a:"Broadening sustainable outsourcing past emissions to labor standards and data practices.",cat:"Impact & ethical outsourcing",anc:"ESG-minded buyers building their own sustainability story.",ai:false,pri:"High"},
+{t:"How a B Corp Measures Impact Beyond Revenue",a:"What a certified B Corp actually tracks besides profit, and why that scorecard matters to buyers.",cat:"B Corp & CSR",anc:"Buyers and partners who want verifiable impact, not slogans.",ai:false,pri:"High"},
+{t:"What Being a B Corp Actually Changed About How We Operate",a:"The concrete operating changes certification forced, from how we hire to how we report.",cat:"B Corp & CSR",anc:"Buyers who want proof B Corp is more than a logo.",ai:false,pri:"Medium"},
+{t:"Our Journey With 1% for the Planet, and How It Amplifies Our Impact",a:"How the partnership multiplies what our giving can actually do, from day one onward.",cat:"B Corp & CSR",anc:"Buyers and partners who want to see impact, not intentions.",ai:false,pri:"Medium"},
+];
+const AUTHORS=[
+{key:"jamie",who:"Jamie",fld:"Vision & Leadership",topics:JAMIE},
+{key:"jen",who:"Jen",fld:"Growth",topics:JEN},
+{key:"chad",who:"Chad",fld:"AI & Innovation",topics:CHAD},
+{key:"elaine",who:"Elaine",fld:"People & Culture",topics:ELAINE},
+{key:"kathy",who:"Kathy",fld:"Operations & Delivery",topics:KATHY},
+{key:"chris",who:"Chris",fld:"Client Success",topics:CHRIS},
+{key:"michelle",who:"Michelle",fld:"B-Corp & CSR",topics:MICHELLE},
+{key:"finance",who:"Finance",fld:"Finance & Ops (author TBD)",topics:[]},
+{key:"carmen",who:"Carmen",fld:"Workspaces & Integrator",topics:CARMEN},
+];
+const KEY="booth_site_v55";
+let state=JSON.parse(localStorage.getItem(KEY)||"{}");
+let curAuthor=null, filter="All";
+const $=id=>document.getElementById(id);
+const toastEl=$('toast');
+const whoStore="booth_site_who";
+function save(){localStorage.setItem(KEY,JSON.stringify(state));}
+const BOOKINGS_URL="https://script.google.com/macros/s/AKfycbwazvIM3EvPRAZfeGCi8Yp42q_SnAqHCZ0lVAJrKe_m1JuBBsbOojBitGF3xEWdlC_ztg/exec";
+let REMOTE=[];
+function postToBackend(payload){try{const cb="__wr"+Date.now();window[cb]=function(){try{delete window[cb];}catch(e){}};const sc=document.createElement("script");sc.src=BOOKINGS_URL+"?p="+encodeURIComponent(JSON.stringify(payload))+"&callback="+cb+"&t="+Date.now();sc.onload=function(){sc.remove();};sc.onerror=function(){sc.remove();};document.body.appendChild(sc);}catch(e){}}
+function loadRemote(){
+  const cb="__bk"+Date.now();
+  window[cb]=function(rows){try{REMOTE=(rows||[]).map(b=>({date:String(b.date),who:String(b.author||b.who||""),title:String(b.topic||b.title||""),format:String(b.format||""),bullets:String(b.bullets||"")}));}catch(e){REMOTE=[];}hydrateMine();renderAll();};
+  const sc=document.createElement("script");sc.src=BOOKINGS_URL+"?callback="+cb+"&t="+Date.now();sc.onerror=function(){};document.body.appendChild(sc);
+}
+// Recognize the current person's existing bookings (by name) so their cards show as booked/updatable on any device.
+function hydrateMine(){
+  const nm=((localStorage.getItem(whoStore))||'').trim().toLowerCase();if(!nm)return;
+  const idx={};AUTHORS.forEach(au=>au.topics.forEach((t,i)=>{idx[t.t]={key:au.key,i:i};}));
+  REMOTE.forEach(b=>{if(String(b.who).trim().toLowerCase()!==nm)return;const loc=idx[b.title];if(!loc)return;state[loc.key]=state[loc.key]||{};const cur=state[loc.key][loc.i];if(!cur||!cur.date){state[loc.key][loc.i]={format:b.format||'Full draft',date:b.date,bullets:b.bullets||'',fromServer:true};}});
+  save();
+}
+function toast(m,err){toastEl.textContent=m;toastEl.className="toast show"+(err?" err":"");clearTimeout(toastEl._t);toastEl._t=setTimeout(()=>toastEl.className="toast",3600);}
+function burst(el){
+  if(!el||window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  const r=el.getBoundingClientRect();const x=r.left+r.width/2,y=r.top+r.height/2;
+  const cols=['#589992','#8fd8c9','#CD9ACD','#DBEAF4','#e6d06a','#ffffff'];const N=20;
+  for(let i=0;i<N;i++){
+    const p=document.createElement('div');p.className='particle';
+    const ang=(Math.PI*2*i/N)+Math.random()*0.5;const d=54+Math.random()*66;
+    p.style.left=x+'px';p.style.top=y+'px';p.style.background=cols[i%cols.length];
+    p.style.setProperty('--dx',(Math.cos(ang)*d)+'px');p.style.setProperty('--dy',(Math.sin(ang)*d)+'px');
+    document.body.appendChild(p);setTimeout(()=>p.remove(),720);
+  }
+  const rk=document.createElement('div');rk.className='rocket';rk.textContent='🚀';rk.style.left=x+'px';rk.style.top=y+'px';
+  document.body.appendChild(rk);setTimeout(()=>rk.remove(),1000);
+}
+function titleFor(au,key){const r=state[au.key][key];return (r&&r.title)||(au.topics[key]&&au.topics[key].t)||"Suggested topic";}
+function localAssignments(){const out=[];AUTHORS.forEach(au=>{const s=state[au.key]||{};Object.keys(s).forEach(k=>{if(s[k].date)out.push({au,k,rec:s[k]});});});return out;}
+function bookedMap(){const nm=((localStorage.getItem(whoStore))||'').trim().toLowerCase();const m={};REMOTE.forEach(b=>{if(b.date)m[b.date]={date:b.date,who:b.who,title:b.title,local:false,mine:(!!nm&&String(b.who).trim().toLowerCase()===nm)};});localAssignments().forEach(a=>{m[a.rec.date]={date:a.rec.date,who:((localStorage.getItem(whoStore))||a.au.who),title:titleFor(a.au,a.k),local:true,auKey:a.au.key,k:a.k,mine:true};});return m;}
+function filledCount(){return Object.keys(bookedMap()).length;}
+function assignedTo(date){return bookedMap()[date]||null;}
+function dateTaken(date,auKey,exceptKey){const e=bookedMap()[date];if(!e)return false;if(e.local&&e.auKey===auKey&&String(e.k)===String(exceptKey))return false;return true;}
+function renderLanes(){
+  const el=$('lanes');el.innerHTML="";
+  AUTHORS.forEach(au=>{
+    const live=au.topics.length>0;
+    const b=document.createElement('button');b.className='lane'+(live?' live':'');
+    b.innerHTML=`<div class="who">${au.who}</div><div class="fld">${au.fld}</div><span class="badge ${live?'on':'soon'}">${live?(au.topics.length+' topics'):'Coming soon'}</span>`;
+    b.onclick=()=>openAuthor(au.key);el.appendChild(b);
+  });
+}
+function renderSlots(){
+  [["slotsHome","capHome"],["slotsAuthor","capAuthor"]].forEach(([sid,cid])=>{
+    const host=$(sid);if(!host)return;host.innerHTML="";
+    SLOTS.forEach(d=>{
+      const a=assignedTo(d);const el=document.createElement('div');el.className='slot'+(a?' full':' slot-open');
+      el.innerHTML=`<div class="d">${d}</div>`+(a?`<div class="ti">${a.title||'Booked'}</div><div class="au">${a.who||''}</div>`+(a.mine?`<span class="x" title="Unschedule">✕</span>`:''):`<div class="open">Open · claim it →</div>`);
+      if(a&&a.mine){el.querySelector('.x').onclick=(e)=>{e.stopPropagation();if(a.local&&state[a.auKey])delete state[a.auKey][a.k];REMOTE=REMOTE.filter(b=>b.date!==a.date);save();postToBackend({type:'unbook',author:a.who,topic:a.title});renderAll();toast("Slot cleared.");};}
+      else if(!a){el.onclick=()=>navGo('lanes-sec');}
+      host.appendChild(el);
+    });
+    $(cid).textContent=`${filledCount()} of 6 slots filled. ${CAP}`;
+  });
+}
+function openAuthor(key){
+  curAuthor=AUTHORS.find(a=>a.key===key);filter="All";
+  $('homeView').classList.add('hidden');$('authorView').classList.remove('hidden');
+  $('aName').textContent=curAuthor.who+"'s topics";$('aField').textContent=curAuthor.fld;
+  window.scrollTo(0,0);renderAuthor();renderSlots();
+}
+function goHome(){curAuthor=null;$('authorView').classList.add('hidden');$('homeView').classList.remove('hidden');window.scrollTo(0,0);renderSlots();}
+$('backBtn').onclick=goHome;
+function renderAuthor(){
+  const body=$('authorBody');const au=curAuthor;
+  if(!au.topics.length){body.innerHTML=`<div class="soon"><b>Topics for ${au.who}'s lane are being added.</b><br/>Check back soon. Isabella is curating this lane next.</div>`;return;}
+  const cats=["All",...Array.from(new Set(au.topics.map(t=>t.cat)))];
+  const who=localStorage.getItem(whoStore)||"";
+  body.innerHTML=`
+    <p class="lead" style="margin-top:-2px">These are tentative working titles. Pick the angle you like and we'll finalize the exact headline with you. Prefer your own idea? Use "Suggest a topic" at the top.</p>
+    <div class="namebar"><label for="who">Your name</label><input id="who" type="text" placeholder="e.g. ${au.who}" value="${who}" autocomplete="off"/></div>
+    <div class="toolbar"><div class="chips" id="chips"></div><div class="count" id="count"></div></div>
+    <p class="legend"><span class="star">⭐</span> = Top for search — highest-priority topic for AI search visibility (AEO/SEO).</p>
+    <div class="grid" id="grid"></div>`;
+  const whoEl=$('who');whoEl.oninput=()=>localStorage.setItem(whoStore,whoEl.value);whoEl.onchange=()=>{localStorage.setItem(whoStore,whoEl.value);hydrateMine();renderAll();};
+  const chipsEl=$('chips');
+  cats.forEach(c=>{const b=document.createElement('button');b.className='chip'+(c===filter?' active':'');b.textContent=c;b.onclick=()=>{filter=c;renderGrid();};chipsEl.appendChild(b);});
+  renderGrid();
+}
+function renderGrid(){
+  const au=curAuthor;const grid=$('grid');if(!grid)return;
+  [...$('chips').children].forEach(x=>x.classList.toggle('active',x.textContent===filter));
+  grid.innerHTML="";
+  const s=state[au.key]||{};const full=filledCount()>=6;
+  const rows=au.topics.map((x,i)=>({x,i})).filter(o=>filter==="All"||o.x.cat===filter);
+  if(!rows.length){grid.innerHTML='<p class="empty">No topics in this category.</p>';}
+  rows.forEach(({x,i})=>{
+    const sel=s[i];const fmt=sel?sel.format:null;const dt=sel?sel.date:"";
+    const card=document.createElement('div');card.className='card'+(sel?' sel':'');
+    const dateOpts=['<option value="">Pick a publish date…</option>'].concat(SLOTS.map(d=>{const taken=dateTaken(d,au.key,i);return `<option value="${d}" ${dt===d?'selected':''} ${taken?'disabled':''}>${d}${taken?' · booked':''}</option>`;})).join('');
+    const blocked=full&&!sel;
+    card.innerHTML=`
+      ${x.pri==='High'?'<span class="rankbadge" title="Top for search">⭐</span>':''}
+      <div class="tags">${SCORES[x.t]!=null?`<span class="tag score" title="AEO opportunity score, 0–100 (from live search data)">AEO ${SCORES[x.t]}</span>`:''}<span class="tag cat">${x.cat}</span><span class="tag ${x.ai?'ai':'noai'}">${x.ai?'AI':'Evergreen'}</span></div>
+      <h3>${x.t}</h3><div class="tentative">Tentative working title</div>
+      <p class="about">${x.a}</p><p class="anchor"><b>Who it's for:</b> ${x.anc}</p>
+      <div class="controls">
+        <div class="seg" data-i="${i}">
+          <button data-f="Full draft" class="${fmt==='Full draft'?'on':''}">I'll write it</button>
+          <button data-f="Bullet points" class="${fmt==='Bullet points'?'on':''}">I'll send bullets</button>
+        </div>
+        <textarea class="sugtext bulletbox" placeholder="Paste your bullet points here (or send them later)" style="display:${fmt==='Bullet points'?'block':'none'}">${sel&&sel.bullets?sel.bullets:''}</textarea>
+        <select class="datesel" data-i="${i}">${dateOpts}</select>
+        <button class="choose" data-choose="${i}" ${blocked?'disabled':''}>${sel?'Sequence engaged ✓ '+dt+' (tap to update)':(blocked?'Launch bay full (6/6)':'Initiate sequence 🔴')}</button>
+        ${sel?`<div class="hint"><b>👽 Transmission tip:</b> to send or change your bullets, pick "I'll send bullets," paste them above, then tap "Sequence engaged ✓" again to save.</div>`:''}
+      </div>`;
+    grid.appendChild(card);
+  });
+  // suggestion card (always shown, at the top)
+  {
+    const sugDateOpts=SLOTS.map(d=>{const taken=dateTaken(d,au.key,"__sug__");return `<option value="${d}" ${taken?'disabled':''}>${d}${taken?' · booked':''}</option>`;}).join('');
+    const c=document.createElement('div');c.className='card suggest';
+    c.innerHTML=`
+      <div class="sug-top"><span class="sug-title">▚ INCOMING TRANSMISSION</span><div class="con-lights"><i class="g"></i><i class="a"></i><i class="r"></i></div></div>
+      <div class="sug-screen">
+        <div class="tags"><span class="tag idea">Your idea</span></div>
+        <h3>Suggest a topic</h3><div class="tentative">Not sure it fits a slot yet? Send it anyway.</div>
+        <p class="about">Have an angle we missed? Beam it over.</p>
+        <div class="controls">
+          <textarea class="sugtext" id="sugText" placeholder="Your topic idea or a rough headline"></textarea>
+          <div class="seg" id="sugSeg">
+            <button data-f="Full draft">I'll write it</button>
+            <button data-f="Bullet points">I'll send bullets</button>
+          </div>
+          <select class="datesel" id="sugDate"><option value="">Publish date (optional)</option>${sugDateOpts}</select>
+          <button class="choose" id="sugBtn">Beam it up, Scotty 🛸🔫</button>
+        </div>
+      </div>`;
+    grid.insertBefore(c, grid.firstChild);
+    const seg=$('sugSeg');seg.querySelectorAll('button').forEach(b=>b.onclick=()=>{seg.querySelectorAll('button').forEach(z=>z.classList.remove('on'));b.classList.add('on');seg._f=b.dataset.f;});
+    $('sugBtn').onclick=()=>suggest();
+  }
+  grid.querySelectorAll('.seg[data-i] button').forEach(b=>{b.onclick=()=>{const seg=b.parentElement;seg.querySelectorAll('button').forEach(z=>z.classList.remove('on'));b.classList.add('on');seg._f=b.dataset.f;const card=seg.closest('.card');const bx=card&&card.querySelector('.bulletbox');if(bx)bx.style.display=(b.dataset.f==='Bullet points')?'block':'none';};});
+  grid.querySelectorAll('.datesel[data-i]').forEach(sl=>{sl.onchange=()=>{sl._d=sl.value;};});
+  grid.querySelectorAll('[data-choose]').forEach(b=>{b.onclick=()=>choose(+b.dataset.choose,b);});
+  $('count').textContent=Object.keys(s).length+" selected";
+}
+async function choose(i,btn){
+  const au=curAuthor;const card=btn.closest('.card');const seg=card.querySelector('.seg'),dsel=card.querySelector('.datesel');
+  const bx=card.querySelector('.bulletbox');const bullets=bx?bx.value.trim():'';
+  state[au.key]=state[au.key]||{};const s=state[au.key];
+  const fmt=seg._f||(s[i]&&s[i].format);
+  const date=(dsel._d!==undefined?dsel._d:dsel.value)||(s[i]&&s[i].date);
+  if(!fmt){toast("Pick 'write it' or 'send bullets' first.",true);return;}
+  if(!date){toast("Pick a publish date first.",true);return;}
+  if(dateTaken(date,au.key,i)){toast(date+" is already taken. Pick another date.",true);return;}
+  burst(btn);
+  const who=((localStorage.getItem(whoStore))||au.who).trim();const x=au.topics[i];
+  s[i]={format:fmt,date:date,bullets:bullets};save();
+  REMOTE.push({date:date,who:who,title:x.t});
+  renderAll();
+  postToBackend({type:'booking',author:who,lane:au.who+' — '+au.fld,topic:x.t,format:fmt,date:date,bullets:bullets});
+  toast("Scheduled for "+date+". Isabella notified.");
+}
+async function suggest(){
+  const au=curAuthor;const idea=$('sugText').value.trim();
+  if(!idea){toast("Type your topic idea first.",true);return;}
+  const fmt=($('sugSeg')._f)||"To discuss";
+  const date=$('sugDate').value;
+  if(date&&dateTaken(date,au.key,"__sug__")){toast(date+" is already taken. Pick another date.",true);return;}
+  const who=((localStorage.getItem(whoStore))||au.who).trim();
+  if(date){state[au.key]=state[au.key]||{};state[au.key]["sug"+Date.now()]={format:fmt,date:date,title:idea,suggested:true};save();REMOTE.push({date:date,who:who,title:idea});renderAll();}
+  postToBackend({type:'suggestion',author:who,lane:au.who+' — '+au.fld,topic:idea,format:fmt,date:date||''});
+  toast(date?("Suggestion sent and booked for "+date+"."):"Suggestion sent to Isabella.");
+  $('sugText').value="";renderAll();
+}
+function renderAll(){renderSlots();if(curAuthor)renderGrid();}
+// nav
+function navGo(sec){goHome();const t=document.getElementById(sec);if(t)setTimeout(()=>t.scrollIntoView({behavior:'smooth',block:'start'}),40);}
+document.querySelectorAll('.navlink').forEach(a=>{a.onclick=(e)=>{e.preventDefault();navGo(a.dataset.sec);};});
+$('brandHome').onclick=()=>{goHome();window.scrollTo({top:0,behavior:'smooth'});};
+(function(){const sa=$('schedAlien');if(!sa)return;sa.onclick=()=>navGo('lanes-sec');sa.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();navGo('lanes-sec');}};})();
+// animated blog laptop
+const BLOG=[
+ {k:"Operations & Delivery",h:"What Is an EOR, and When Do You Actually Need One?"},
+ {k:"Growth",h:"Stop Buying Headcount. Start Buying Outcomes."},
+ {k:"Workspaces",h:"The Office Isn't Dead. It Just Has a New Job."},
+ {k:"AI & Innovation",h:"What Is BoothAgent? Booth's AI Product Line, Explained."},
+ {k:"People & Culture",h:"What a Stay Interview Tells You an Exit Interview Never Will"},
+ {k:"Growth",h:"Your Next Buyer Is Asking ChatGPT About You. Are You in the Answer?"},
+ {k:"Vision & Leadership",h:"Why 'Managed' Beats 'Staffed' for the Next Generation of Companies"},
+ {k:"B-Corp & CSR",h:"How a B Corp Measures Impact Beyond Revenue"},
+];
+(function buildBlog(){const t=$('blogTrack');if(!t)return;const html=BLOG.map(b=>`<div class="acard"><div class="k">${b.k}</div><div class="h">${b.h}</div><div class="m">Booth Blog · 5 min read</div></div>`).join('');t.innerHTML=html+html;})();
+renderLanes();renderSlots();loadRemote();
+</script>
+</body>
+</html>
