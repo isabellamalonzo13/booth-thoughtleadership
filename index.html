@@ -253,6 +253,17 @@ body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 .back:hover{color:#e2b9e2}
 .backbottom{margin-top:26px;padding-top:14px;border-top:1px solid rgba(255,255,255,.12);text-align:center}
 .backbottom .back{padding:6px 0}
+.lane .who{display:flex;align-items:center;gap:9px}
+.mini-alien{width:38px;height:42px;flex:0 0 auto;display:inline-flex;line-height:0}
+.mini-alien svg{width:100%;height:100%;overflow:visible}
+.ahead{display:flex;align-items:center;gap:12px}
+.ahead-alien{width:48px;height:52px;flex:0 0 auto;display:inline-flex;line-height:0}
+.ahead-alien svg{width:100%;height:100%;overflow:visible}
+.slot-alien{width:20px;height:22px;display:inline-flex;vertical-align:-7px;margin-right:5px;line-height:0}
+.slot-alien svg{width:100%;height:100%;overflow:visible}
+.m-eyes{transform-box:fill-box;transform-origin:center;animation:mblink 4s ease-in-out infinite}
+@keyframes mblink{0%,90%,100%{transform:scaleY(1)}95%{transform:scaleY(.12)}}
+@media (prefers-reduced-motion:reduce){.m-eyes{animation:none}}
 .ahead{font-family:var(--head);font-weight:700;color:#fff;font-size:27px;margin:2px 0 2px}
 .asub{font-family:var(--head);font-weight:700;color:#e2b9e2;font-size:15px;margin:0 0 8px}
 .namebar{display:flex;align-items:center;gap:10px;margin:6px 0 18px;flex-wrap:wrap}
@@ -450,7 +461,7 @@ textarea.sugtext::placeholder{color:#9aa6b1}
       <p class="h2"><span style="margin-right:8px">👾</span>How it works</p>
       <p class="lead">Three steps. <em>No probing, no abductions, no tractor beams.</em></p>
       <div class="steps">
-        <div class="step"><div class="num">01</div><div class="st">Open your lane</div><div class="sd">Click your name below to see the topics written for your lane, or pitch your own.</div></div>
+        <div class="step"><div class="num">01</div><div class="st">Open your lane</div><div class="sd">Click your Boothling below to see the topics written for your lane, or pitch your own.</div></div>
         <div class="step"><div class="num">02</div><div class="st">Write it or send bullets</div><div class="sd">Write it yourself and we'll edit and polish it for you, or hand over bullet points and we'll draft the whole thing.</div></div>
         <div class="step"><div class="num">03</div><div class="st">Slot a publish date</div><div class="sd">Pick a date and Isabella gets the signal instantly. <em>The mothership takes it from there.</em></div></div>
       </div>
@@ -458,7 +469,7 @@ textarea.sugtext::placeholder{color:#9aa6b1}
     <div class="stardiv" aria-hidden="true"></div>
     <div class="section" id="lanes-sec">
       <p class="h2"><span style="margin-right:8px">🪐</span>Author lanes</p>
-      <p class="lead">Click your name to open your topics. Write where you have real expertise and a point of view. The lane guides you, it doesn't box you in.</p>
+      <p class="lead">Click your <span style="color:#9fe6d6;font-style:italic">Boothling</span> to open your topics. Write where you have real expertise and a point of view. The lane guides you, it doesn't box you in.</p>
       <div class="lanes" id="lanes"></div>
       <div class="lognote">
         <div class="log-top"><span class="log-title">▚ BOOTH LOG · 0731-Q3</span><div class="con-lights"><i class="g"></i><i class="a"></i><i class="r"></i></div></div>
@@ -683,8 +694,17 @@ const SUSELLE=[
 {t:"Why Colombia Is Becoming a Top Nearshore Hub",a:"What makes Colombia a standout for nearshore teams, from talent to time zone to cost.",cat:"Colombia",anc:"US leaders scoping where to build a nearshore team.",ai:false,pri:"High"},
 {t:"Building a Team in Colombia: Talent, Cost, and What to Expect",a:"A grounded look at hiring, talent depth, cost and culture when you build in Colombia.",cat:"Colombia",anc:"Leaders considering Colombia for their next team.",ai:false,pri:"Medium"},
 ];
+const FINANCE=[
+{t:"What Is Finance and Accounting (F&A) Outsourcing?",a:"A plain definition of F&A outsourcing and which functions companies actually hand off.",cat:"F&A outsourcing",anc:"Finance leaders new to outsourcing the back office.",ai:false,pri:"High"},
+{t:"How to Hire Accounting and Finance Talent Overseas",a:"Where to find dedicated accounting and finance professionals abroad, and how to do it without the risk.",cat:"F&A outsourcing",anc:"Finance leaders whose local hires are too expensive or too slow.",ai:false,pri:"High"},
+{t:"What Does It Cost to Outsource Finance and Accounting?",a:"A transparent look at F&A and EOR pricing, and what actually drives the number.",cat:"F&A outsourcing",anc:"CFOs and controllers pricing out an outsourced finance team.",ai:false,pri:"High"},
+{t:"What to Keep In-House vs. Outsource in Your Finance Function",a:"A clear line between the finance work you should own and the work you can safely hand off.",cat:"F&A outsourcing",anc:"Finance leaders deciding where to start.",ai:false,pri:"Medium"},
+{t:"The CFO's Case for Outcome-Based Outsourcing",a:"Why paying for results, not headcount, changes the math for a finance leader.",cat:"Finance leadership",anc:"CFOs rethinking how they buy outsourced work.",ai:false,pri:"Medium"},
+{t:"Building a Finance Team Across Borders: Controls, Compliance, and Cost",a:"How to scale a finance function globally without losing control or compliance.",cat:"Finance leadership",anc:"Finance leaders scaling across countries.",ai:false,pri:"Medium"},
+];
 const AUTHORS=[
 {key:"jamie",who:"Jamie",fld:"Vision & Leadership",topics:JAMIE},
+{key:"carmen",who:"Carmen",fld:"Workspaces & Integrator",topics:CARMEN},
 {key:"jen",who:"Jen",fld:"Growth",topics:JEN},
 {key:"chad",who:"Chad",fld:"AI & Innovation",topics:CHAD},
 {key:"elaine",who:"Elaine",fld:"People & Culture",topics:ELAINE},
@@ -692,8 +712,7 @@ const AUTHORS=[
 {key:"chris",who:"Chris",fld:"Client Success",topics:CHRIS},
 {key:"michelle",who:"Michelle",fld:"B-Corp & CSR",topics:MICHELLE},
 {key:"suselle",who:"Suselle",fld:"LATAM & Nearshore",topics:SUSELLE},
-{key:"finance",who:"Finance",fld:"Finance & Ops (author TBD)",topics:[]},
-{key:"carmen",who:"Carmen",fld:"Workspaces & Integrator",topics:CARMEN},
+{key:"finance",who:"Genesis",fld:"Finance & Ops",topics:FINANCE},
 ];
 const KEY="booth_site_v55";
 let state=JSON.parse(localStorage.getItem(KEY)||"{}");
@@ -738,12 +757,39 @@ function bookedMap(){const nm=((localStorage.getItem(whoStore))||'').trim().toLo
 function filledCount(){return Object.keys(bookedMap()).length;}
 function assignedTo(date){return bookedMap()[date]||null;}
 function dateTaken(date,auKey,exceptKey){const e=bookedMap()[date];if(!e)return false;if(e.local&&e.auKey===auKey&&String(e.k)===String(exceptKey))return false;return true;}
+function monster(o){
+  const h=o.hue,d=o.dark;
+  const arms=`<ellipse cx="7" cy="29" rx="3.4" ry="5" fill="${h}"/><ellipse cx="41" cy="29" rx="3.4" ry="5" fill="${h}"/>`;
+  const horns=`<path d="M13 13 L10.5 4 L18 12 Z" fill="${h}"/><path d="M35 13 L37.5 4 L30 12 Z" fill="${h}"/>`;
+  const ant=`<line x1="24" y1="11" x2="24" y2="3" stroke="${d}" stroke-width="1.8"/><circle cx="24" cy="2.6" r="2.4" fill="${h}"/>`;
+  const top=o.top==="horns"?horns:o.top==="antenna"?ant:"";
+  const body=`<ellipse cx="24" cy="27" rx="16" ry="17" fill="${h}"/>`;
+  const feet=`<ellipse cx="17" cy="45" rx="4.5" ry="3" fill="${d}"/><ellipse cx="31" cy="45" rx="4.5" ry="3" fill="${d}"/>`;
+  const two=`<circle cx="18" cy="24" r="6" fill="#fff"/><circle cx="30" cy="24" r="6" fill="#fff"/><circle cx="19" cy="25" r="2.6" fill="#12223a"/><circle cx="29" cy="25" r="2.6" fill="#12223a"/>`;
+  const one=`<circle cx="24" cy="23" r="7.5" fill="#fff"/><circle cx="24" cy="24" r="3.2" fill="#12223a"/>`;
+  const eyes='<g class="m-eyes">'+(o.eyes===1?one:two)+'</g>';
+  const mouth=o.nomouth?"":`<path d="M19 33 Q24 37.5 29 33" stroke="#12223a" stroke-width="1.6" fill="none" stroke-linecap="round"/>`;
+  return `<svg viewBox="0 0 48 52" fill="none">${arms}${top}${body}${feet}${eyes}${mouth}${o.extra||""}</svg>`;
+}
+const AVATARS={
+ jamie:monster({hue:"#8b6fd0",dark:"#6f52b8",eyes:2,extra:`<path d="M24 11 V3" stroke="#4f8a3e" stroke-width="2" stroke-linecap="round"/><ellipse cx="20" cy="5" rx="4" ry="2.3" fill="#5bbf7a" transform="rotate(-30 20 5)"/><ellipse cx="28" cy="5" rx="4" ry="2.3" fill="#5bbf7a" transform="rotate(30 28 5)"/>`}),
+ jen:monster({hue:"#e0607a",dark:"#c04862",top:"antenna",eyes:2,extra:`<path d="M11 24 Q11 19 20 21 Q19 26 11 25 Z" fill="none" stroke="#12223a" stroke-width="1.5"/><path d="M37 24 Q37 19 28 21 Q29 26 37 25 Z" fill="none" stroke="#12223a" stroke-width="1.5"/><line x1="20" y1="22" x2="28" y2="22" stroke="#12223a" stroke-width="1.5"/><g transform="translate(43,29)"><rect x="-1.7" y="-6" width="3.4" height="12" rx="1.5" fill="#c2c9d1"/><circle cx="0" cy="-6.5" r="3.6" fill="#3a444e"/><circle cx="0" cy="6.5" r="3.6" fill="#3a444e"/></g>`}),
+ chad:monster({hue:"#e6b84a",dark:"#cf9f34",eyes:1,extra:`<ellipse cx="24" cy="11" rx="17" ry="3.4" fill="#7a5230"/><path d="M15 11 Q16 3 24 3 Q32 3 33 11 Z" fill="#8a5f38"/><rect x="15" y="8.6" width="18" height="2.4" fill="#5a3d24"/>`}),
+ elaine:monster({hue:"#4bb3a6",dark:"#369187",top:"horns",eyes:2,extra:`<path d="M9 18 Q24 13 39 18 L38 22 Q24 17.5 10 22 Z" fill="#CD9ACD"/><path d="M38 19 l5 -2 l-1 4 z" fill="#b97fb9"/>`}),
+ kathy:monster({hue:"#e58fb0",dark:"#cf6f95",top:"antenna",eyes:2,nomouth:true,extra:`<path d="M18 33 Q24 30 30 33 Q24 37.5 18 33 Z" fill="#c8305a"/><path d="M18 33 Q24 34.5 30 33" stroke="#8f1f3f" stroke-width="0.8" fill="none"/>`}),
+ chris:monster({hue:"#4a90d9",dark:"#3574bd",eyes:2,extra:`<path d="M12 13 Q13 3 24 4 L32 9 Z" fill="#d23b3b"/><circle cx="32" cy="9" r="2.8" fill="#fff"/><rect x="10" y="11" width="24" height="3.4" rx="1.7" fill="#fff"/>`}),
+ michelle:monster({hue:"#6bbf5b",dark:"#52a343",top:"antenna",eyes:2,extra:`<line x1="35" y1="41" x2="43" y2="27" stroke="#caa24a" stroke-width="2" stroke-linecap="round"/><path d="M43 22 L44.2 26 L48 27 L44.2 28 L43 32 L41.8 28 L38 27 L41.8 26 Z" fill="#f0d24a"/>`}),
+ suselle:monster({hue:"#e59440",dark:"#cf7a2c",top:"horns",eyes:2,extra:`<g transform="translate(12,9)"><circle cx="-2.4" cy="0" r="2.3" fill="#e05a8a"/><circle cx="2.4" cy="0" r="2.3" fill="#e05a8a"/><circle cx="0" cy="-2.4" r="2.3" fill="#e05a8a"/><circle cx="0" cy="2.4" r="2.3" fill="#e05a8a"/><circle cx="0" cy="0" r="2" fill="#f0d24a"/></g>`}),
+ carmen:monster({hue:"#a77fd0",dark:"#8b63b8",top:"antenna",eyes:2,extra:`<g transform="translate(37,35)"><circle cx="0" cy="0" r="8.5" fill="#d9772e"/><path d="M0 -8.5 V8.5" stroke="#2b2f36" stroke-width="1.1"/><path d="M-8.4 -1.4 Q0 1 8.4 -1.4" stroke="#2b2f36" stroke-width="1.1" fill="none"/><path d="M0 -8.5 Q6.6 0 0 8.5" stroke="#2b2f36" stroke-width="1.1" fill="none"/><path d="M0 -8.5 Q-6.6 0 0 8.5" stroke="#2b2f36" stroke-width="1.1" fill="none"/></g>`}),
+ finance:monster({hue:"#46586a",dark:"#33414d",eyes:1,extra:`<text x="4" y="9" font-size="8" fill="#9fe6d6" font-family="monospace">&#8721;</text><text x="20" y="4" font-size="7" fill="#e6d06a" font-family="monospace">%</text><text x="34" y="9" font-size="8" fill="#9fe6d6" font-family="monospace">=</text>`}),
+};
+const NAMEKEY={};AUTHORS.forEach(au=>{NAMEKEY[au.who.trim().toLowerCase()]=au.key;});
 function renderLanes(){
   const el=$('lanes');el.innerHTML="";
   AUTHORS.forEach(au=>{
     const live=au.topics.length>0;
     const b=document.createElement('button');b.className='lane'+(live?' live':'');
-    b.innerHTML=`<div class="who">${au.who}</div><div class="fld">${au.fld}</div><span class="badge ${live?'on':'soon'}">${live?(au.topics.length+' topics'):'Coming soon'}</span>`;
+    b.innerHTML=`<div class="who"><span class="mini-alien">${AVATARS[au.key]||''}</span>${au.who}</div><div class="fld">${au.fld}</div><span class="badge ${live?'on':'soon'}">${live?(au.topics.length+' topics'):'Coming soon'}</span>`;
     b.onclick=()=>openAuthor(au.key);el.appendChild(b);
   });
 }
@@ -752,7 +798,8 @@ function renderSlots(){
     const host=$(sid);if(!host)return;host.innerHTML="";
     SLOTS.forEach(d=>{
       const a=assignedTo(d);const el=document.createElement('div');el.className='slot'+(a?' full':' slot-open');
-      el.innerHTML=`<div class="d">${d}</div>`+(a?`<div class="ti">${a.title||'Booked'}</div><div class="au">${a.who||''}</div>`+(a.mine?`<span class="x" title="Unschedule">✕</span>`:''):`<div class="open">Open · claim it →</div>`);
+      const ak=a?(a.auKey||NAMEKEY[(a.who||'').trim().toLowerCase()]):null;
+      el.innerHTML=`<div class="d">${d}</div>`+(a?`<div class="ti">${a.title||'Booked'}</div><div class="au">${ak&&AVATARS[ak]?`<span class="slot-alien">${AVATARS[ak]}</span>`:''}${a.who||''}</div>`+(a.mine?`<span class="x" title="Unschedule">✕</span>`:''):`<div class="open">Open · claim it →</div>`);
       if(a&&a.mine){el.querySelector('.x').onclick=(e)=>{e.stopPropagation();if(!confirm('Unschedule "'+(a.title||'this post')+'" and free the '+a.date+' slot?'))return;if(a.local&&state[a.auKey])delete state[a.auKey][a.k];REMOTE=REMOTE.filter(b=>b.date!==a.date);save();postToBackend({type:'unbook',author:a.who,topic:a.title});renderAll();toast("Slot cleared.");};}
       else if(!a){el.onclick=()=>navGo('lanes-sec');}
       host.appendChild(el);
@@ -763,7 +810,7 @@ function renderSlots(){
 function openAuthor(key){
   curAuthor=AUTHORS.find(a=>a.key===key);filter="All";
   $('homeView').classList.add('hidden');$('authorView').classList.remove('hidden');
-  $('aName').textContent=curAuthor.who+"'s topics";$('aField').textContent=curAuthor.fld;
+  $('aName').innerHTML='<span class="ahead-alien">'+(AVATARS[curAuthor.key]||'')+'</span>'+curAuthor.who+"'s topics";$('aField').textContent=curAuthor.fld;
   window.scrollTo(0,0);renderAuthor();renderSlots();
 }
 function goHome(){curAuthor=null;$('authorView').classList.add('hidden');$('homeView').classList.remove('hidden');window.scrollTo(0,0);renderSlots();}
