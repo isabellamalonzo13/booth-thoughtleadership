@@ -285,6 +285,7 @@ body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 .card.sel{border-color:var(--teal);background:linear-gradient(180deg,#f1f8f6,#ffffff);box-shadow:0 6px 20px rgba(88,153,146,.16)}
 .card.suggest{border:1.5px dashed var(--teal);background:linear-gradient(180deg,#f3faf8,#ffffff)}
 .tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:9px}
+.card.hasrec .tags{padding-right:112px}
 .tag{font-family:var(--head);font-weight:700;font-size:10px;letter-spacing:.04em;text-transform:uppercase;padding:3px 9px;border-radius:999px}
 .tag.cat{background:var(--sky);color:var(--green)}
 .tag.idea{background:var(--teal);color:#fff}
@@ -846,7 +847,7 @@ function renderGrid(){
   rows.forEach(({x,i})=>{
     const rec=s[i];const fmt=rec?rec.format:null;const dt=rec&&rec.date?rec.date:"";
     const booked=!!(rec&&rec.date);const wait=!!(rec&&rec.waitlist&&!rec.date);
-    const card=document.createElement('div');card.className='card'+(booked?' sel':'')+(wait?' wait':'');
+    const card=document.createElement('div');card.className='card'+(booked?' sel':'')+(wait?' wait':'')+(x.pri==='High'?' hasrec':'');
     const dateOpts=['<option value="">Pick a publish date…</option>'].concat(SLOTS.map(d=>{const taken=dateTaken(d,au.key,i);return `<option value="${d}" ${dt===d?'selected':''} ${taken?'disabled':''}>${d}${taken?' · booked':''}</option>`;})).join('');
     let btnLabel;
     if(booked)btnLabel='Sequence engaged ✓ '+dt+' (tap to update)';
