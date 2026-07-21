@@ -251,6 +251,8 @@ body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 .slot .x:hover{color:#c0503d}
 .back{display:inline-flex;align-items:center;gap:6px;font-family:var(--head);font-weight:700;font-size:13px;color:#9fe6d6;background:none;border:none;cursor:pointer;padding:16px 0 6px}
 .back:hover{color:#e2b9e2}
+.backbottom{margin-top:26px;padding-top:14px;border-top:1px solid rgba(255,255,255,.12);text-align:center}
+.backbottom .back{padding:6px 0}
 .ahead{font-family:var(--head);font-weight:700;color:#fff;font-size:27px;margin:2px 0 2px}
 .asub{font-family:var(--head);font-weight:700;color:#e2b9e2;font-size:15px;margin:0 0 8px}
 .namebar{display:flex;align-items:center;gap:10px;margin:6px 0 18px;flex-wrap:wrap}
@@ -273,7 +275,8 @@ body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 .tag{font-family:var(--head);font-weight:700;font-size:10px;letter-spacing:.04em;text-transform:uppercase;padding:3px 9px;border-radius:999px}
 .tag.cat{background:var(--sky);color:var(--green)}
 .tag.idea{background:var(--teal);color:#fff}
-.rankbadge{position:absolute;top:12px;right:13px;font-size:16px;line-height:1;filter:drop-shadow(0 2px 5px rgba(230,180,60,.6))}
+.recbadge{position:absolute;top:11px;right:12px;font-family:var(--head);font-weight:700;font-size:9px;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:var(--teal);color:#04130f}
+.legend .reclbl{font-family:var(--head);font-weight:700;font-size:9px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:var(--teal);color:#04130f}
 .legend{display:flex;align-items:center;gap:6px;font-size:12px;color:#b6c2dc;margin:0 0 12px}
 .legend .star{font-size:14px}
 .tag.ai{background:#f0e2f0;color:var(--lavd)}
@@ -300,6 +303,11 @@ textarea.sugtext::placeholder{color:#9aa6b1}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast.err{background:linear-gradient(180deg,#c0503d,#8a3222)}
 .empty{color:#b6c2dc;font-size:14px;padding:30px 0}
+#authorView .wrap{position:relative}
+.topic-sat{position:absolute;top:6px;right:2px;width:104px;z-index:1;pointer-events:none;filter:drop-shadow(0 6px 12px rgba(0,0,0,.35));animation:satfloat 8s ease-in-out infinite}
+@keyframes satfloat{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-12px) rotate(5deg)}}
+@media (prefers-reduced-motion:reduce){.topic-sat{animation:none}}
+@media(max-width:640px){.topic-sat{width:64px;top:2px}}
 .hint{font-size:11px;color:#c6d1e6;margin-top:4px;line-height:1.45}
 .hint b{color:#9fe6d6;font-weight:700}
 .particle{position:fixed;width:9px;height:9px;border-radius:50%;z-index:9999;pointer-events:none;animation:burst .7s ease-out forwards}
@@ -325,6 +333,7 @@ textarea.sugtext::placeholder{color:#9aa6b1}
 .lane.live{background:linear-gradient(180deg,rgba(143,216,201,.16),rgba(255,255,255,.05));border-color:rgba(143,216,201,.45)}
 .card.sel{background:linear-gradient(180deg,rgba(143,216,201,.16),rgba(255,255,255,.05));border-color:rgba(143,216,201,.55)}
 .card.suggest{background:linear-gradient(180deg,rgba(143,216,201,.08),rgba(255,255,255,.04));border-color:rgba(143,216,201,.5)}
+.card.wait{background:linear-gradient(180deg,rgba(205,154,205,.14),rgba(255,255,255,.04));border-color:rgba(205,154,205,.55)}
 .slot{border-style:dashed;border-color:rgba(255,255,255,.2)}
 .slot.full{border-style:solid;border-color:rgba(143,216,201,.6)}
 .step .st,.lane .who,.card h3{color:#eaf5f1}
@@ -396,7 +405,7 @@ textarea.sugtext::placeholder{color:#9aa6b1}
   <div class="hero">
     <div class="hero-decor" aria-hidden="true">
       <svg class="d-planet" viewBox="0 0 100 100" fill="none"><ellipse cx="50" cy="52" rx="46" ry="12" stroke="#8fd8c9" stroke-width="4" opacity=".85" transform="rotate(-20 50 50)"/><circle cx="50" cy="50" r="24" fill="#CD9ACD"/><circle cx="42" cy="43" r="7" fill="#e2c0e2" opacity=".7"/></svg>
-      <div class="hero-ufo"><div class="hero-beam"></div><div class="hero-cow">🐄</div><svg class="d-ufo" viewBox="0 0 150 120" fill="none"><ellipse cx="75" cy="60" rx="60" ry="18" fill="#3f7a72"/><ellipse cx="75" cy="54" rx="60" ry="16" fill="#589992"/><path d="M50 50a25 22 0 0 1 50 0Z" fill="#DBEAF4"/><ellipse cx="75" cy="50" rx="25" ry="6" fill="#bcd9ef"/><circle cx="45" cy="56" r="3.6" fill="#CD9ACD"/><circle cx="60" cy="60" r="3.6" fill="#e6d06a"/><circle cx="75" cy="61" r="3.6" fill="#CD9ACD"/><circle cx="90" cy="60" r="3.6" fill="#e6d06a"/><circle cx="105" cy="56" r="3.6" fill="#CD9ACD"/></svg></div>
+      <div class="hero-ufo"><div class="hero-beam"></div><div class="hero-cow">🐄</div><svg class="d-ufo" viewBox="0 0 150 120" fill="none"><ellipse cx="75" cy="60" rx="60" ry="18" fill="#3f7a72"/><ellipse cx="75" cy="54" rx="60" ry="16" fill="#589992"/><path d="M50 50a25 22 0 0 1 50 0Z" fill="#DBEAF4"/><ellipse cx="75" cy="50" rx="25" ry="6" fill="#bcd9ef"/><ellipse cx="75" cy="41" rx="9.5" ry="10.5" fill="#8fd36a"/><ellipse cx="71" cy="41" rx="2.3" ry="3.6" fill="#0d1a15" transform="rotate(-15 71 41)"/><ellipse cx="79" cy="41" rx="2.3" ry="3.6" fill="#0d1a15" transform="rotate(15 79 41)"/><circle cx="45" cy="56" r="3.6" fill="#CD9ACD"/><circle cx="60" cy="60" r="3.6" fill="#e6d06a"/><circle cx="75" cy="61" r="3.6" fill="#CD9ACD"/><circle cx="90" cy="60" r="3.6" fill="#e6d06a"/><circle cx="105" cy="56" r="3.6" fill="#CD9ACD"/></svg></div>
       <svg class="d-planet2" viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="20" fill="#589992"/><circle cx="24" cy="24" r="6" fill="#8fd8c9" opacity=".7"/><circle cx="38" cy="34" r="4" fill="#3f7a72" opacity=".6"/></svg>
     </div>
     <div class="hero-inner">
@@ -433,7 +442,7 @@ textarea.sugtext::placeholder{color:#9aa6b1}
       <div class="statbar-top"><span class="con-title">🛰️ Mission Parameters</span><div class="con-lights"><i class="g"></i><i class="a"></i><i class="r"></i></div></div>
       <div class="statgrid">
         <div class="stat"><div class="sl">Output</div><div class="n">📝 6+ posts</div><div class="l">Glocom-authored, this quarter</div></div>
-        <div class="stat"><div class="sl">Target</div><div class="n">🚀 +33%</div><div class="l">Share of voice across AI engines</div></div>
+        <div class="stat"><div class="sl">Target</div><div class="n">🚀 +33%</div><div class="l">Relative lift in AI-engine share of voice vs. July baseline</div></div>
         <div class="stat"><div class="sl">Cadence</div><div class="n">🗓️ Every 2 weeks</div><div class="l">Tuesdays, Jul 28 to Sep 29</div></div>
       </div>
     </div>
@@ -455,7 +464,7 @@ textarea.sugtext::placeholder{color:#9aa6b1}
         <div class="log-top"><span class="log-title">▚ BOOTH LOG · 0731-Q3</span><div class="con-lights"><i class="g"></i><i class="a"></i><i class="r"></i></div></div>
         <div class="log-body">
           <p class="log-h">&gt; WHY THESE TOPICS LANDED</p>
-          <p class="log-p">Every topic here was built the same way, on purpose. We start from the questions our buyers are actually asking and the categories we most need to own: Managed Solutions, outcome-based pricing, global hiring, and AI inside the workflow. Then we match each topic to the author with the most credibility to answer it. Audience first, lane second. Many are scored for their potential to rank on Google and get picked up by AI engines. That's what the "Top for search" tag flags, and we'll sharpen the scoring with live HubSpot search data as we go.<span class="cursor"></span></p>
+          <p class="log-p">Every topic here was built the same way, on purpose. We start from the questions our buyers are actually asking and the categories we most need to own: Managed Solutions, outcome-based pricing, global hiring, and AI inside the workflow. Then we match each topic to the author with the most credibility to answer it. Audience first, lane second. The ones marked Recommended are the easiest place to start: clear, definitional pieces you could explain in your sleep that also happen to be what AI engines pick up first. We'll keep sharpening the picks with live HubSpot data as we go.<span class="cursor"></span></p>
         </div>
       </div>
     </div>
@@ -469,6 +478,7 @@ textarea.sugtext::placeholder{color:#9aa6b1}
         <div class="bstat"><div class="be">Gemini</div><div class="bn">39<span class="bmax">/100</span></div><div class="bl">AEO score · SoV 0/10</div></div>
       </div>
       <p class="lead" style="margin-top:10px;font-size:12px">The <b style="color:#9fe6d6">AEO score</b> (0–100, higher is better) is how visible and well-represented Booth is in each engine's answers. <b style="color:#9fe6d6">SoV</b> = share of voice, how often Booth shows up versus competitors.</p>
+      <p class="lead" style="margin-top:8px;font-size:12px"><b style="color:#9fe6d6">On the +33% goal:</b> this is a 33% <b>relative</b> increase in share of voice over the July baseline, not a rise of 33 percentage points. We re-measure monthly with the AEO Grader and report the movement into the BoothGrowth Rock.</p>
       <div class="insightbox">
         <div class="insight-row">
           <div class="insight-k">The gap</div>
@@ -501,13 +511,14 @@ textarea.sugtext::placeholder{color:#9aa6b1}
       <h2><span style="margin-right:8px">🛸</span>Q3 publishing schedule</h2>
       <p class="cap" id="capHome"></p>
       <div class="slots" id="slotsHome"></div>
-      <p class="cap" style="margin:12px 0 0">There are six publication slots available this quarter, with nine authors in the queue. Reserve the slot that works best for you. Once all six Q3 spots are filled, any remaining articles will be scheduled for publication after Q3.</p>
+      <p class="cap" style="margin:12px 0 0">There are six publication slots available this quarter, with the Glocom authors in the queue. Reserve the slot that works best for you. Once all six Q3 spots are filled, any remaining articles will be scheduled for publication after Q3.</p>
     </div>
   </div>
 </div>
 
 <div id="authorView" class="hidden">
   <div class="wrap">
+    <svg class="topic-sat" viewBox="0 0 120 74" fill="none" aria-hidden="true"><rect x="20" y="35" width="24" height="4" rx="2" fill="#3f7a72"/><rect x="76" y="35" width="24" height="4" rx="2" fill="#3f7a72"/><rect x="2" y="26" width="20" height="22" rx="2" fill="#DBEAF4" stroke="#589992" stroke-width="1.5"/><line x1="12" y1="26" x2="12" y2="48" stroke="#589992" stroke-width="1"/><line x1="2" y1="37" x2="22" y2="37" stroke="#589992" stroke-width="1"/><rect x="98" y="26" width="20" height="22" rx="2" fill="#DBEAF4" stroke="#589992" stroke-width="1.5"/><line x1="108" y1="26" x2="108" y2="48" stroke="#589992" stroke-width="1"/><line x1="98" y1="37" x2="118" y2="37" stroke="#589992" stroke-width="1"/><rect x="44" y="24" width="32" height="26" rx="5" fill="#0D4B3B"/><rect x="49" y="29" width="22" height="8" rx="2" fill="#8fd8c9"/><ellipse cx="60" cy="15" rx="10" ry="5" fill="#CD9ACD" transform="rotate(-20 60 15)"/><line x1="60" y1="19" x2="60" y2="24" stroke="#CD9ACD" stroke-width="2"/><circle cx="60" cy="11" r="1.7" fill="#0D4B3B"/></svg>
     <button class="back" id="backBtn">← All lanes</button>
     <p class="ahead" id="aName">Author</p>
     <p class="asub" id="aField">Lane</p>
@@ -515,9 +526,10 @@ textarea.sugtext::placeholder{color:#9aa6b1}
       <h2><span style="margin-right:8px">🛸</span>Q3 publishing schedule</h2>
       <p class="cap" id="capAuthor"></p>
       <div class="slots" id="slotsAuthor"></div>
-      <p class="cap" style="margin:12px 0 0">There are six publication slots available this quarter, with nine authors in the queue. Reserve the slot that works best for you. Once all six Q3 spots are filled, any remaining articles will be scheduled for publication after Q3.</p>
+      <p class="cap" style="margin:12px 0 0">There are six publication slots available this quarter, with the Glocom authors in the queue. Reserve the slot that works best for you. Once all six Q3 spots are filled, any remaining articles will be scheduled for publication after Q3.</p>
     </div>
     <div id="authorBody"></div>
+    <div class="backbottom"><button class="back" id="backBtn2">← Back to all lanes</button></div>
   </div>
 </div>
 
@@ -540,7 +552,7 @@ textarea.sugtext::placeholder{color:#9aa6b1}
       <span class="foot-muted">Spiral Nebula Messier 101</span>
     </div>
   </div>
-  <div class="foot-bar"><span>© 2026 Booth · Internal use only</span><span class="foot-note">🛸 Made with love by Booth Marketing</span></div>
+  <div class="foot-bar"><span>© 2026 Booth · Internal use only</span><span class="foot-note">🛸 Booth Marketing</span></div>
 </footer>
 <div class="toast" id="toast"></div>
 <script>
@@ -570,6 +582,9 @@ const ELAINE=[
 ];
 const KATHY=[
 {t:"What Is an EOR, and When Do You Actually Need One?",a:"A plain-English definition of Employer of Record and the moment it makes sense.",cat:"Operations & delivery",anc:"Buyers weighing global hiring options.",ai:false,pri:"High"},
+{t:"What Does an EOR Actually Cost? A Plain Guide to BPO Pricing Models",a:"A clear breakdown of what an EOR and the common BPO pricing models cost, and what drives the number.",cat:"Operations & delivery",anc:"Buyers pricing out global hiring and comparing models.",ai:false,pri:"High"},
+{t:"How to Choose a Managed Services Vendor: A Buyer's Guide",a:"The seven criteria that actually predict whether a managed services vendor will work out.",cat:"Operations & delivery",anc:"Buyers evaluating and comparing managed services providers.",ai:false,pri:"High"},
+{t:"Outsourcing Healthcare RCM: What to Know Before You Hand It Off",a:"What it takes to outsource revenue cycle management well, from compliance to the transition itself.",cat:"Industry verticals",anc:"Healthcare and RCM leaders evaluating an outsourcing partner.",ai:false,pri:"High"},
 {t:"The Real Cost of a Cheap Team: Where Offshore Campaigns Leak Money",a:"The rework, attrition and oversight that make cheap the expensive option.",cat:"Operations & delivery",anc:"CFOs and ops leaders comparing bids.",ai:false,pri:"High"},
 {t:"How to Move a Messy Process Offshore Without Quality Falling Off",a:"Transition design and the first-quarter dip, handled.",cat:"Operations & delivery",anc:"COOs with a process that isn't clean enough to just hand over.",ai:false,pri:"High"},
 {t:"SLAs vs. Outcomes: What Should You Actually Hold a Vendor To?",a:"Activity targets versus result targets, and why outcome accountability wins.",cat:"Operations & delivery",anc:"Buyers writing or renewing an outsourcing contract.",ai:false,pri:"High"},
@@ -580,7 +595,7 @@ const KATHY=[
 {t:"How Much Should You Actually Manage an Outsourced Team?",a:"Too hands-off fails, too hands-on defeats the point; the calibration.",cat:"Operations & delivery",anc:"First-time outsourcers unsure how involved to be.",ai:false,pri:"Medium"},
 {t:"Why Outsourced Operations Break at Scale, and How to Prevent It",a:"The cracks that appear going from 10 to 100 seats.",cat:"Operations & delivery",anc:"Buyers scaling a working pilot.",ai:false,pri:"Medium"},
 {t:"How to Choose Between EOR, BPO, Staff Augmentation, and a Managed Team",a:"A plain decision guide for which delivery model fits which need.",cat:"Operations & delivery",anc:"Buyers lost in the model soup.",ai:false,pri:"High"},
-{t:"Is My Data Safe Offshore? What a Managed Environment Actually Means",a:"The physical and operational safeguards a managed workspace provides that a laptop on home WiFi doesn't.",cat:"Operations & delivery",anc:"Security-conscious buyers weighing offshore risk.",ai:false,pri:"High"},
+{t:"Is My Data Safe Offshore? Certifications and Passing Security Due Diligence",a:"The certifications, controls and documentation that get an outsourced setup through a client's security review.",cat:"Operations & delivery",anc:"Security-conscious buyers, and anyone who's stalled in vendor due diligence.",ai:false,pri:"High"},
 {t:"When AI Does Part of the Work, Who Owns the Quality?",a:"Humans own the quality call; QA runs at full coverage, not spot checks. Part of the Agentic Operator series.",cat:"AI in ops and service transformation",anc:"Ops leaders nervous about AI in a delivery workflow.",ai:true,pri:"High"},
 {t:"Which Delivery Metrics Still Matter Once AI Handles the Routine?",a:"Quality-adjusted output beats the old volume and handle-time vanity metrics.",cat:"AI in ops and service transformation",anc:"COOs renegotiating contracts.",ai:true,pri:"High"},
 {t:"What Happens to Offshore Teams When AI Takes the Routine Work?",a:"People move up the value chain into judgment and exception work.",cat:"AI in ops and service transformation",anc:"Buyers wanting specialized offshore, not call-center.",ai:true,pri:"Medium"},
@@ -612,6 +627,7 @@ const JEN=[
 ];
 const CHRIS=[
 {t:"What 'Outcome-Owned' Really Means for You as a Client",a:"Managed Solutions from your chair: one partner accountable for the result, not the activity.",cat:"Inside Booth",anc:"Buyers deciding between staffing and managed.",ai:false,pri:"High"},
+{t:"Can You Outsource Insurance Customer Support Without Compliance Risk?",a:"How to hand off customer-facing work in a regulated industry like insurance without adding risk.",cat:"Industry verticals",anc:"Insurance and regulated-industry CX leaders weighing outsourcing.",ai:false,pri:"High"},
 {t:"Can You Outsource Customer-Facing Work Without Losing Your Brand?",a:"Protecting quality, voice and culture when customers talk to an outsourced team.",cat:"Client relationships & retention",anc:"Brand-protective founders and CX leaders.",ai:false,pri:"High"},
 {t:"Everyone Says “Partner.” Here's How You Know It's Real.",a:"Partnership is a two-sided commitment, not a tagline; the signals that prove it.",cat:"Client relationships & retention",anc:"Buyers burned by vendors who vanish after the sale.",ai:false,pri:"High"},
 {t:"Why Clients Leave (and It's Rarely the Work)",a:"Churn is usually a relationship and alignment problem, not a quality one.",cat:"Client relationships & retention",anc:"Buyers evaluating who they can trust long-term.",ai:false,pri:"High"},
@@ -659,6 +675,14 @@ const MICHELLE=[
 {t:"What Being a B Corp Actually Changed About How We Operate",a:"The concrete operating changes certification forced, from how we hire to how we report.",cat:"B Corp & CSR",anc:"Buyers who want proof B Corp is more than a logo.",ai:false,pri:"Medium"},
 {t:"Our Journey With 1% for the Planet, and How It Amplifies Our Impact",a:"How the partnership multiplies what our giving can actually do, from day one onward.",cat:"B Corp & CSR",anc:"Buyers and partners who want to see impact, not intentions.",ai:false,pri:"Medium"},
 ];
+const SUSELLE=[
+{t:"Nearshore vs. Offshore: Which One Actually Fits?",a:"A plain comparison of nearshore and offshore, and how to choose on time zone, cost and control.",cat:"LATAM & nearshore",anc:"Buyers deciding where to build their team.",ai:false,pri:"High"},
+{t:"Why More Companies Are Moving Work to Latin America",a:"What's driving the shift to LATAM, from time-zone overlap to talent depth, and where it fits.",cat:"LATAM & nearshore",anc:"Leaders exploring nearshore expansion.",ai:false,pri:"High"},
+{t:"The Time-Zone Advantage: Why Nearshore Wins for Real-Time Work",a:"When working in the same hours matters more than the lowest rate, and how nearshore delivers it.",cat:"LATAM & nearshore",anc:"Teams that need real-time collaboration, not follow-the-sun.",ai:false,pri:"Medium"},
+{t:"What Is Nearshoring, and Why Is It Surging?",a:"A plain definition of nearshoring and what's driving companies toward it right now.",cat:"LATAM & nearshore",anc:"Buyers hearing 'nearshore' everywhere and wanting the real definition.",ai:false,pri:"High"},
+{t:"Why Colombia Is Becoming a Top Nearshore Hub",a:"What makes Colombia a standout for nearshore teams, from talent to time zone to cost.",cat:"Colombia",anc:"US leaders scoping where to build a nearshore team.",ai:false,pri:"High"},
+{t:"Building a Team in Colombia: Talent, Cost, and What to Expect",a:"A grounded look at hiring, talent depth, cost and culture when you build in Colombia.",cat:"Colombia",anc:"Leaders considering Colombia for their next team.",ai:false,pri:"Medium"},
+];
 const AUTHORS=[
 {key:"jamie",who:"Jamie",fld:"Vision & Leadership",topics:JAMIE},
 {key:"jen",who:"Jen",fld:"Growth",topics:JEN},
@@ -667,6 +691,7 @@ const AUTHORS=[
 {key:"kathy",who:"Kathy",fld:"Operations & Delivery",topics:KATHY},
 {key:"chris",who:"Chris",fld:"Client Success",topics:CHRIS},
 {key:"michelle",who:"Michelle",fld:"B-Corp & CSR",topics:MICHELLE},
+{key:"suselle",who:"Suselle",fld:"LATAM & Nearshore",topics:SUSELLE},
 {key:"finance",who:"Finance",fld:"Finance & Ops (author TBD)",topics:[]},
 {key:"carmen",who:"Carmen",fld:"Workspaces & Integrator",topics:CARMEN},
 ];
@@ -728,7 +753,7 @@ function renderSlots(){
     SLOTS.forEach(d=>{
       const a=assignedTo(d);const el=document.createElement('div');el.className='slot'+(a?' full':' slot-open');
       el.innerHTML=`<div class="d">${d}</div>`+(a?`<div class="ti">${a.title||'Booked'}</div><div class="au">${a.who||''}</div>`+(a.mine?`<span class="x" title="Unschedule">✕</span>`:''):`<div class="open">Open · claim it →</div>`);
-      if(a&&a.mine){el.querySelector('.x').onclick=(e)=>{e.stopPropagation();if(a.local&&state[a.auKey])delete state[a.auKey][a.k];REMOTE=REMOTE.filter(b=>b.date!==a.date);save();postToBackend({type:'unbook',author:a.who,topic:a.title});renderAll();toast("Slot cleared.");};}
+      if(a&&a.mine){el.querySelector('.x').onclick=(e)=>{e.stopPropagation();if(!confirm('Unschedule "'+(a.title||'this post')+'" and free the '+a.date+' slot?'))return;if(a.local&&state[a.auKey])delete state[a.auKey][a.k];REMOTE=REMOTE.filter(b=>b.date!==a.date);save();postToBackend({type:'unbook',author:a.who,topic:a.title});renderAll();toast("Slot cleared.");};}
       else if(!a){el.onclick=()=>navGo('lanes-sec');}
       host.appendChild(el);
     });
@@ -743,6 +768,7 @@ function openAuthor(key){
 }
 function goHome(){curAuthor=null;$('authorView').classList.add('hidden');$('homeView').classList.remove('hidden');window.scrollTo(0,0);renderSlots();}
 $('backBtn').onclick=goHome;
+(function(){const b2=$('backBtn2');if(b2)b2.onclick=goHome;})();
 function renderAuthor(){
   const body=$('authorBody');const au=curAuthor;
   if(!au.topics.length){body.innerHTML=`<div class="soon"><b>Topics for ${au.who}'s lane are being added.</b><br/>Check back soon. Isabella is curating this lane next.</div>`;return;}
@@ -750,9 +776,10 @@ function renderAuthor(){
   const who=localStorage.getItem(whoStore)||"";
   body.innerHTML=`
     <p class="lead" style="margin-top:-2px">These are tentative working titles. Pick the angle you like and we'll finalize the exact headline with you. Prefer your own idea? Use "Suggest a topic" at the top.</p>
+    <p class="lead" style="margin-top:-6px">Short on time? Choose "I'll send bullets" and hand over 15 minutes of bullet points or a quick voice memo, and Marketing drafts the piece for you.</p>
     <div class="namebar"><label for="who">Your name</label><input id="who" type="text" placeholder="e.g. ${au.who}" value="${who}" autocomplete="off"/></div>
     <div class="toolbar"><div class="chips" id="chips"></div><div class="count" id="count"></div></div>
-    <p class="legend"><span class="star">⭐</span> = Top for search — highest-priority topic for AI search visibility (AEO/SEO).</p>
+    <p class="legend"><span class="reclbl">Recommended</span> = the easiest place to start: a definitional piece you can explain in your sleep, no hot take needed (and AI engines pick it up first).</p>
     <div class="grid" id="grid"></div>`;
   const whoEl=$('who');whoEl.oninput=()=>localStorage.setItem(whoStore,whoEl.value);whoEl.onchange=()=>{localStorage.setItem(whoStore,whoEl.value);hydrateMine();renderAll();};
   const chipsEl=$('chips');
@@ -767,12 +794,17 @@ function renderGrid(){
   const rows=au.topics.map((x,i)=>({x,i})).filter(o=>filter==="All"||o.x.cat===filter);
   if(!rows.length){grid.innerHTML='<p class="empty">No topics in this category.</p>';}
   rows.forEach(({x,i})=>{
-    const sel=s[i];const fmt=sel?sel.format:null;const dt=sel?sel.date:"";
-    const card=document.createElement('div');card.className='card'+(sel?' sel':'');
+    const rec=s[i];const fmt=rec?rec.format:null;const dt=rec&&rec.date?rec.date:"";
+    const booked=!!(rec&&rec.date);const wait=!!(rec&&rec.waitlist&&!rec.date);
+    const card=document.createElement('div');card.className='card'+(booked?' sel':'')+(wait?' wait':'');
     const dateOpts=['<option value="">Pick a publish date…</option>'].concat(SLOTS.map(d=>{const taken=dateTaken(d,au.key,i);return `<option value="${d}" ${dt===d?'selected':''} ${taken?'disabled':''}>${d}${taken?' · booked':''}</option>`;})).join('');
-    const blocked=full&&!sel;
+    let btnLabel;
+    if(booked)btnLabel='Sequence engaged ✓ '+dt+' (tap to update)';
+    else if(wait)btnLabel='Queued for launch ✓ after Q3 (tap to update)';
+    else if(full)btnLabel='🚀 Queue for the next launch window (after Q3)';
+    else btnLabel='Initiate sequence 🔴';
     card.innerHTML=`
-      ${x.pri==='High'?'<span class="rankbadge" title="Top for search">⭐</span>':''}
+      ${x.pri==='High'?'<span class="recbadge">Recommended</span>':''}
       <div class="tags">${SCORES[x.t]!=null?`<span class="tag score" title="AEO opportunity score, 0–100 (from live search data)">AEO ${SCORES[x.t]}</span>`:''}<span class="tag cat">${x.cat}</span><span class="tag ${x.ai?'ai':'noai'}">${x.ai?'AI':'Evergreen'}</span></div>
       <h3>${x.t}</h3><div class="tentative">Tentative working title</div>
       <p class="about">${x.a}</p><p class="anchor"><b>Who it's for:</b> ${x.anc}</p>
@@ -781,10 +813,11 @@ function renderGrid(){
           <button data-f="Full draft" class="${fmt==='Full draft'?'on':''}">I'll write it</button>
           <button data-f="Bullet points" class="${fmt==='Bullet points'?'on':''}">I'll send bullets</button>
         </div>
-        <textarea class="sugtext bulletbox" placeholder="Paste your bullet points here (or send them later)" style="display:${fmt==='Bullet points'?'block':'none'}">${sel&&sel.bullets?sel.bullets:''}</textarea>
+        <textarea class="sugtext bulletbox" placeholder="Paste your bullet points here (or send them later)" style="display:${fmt==='Bullet points'?'block':'none'}">${rec&&rec.bullets?rec.bullets:''}</textarea>
         <select class="datesel" data-i="${i}">${dateOpts}</select>
-        <button class="choose" data-choose="${i}" ${blocked?'disabled':''}>${sel?'Sequence engaged ✓ '+dt+' (tap to update)':(blocked?'Launch bay full (6/6)':'Initiate sequence 🔴')}</button>
-        ${sel?`<div class="hint"><b>👽 Transmission tip:</b> to send or change your bullets, pick "I'll send bullets," paste them above, then tap "Sequence engaged ✓" again to save.</div>`:''}
+        <button class="choose" data-choose="${i}">${btnLabel}</button>
+        ${full&&!booked&&!wait?`<div class="hint">🚀 All six Q3 launch slots are booked. Queue this one for the next launch window and it publishes right after Q3.</div>`:''}
+        ${(booked||wait)?`<div class="hint"><b>👽 Transmission tip:</b> to send or change your bullets, pick "I'll send bullets," paste them above, then tap the button again to save.</div>`:''}
       </div>`;
     grid.appendChild(card);
   });
@@ -823,11 +856,20 @@ async function choose(i,btn){
   state[au.key]=state[au.key]||{};const s=state[au.key];
   const fmt=seg._f||(s[i]&&s[i].format);
   const date=(dsel._d!==undefined?dsel._d:dsel.value)||(s[i]&&s[i].date);
+  const who=((localStorage.getItem(whoStore))||au.who).trim();const x=au.topics[i];
   if(!fmt){toast("Pick 'write it' or 'send bullets' first.",true);return;}
-  if(!date){toast("Pick a publish date first.",true);return;}
+  const full=filledCount()>=6;
+  if(!date){
+    if(full){
+      s[i]={format:fmt,bullets:bullets,waitlist:true};save();renderAll();
+      postToBackend({type:'waitlist',author:who,lane:au.who+' — '+au.fld,topic:x.t,format:fmt,bullets:bullets});
+      toast("Queued for the next launch window 🚀 publishing right after Q3.");
+      return;
+    }
+    toast("Pick a publish date first.",true);return;
+  }
   if(dateTaken(date,au.key,i)){toast(date+" is already taken. Pick another date.",true);return;}
   burst(btn);
-  const who=((localStorage.getItem(whoStore))||au.who).trim();const x=au.topics[i];
   s[i]={format:fmt,date:date,bullets:bullets};save();
   REMOTE.push({date:date,who:who,title:x.t});
   renderAll();
