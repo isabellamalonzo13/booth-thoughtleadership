@@ -858,13 +858,14 @@ function renderGrid(){
       <div class="controls">
         <div class="seg" data-i="${i}">
           <button data-f="Full draft" class="${fmt==='Full draft'?'on':''}">I'll write it</button>
-          <button data-f="Bullet points" class="${fmt==='Bullet points'?'on':''}">I'll send bullets</button>
+          <button data-f="Bullet points" class="${fmt==='Bullet points'?'on':''}">I'll send bullets or a 🎙️ voice memo</button>
         </div>
         <textarea class="sugtext bulletbox" placeholder="Paste your bullet points here (or send them later)" style="display:${fmt==='Bullet points'?'block':'none'}">${rec&&rec.bullets?rec.bullets:''}</textarea>
+        <input class="sugtext voicelink" type="url" placeholder="🎙️ …or paste a voice-memo link (phone recording, Loom, Drive)" style="display:${fmt==='Bullet points'?'block':'none'};margin-top:6px" value="${rec&&rec.voice?rec.voice:''}"/>
         <select class="datesel" data-i="${i}">${dateOpts}</select>
         <button class="choose" data-choose="${i}">${btnLabel}</button>
         ${full&&!booked&&!wait?`<div class="hint">🚀 All six Q3 launch slots are booked. Queue this one for the next launch window and it publishes right after Q3.</div>`:''}
-        ${(booked||wait)?`<div class="hint"><b>👽 Transmission tip:</b> to send or change your bullets, pick "I'll send bullets," paste them above, then tap the button again to save.</div>`:''}
+        ${(booked||wait)?`<div class="hint"><b>👽 Transmission tip:</b> to send or change your bullets, pick "I'll send bullets," paste them (or drop a voice-memo link) above, then tap the button again to save.</div>`:''}
       </div>`;
     grid.appendChild(card);
   });
@@ -882,7 +883,7 @@ function renderGrid(){
           <textarea class="sugtext" id="sugText" placeholder="Your topic idea or a rough headline"></textarea>
           <div class="seg" id="sugSeg">
             <button data-f="Full draft">I'll write it</button>
-            <button data-f="Bullet points">I'll send bullets</button>
+            <button data-f="Bullet points">I'll send bullets or a 🎙️ voice memo</button>
           </div>
           <select class="datesel" id="sugDate"><option value="">Publish date (optional)</option>${sugDateOpts}</select>
           <button class="choose" id="sugBtn">Beam it up, Scotty 🛸🔫</button>
@@ -892,7 +893,7 @@ function renderGrid(){
     const seg=$('sugSeg');seg.querySelectorAll('button').forEach(b=>b.onclick=()=>{seg.querySelectorAll('button').forEach(z=>z.classList.remove('on'));b.classList.add('on');seg._f=b.dataset.f;});
     $('sugBtn').onclick=()=>suggest();
   }
-  grid.querySelectorAll('.seg[data-i] button').forEach(b=>{b.onclick=()=>{const seg=b.parentElement;seg.querySelectorAll('button').forEach(z=>z.classList.remove('on'));b.classList.add('on');seg._f=b.dataset.f;const card=seg.closest('.card');const bx=card&&card.querySelector('.bulletbox');if(bx)bx.style.display=(b.dataset.f==='Bullet points')?'block':'none';};});
+  grid.querySelectorAll('.seg[data-i] button').forEach(b=>{b.onclick=()=>{const seg=b.parentElement;seg.querySelectorAll('button').forEach(z=>z.classList.remove('on'));b.classList.add('on');seg._f=b.dataset.f;const card=seg.closest('.card');const show=(b.dataset.f==='Bullet points')?'block':'none';const bx=card&&card.querySelector('.bulletbox');if(bx)bx.style.display=show;const vl=card&&card.querySelector('.voicelink');if(vl)vl.style.display=show;};});
   grid.querySelectorAll('.datesel[data-i]').forEach(sl=>{sl.onchange=()=>{sl._d=sl.value;};});
   grid.querySelectorAll('[data-choose]').forEach(b=>{b.onclick=()=>choose(+b.dataset.choose,b);});
   $('count').textContent=Object.keys(s).length+" selected";
@@ -900,6 +901,8 @@ function renderGrid(){
 async function choose(i,btn){
   const au=curAuthor;const card=btn.closest('.card');const seg=card.querySelector('.seg'),dsel=card.querySelector('.datesel');
   const bx=card.querySelector('.bulletbox');const bullets=bx?bx.value.trim():'';
+  const vl=card.querySelector('.voicelink');const voice=vl?vl.value.trim():'';
+  const outBullets=(voice?('🎙️ Voice memo: '+voice+(bullets?'\n\n':'')):'')+bullets;
   state[au.key]=state[au.key]||{};const s=state[au.key];
   const fmt=seg._f||(s[i]&&s[i].format);
   const date=(dsel._d!==undefined?dsel._d:dsel.value)||(s[i]&&s[i].date);
@@ -908,8 +911,8 @@ async function choose(i,btn){
   const full=filledCount()>=6;
   if(!date){
     if(full){
-      s[i]={format:fmt,bullets:bullets,waitlist:true};save();renderAll();
-      postToBackend({type:'waitlist',author:who,lane:au.who+' — '+au.fld,topic:x.t,format:fmt,bullets:bullets});
+      s[i]={format:fmt,bullets:bullets,voice:voice,waitlist:true};save();renderAll();
+      postToBackend({type:'waitlist',author:who,lane:au.who+' — '+au.fld,topic:x.t,format:fmt,bullets:outBullets});
       toast("Queued for the next launch window 🚀 publishing right after Q3.");
       return;
     }
@@ -917,10 +920,10 @@ async function choose(i,btn){
   }
   if(dateTaken(date,au.key,i)){toast(date+" is already taken. Pick another date.",true);return;}
   burst(btn);
-  s[i]={format:fmt,date:date,bullets:bullets};save();
+  s[i]={format:fmt,date:date,bullets:bullets,voice:voice};save();
   REMOTE.push({date:date,who:who,title:x.t});
   renderAll();
-  postToBackend({type:'booking',author:who,lane:au.who+' — '+au.fld,topic:x.t,format:fmt,date:date,bullets:bullets});
+  postToBackend({type:'booking',author:who,lane:au.who+' — '+au.fld,topic:x.t,format:fmt,date:date,bullets:outBullets});
   toast("Scheduled for "+date+". Isabella notified.");
 }
 async function suggest(){
