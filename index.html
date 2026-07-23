@@ -827,16 +827,19 @@ function loadRemote(){
 function hydrateMine(){
   const nm=((localStorage.getItem(whoStore))||'').trim().toLowerCase();if(!nm)return;
   const idx={};AUTHORS.forEach(au=>au.topics.forEach((t,i)=>{idx[t.t]={key:au.key,i:i};}));
+  const au=AUTHORS.find(a=>String(a.who).trim().toLowerCase()===nm);if(!au)return;
   REMOTE.forEach(b=>{
+    // Safeguard: only ever hydrate the current person's OWN bookings into their OWN lane.
     if(String(b.who).trim().toLowerCase()!==nm)return;
     let loc=idx[b.title];
+    // Reject a preset match that belongs to a different author's lane (title collision) — treat as this person's own topic.
+    if(loc&&loc.key!==au.key)loc=null;
     if(!loc){
-      // A topic this person booked that isn't in the preset list (e.g. a self-pitched topic) —
+      // A topic this person booked that isn't a preset in their own lane (e.g. a self-pitched topic) —
       // add it as a card in their own lane so they can still send bullets / a voice memo.
-      const au=AUTHORS.find(a=>String(a.who).trim().toLowerCase()===nm);if(!au)return;
       let i=au.topics.findIndex(t=>t.t===b.title);
       if(i<0){au.topics.push({t:b.title,a:'Your pitched topic. Add bullets or a voice memo any time and Marketing takes it from there.',cat:au.fld,anc:'Your own pitch.',ai:false,pri:'',custom:true});i=au.topics.length-1;}
-      idx[b.title]={key:au.key,i:i};loc=idx[b.title];
+      loc={key:au.key,i:i};
     }
     state[loc.key]=state[loc.key]||{};const cur=state[loc.key][loc.i];
     if(!cur||!cur.date){state[loc.key][loc.i]={format:b.format||'Full draft',date:b.date,bullets:b.bullets||'',title:b.title,fromServer:true};}
@@ -896,8 +899,9 @@ function burst(el){
   document.body.appendChild(rk);setTimeout(()=>rk.remove(),1000);
 }
 function titleFor(au,key){const r=state[au.key][key];return (r&&r.title)||(au.topics[key]&&au.topics[key].t)||"Suggested topic";}
-function localAssignments(){const out=[];AUTHORS.forEach(au=>{const s=state[au.key]||{};Object.keys(s).forEach(k=>{if(s[k].date)out.push({au,k,rec:s[k]});});});return out;}
-function bookedMap(){const nm=((localStorage.getItem(whoStore))||'').trim().toLowerCase();const m={};REMOTE.forEach(b=>{if(b.date)m[b.date]={date:b.date,who:b.who,title:b.title,local:false,mine:(!!nm&&String(b.who).trim().toLowerCase()===nm)};});localAssignments().forEach(a=>{m[a.rec.date]={date:a.rec.date,who:((localStorage.getItem(whoStore))||a.au.who),title:titleFor(a.au,a.k),local:true,auKey:a.au.key,k:a.k,mine:true};});return m;}
+// Only the CURRENT lane's author counts as local/"mine" — never restamp other authors' bookings.
+function localAssignments(){const out=[];const au=curAuthor;if(!au)return out;const s=state[au.key]||{};Object.keys(s).forEach(k=>{if(s[k].date)out.push({au,k,rec:s[k]});});return out;}
+function bookedMap(){const meName=(curAuthor?curAuthor.who:((localStorage.getItem(whoStore))||'')).trim().toLowerCase();const m={};REMOTE.forEach(b=>{if(b.date)m[b.date]={date:b.date,who:b.who,title:b.title,local:false,mine:(!!meName&&String(b.who).trim().toLowerCase()===meName)};});localAssignments().forEach(a=>{m[a.rec.date]={date:a.rec.date,who:a.au.who,title:titleFor(a.au,a.k),local:true,auKey:a.au.key,k:a.k,mine:true};});return m;}
 function filledCount(){return Object.keys(bookedMap()).length;}
 function assignedTo(date){return bookedMap()[date]||null;}
 function dateTaken(date,auKey,exceptKey){const e=bookedMap()[date];if(!e)return false;if(e.local&&e.auKey===auKey&&String(e.k)===String(exceptKey))return false;return true;}
