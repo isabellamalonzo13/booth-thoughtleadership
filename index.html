@@ -3,6 +3,9 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+<meta http-equiv="Pragma" content="no-cache"/>
+<meta http-equiv="Expires" content="0"/>
 <title>Booth Glocom Thought Leadership — Q3</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
@@ -257,8 +260,27 @@ body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 .mini-alien{width:38px;height:42px;flex:0 0 auto;display:inline-flex;line-height:0}
 .mini-alien svg{width:100%;height:100%;overflow:visible}
 .ahead{display:flex;align-items:center;gap:12px}
-.ahead-alien{width:48px;height:52px;flex:0 0 auto;display:inline-flex;line-height:0}
+.ahead-alien{width:48px;height:52px;flex:0 0 auto;display:inline-flex;line-height:0;position:relative}
 .ahead-alien svg{width:100%;height:100%;overflow:visible}
+.howdy{position:absolute;left:52px;top:2px;white-space:nowrap;background:#fff;color:#0D4B3B;font-family:var(--head);font-weight:700;font-size:12px;padding:5px 10px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.18);line-height:1;animation:howdyPop .35s ease-out both}
+.howdy::before{content:"";position:absolute;left:-6px;top:9px;border:6px solid transparent;border-right-color:#fff;border-left:0}
+@keyframes howdyPop{0%{opacity:0;transform:translateX(-6px) scale(.8)}100%{opacity:1;transform:translateX(0) scale(1)}}
+#planetBooth{position:fixed;left:18px;bottom:6px;width:150px;height:160px;z-index:0;pointer-events:none;opacity:0;transition:opacity 1.2s ease;animation:pbDrift 16s ease-in-out infinite}
+#planetBooth.show{opacity:.4}
+#planetBooth svg{width:100%;height:100%;overflow:visible}
+@keyframes pbDrift{0%,100%{transform:translate(0,0)}25%{transform:translate(14px,-10px)}50%{transform:translate(6px,-20px)}75%{transform:translate(-8px,-8px)}}
+body>*:not(#planetBooth):not(.toast){position:relative;z-index:1}
+.pb-planet{animation:pbFloat 6s ease-in-out infinite;transform-origin:80px 125px}
+@keyframes pbFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.pb-ling{transform-origin:center}
+.pb-ling1{animation:pbRise1 5.5s ease-in-out infinite}
+.pb-ling2{animation:pbRise2 6.5s ease-in-out infinite}
+.pb-ling3{animation:pbRise3 7.5s ease-in-out infinite}
+@keyframes pbRise1{0%{transform:translate(52px,96px) scale(.9);opacity:0}20%{opacity:1}80%{opacity:1}100%{transform:translate(44px,34px) scale(1.05);opacity:0}}
+@keyframes pbRise2{0%{transform:translate(96px,100px) scale(.85);opacity:0}25%{opacity:1}75%{opacity:1}100%{transform:translate(108px,40px) scale(1);opacity:0}}
+@keyframes pbRise3{0%{transform:translate(78px,104px) scale(.8);opacity:0}30%{opacity:1}70%{opacity:1}100%{transform:translate(82px,30px) scale(.95);opacity:0}}
+.pb-eyes{animation:blink 4s infinite}
+@media(max-width:640px){#planetBooth{width:104px;height:112px;left:8px}}
 .slot-alien{width:20px;height:22px;display:inline-flex;vertical-align:-7px;margin-right:5px;line-height:0}
 .slot-alien svg{width:100%;height:100%;overflow:visible}
 .m-eyes{transform-box:fill-box;transform-origin:center;animation:mblink 4s ease-in-out infinite}
@@ -571,6 +593,47 @@ textarea.sugtext::placeholder{color:#9aa6b1}
   <div class="foot-bar"><span>© 2026 Booth · Internal use only</span><span class="foot-note">🛸 Booth Marketing</span></div>
 </footer>
 <div class="toast" id="toast"></div>
+<div id="planetBooth" aria-hidden="true">
+  <svg viewBox="0 0 160 170" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- little boothlings drifting up from the planet -->
+    <g class="pb-ling pb-ling1">
+      <ellipse cx="0" cy="0" rx="9" ry="8.5" fill="#8fd36a"/>
+      <ellipse cx="0" cy="-1" rx="6.5" ry="6" fill="#a2e07f"/>
+      <line x1="-4" y1="-8" x2="-6" y2="-13" stroke="#6fb35a" stroke-width="1.6" stroke-linecap="round"/><circle cx="-6.3" cy="-13.6" r="1.6" fill="#cd9acd"/>
+      <line x1="4" y1="-8" x2="6" y2="-13" stroke="#6fb35a" stroke-width="1.6" stroke-linecap="round"/><circle cx="6.3" cy="-13.6" r="1.6" fill="#cd9acd"/>
+      <g class="pb-eyes"><circle cx="-3" cy="0" r="1.8" fill="#0d1a15"/><circle cx="3" cy="0" r="1.8" fill="#0d1a15"/></g>
+    </g>
+    <g class="pb-ling pb-ling2">
+      <ellipse cx="0" cy="0" rx="7.5" ry="7" fill="#e0607a"/>
+      <ellipse cx="0" cy="-1" rx="5.2" ry="4.8" fill="#f08199"/>
+      <line x1="0" y1="-7" x2="0" y2="-12" stroke="#c94f68" stroke-width="1.5" stroke-linecap="round"/><circle cx="0" cy="-12.6" r="1.5" fill="#dbeaf4"/>
+      <g class="pb-eyes"><circle cx="-2.4" cy="0" r="1.5" fill="#0d1a15"/><circle cx="2.4" cy="0" r="1.5" fill="#0d1a15"/></g>
+    </g>
+    <g class="pb-ling pb-ling3">
+      <ellipse cx="0" cy="0" rx="6.5" ry="6" fill="#8b6fd0"/>
+      <ellipse cx="0" cy="-1" rx="4.4" ry="4" fill="#a98fe0"/>
+      <line x1="-3" y1="-6" x2="-4.5" y2="-10.5" stroke="#7457c0" stroke-width="1.4" stroke-linecap="round"/><circle cx="-4.8" cy="-11" r="1.4" fill="#8fd8c9"/>
+      <g class="pb-eyes"><circle cx="-2" cy="0" r="1.4" fill="#0d1a15"/><circle cx="2" cy="0" r="1.4" fill="#0d1a15"/></g>
+    </g>
+    <!-- the planet -->
+    <g class="pb-planet">
+      <circle cx="80" cy="125" r="38" fill="#0D4B3B"/>
+      <circle cx="80" cy="125" r="38" fill="url(#pbShine)"/>
+      <ellipse cx="66" cy="112" rx="9" ry="6" fill="#146b52" opacity=".8"/>
+      <ellipse cx="95" cy="132" rx="12" ry="7" fill="#0a3a2d" opacity=".7"/>
+      <ellipse cx="88" cy="110" rx="5" ry="3.5" fill="#589992" opacity=".7"/>
+      <circle cx="70" cy="138" r="3" fill="#cd9acd" opacity=".55"/>
+      <text x="80" y="129" text-anchor="middle" font-family="Segoe UI, sans-serif" font-weight="800" font-size="12" letter-spacing="1.5" fill="#eafaf4">BOOTH</text>
+    </g>
+    <defs>
+      <radialGradient id="pbShine" cx="0.35" cy="0.3" r="0.8">
+        <stop offset="0%" stop-color="#1c6b52"/>
+        <stop offset="60%" stop-color="#0D4B3B"/>
+        <stop offset="100%" stop-color="#062b20"/>
+      </radialGradient>
+    </defs>
+  </svg>
+</div>
 <script>
 const NOTIFY_TO="isabella.kubota@hirebooth.com";
 const CAP="Tuesdays, chosen for peak US B2B engagement, all within Q3.";
@@ -815,7 +878,7 @@ function renderSlots(){
 function openAuthor(key){
   curAuthor=AUTHORS.find(a=>a.key===key);filter="All";
   $('homeView').classList.add('hidden');$('authorView').classList.remove('hidden');
-  $('aName').innerHTML='<span class="ahead-alien">'+(AVATARS[curAuthor.key]||'')+'</span>'+curAuthor.who+"'s topics";$('aField').textContent=curAuthor.fld;
+  $('aName').innerHTML='<span class="ahead-alien">'+(AVATARS[curAuthor.key]||'')+(curAuthor.key==='chad'?'<span class="howdy">Hey y\'all 🤠</span>':'')+'</span>'+curAuthor.who+"'s topics";$('aField').textContent=curAuthor.fld;
   window.scrollTo(0,0);renderAuthor();renderSlots();
 }
 function goHome(){curAuthor=null;$('authorView').classList.add('hidden');$('homeView').classList.remove('hidden');window.scrollTo(0,0);renderSlots();}
@@ -962,6 +1025,11 @@ const BLOG=[
 ];
 (function buildBlog(){const t=$('blogTrack');if(!t)return;const html=BLOG.map(b=>`<div class="acard"><div class="k">${b.k}</div><div class="h">${b.h}</div><div class="m">Booth Blog · 5 min read</div></div>`).join('');t.innerHTML=html+html;})();
 renderLanes();renderSlots();loadRemote();
+// Auto-refresh the shared calendar every 25s so new bookings appear without a reload
+// (skips while someone is typing/selecting so it never wipes their input)
+setInterval(()=>{const ae=document.activeElement;if(ae&&(ae.tagName==='TEXTAREA'||ae.tagName==='INPUT'||ae.tagName==='SELECT'))return;loadRemote();},25000);
+// Planet Booth floats quietly in the background
+(function(){const pb=$('planetBooth');if(!pb)return;setTimeout(()=>pb.classList.add('show'),400);})();
 </script>
 </body>
 </html>
