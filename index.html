@@ -958,7 +958,7 @@ function renderGrid(){
       <div class="sug-top"><span class="sug-title">▚ INCOMING TRANSMISSION</span><div class="con-lights"><i class="g"></i><i class="a"></i><i class="r"></i></div></div>
       <div class="sug-screen">
         <div class="tags"><span class="tag idea">Your idea</span></div>
-        <h3>Suggest a topic</h3><div class="tentative">Not sure it fits a slot yet? Send it anyway.</div>
+        <h3>Suggest a topic</h3><div class="tentative">Pitch your own angle, then pick a date to reserve your slot.</div>
         <p class="about">Have an angle we missed? Beam it over.</p>
         <div class="controls">
           <textarea class="sugtext" id="sugText" placeholder="Your topic idea or a rough headline"></textarea>
@@ -966,7 +966,7 @@ function renderGrid(){
             <button data-f="Full draft">I'll write it</button>
             <button data-f="Bullet points">I'll send bullets or a 🎙️ voice memo</button>
           </div>
-          <select class="datesel" id="sugDate"><option value="">Publish date (optional)</option>${sugDateOpts}</select>
+          <select class="datesel" id="sugDate"><option value="">Pick a publish date to reserve a slot</option>${sugDateOpts}</select>
           <button class="choose" id="sugBtn">Beam it up, Scotty 🛸🔫</button>
         </div>
       </div>`;
@@ -1012,11 +1012,21 @@ async function suggest(){
   if(!idea){toast("Type your topic idea first.",true);return;}
   const fmt=($('sugSeg')._f)||"To discuss";
   const date=$('sugDate').value;
-  if(date&&dateTaken(date,au.key,"__sug__")){toast(date+" is already taken. Pick another date.",true);return;}
   const who=((localStorage.getItem(whoStore))||au.who).trim();
-  if(date){state[au.key]=state[au.key]||{};state[au.key]["sug"+Date.now()]={format:fmt,date:date,title:idea,suggested:true};save();REMOTE.push({date:date,who:who,title:idea});renderAll();}
-  postToBackend({type:'suggestion',author:who,lane:au.who+' — '+au.fld,topic:idea,format:fmt,date:date||''});
-  toast(date?("Suggestion sent and booked for "+date+"."):"Suggestion sent to Isabella.");
+  const full=filledCount()>=6;
+  if(!date){
+    if(full){
+      postToBackend({type:'waitlist',author:who,lane:au.who+' — '+au.fld,topic:idea,format:fmt,bullets:'(Self-pitched topic)'});
+      toast("All six Q3 slots are full — your topic is queued for the next window 🚀");
+      $('sugText').value="";return;
+    }
+    toast("Pick a publish date so your topic reserves a slot.",true);return;
+  }
+  if(dateTaken(date,au.key,"__sug__")){toast(date+" is already taken. Pick another date.",true);return;}
+  state[au.key]=state[au.key]||{};state[au.key]["sug"+Date.now()]={format:fmt,date:date,title:idea,suggested:true};save();
+  REMOTE.push({date:date,who:who,title:idea});renderAll();
+  postToBackend({type:'booking',author:who,lane:au.who+' — '+au.fld,topic:idea,format:fmt,date:date,bullets:'(Self-pitched topic)'});
+  toast("Topic added and booked for "+date+". Isabella notified.");
   $('sugText').value="";renderAll();
 }
 function renderAll(){renderSlots();if(curAuthor)renderGrid();}
