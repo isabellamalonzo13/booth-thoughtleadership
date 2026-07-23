@@ -792,9 +792,22 @@ function save(){localStorage.setItem(KEY,JSON.stringify(state));}
 const BOOKINGS_URL="https://script.google.com/macros/s/AKfycbwazvIM3EvPRAZfeGCi8Yp42q_SnAqHCZ0lVAJrKe_m1JuBBsbOojBitGF3xEWdlC_ztg/exec";
 let REMOTE=[];
 function postToBackend(payload){try{const cb="__wr"+Date.now();window[cb]=function(){try{delete window[cb];}catch(e){}};const sc=document.createElement("script");sc.src=BOOKINGS_URL+"?p="+encodeURIComponent(JSON.stringify(payload))+"&callback="+cb+"&t="+Date.now();sc.onload=function(){sc.remove();};sc.onerror=function(){sc.remove();};document.body.appendChild(sc);}catch(e){}}
+// Match any saved date back to its slot label, even if Sheets stored it as a real Date (ISO/full-date string).
+function normSlot(raw){
+  if(!raw) return raw;
+  const s=String(raw).trim();
+  if(SLOTS.indexOf(s)>=0) return s;
+  let mon=null,day=null;
+  const iso=s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if(iso){const M=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];mon=M[Number(iso[2])-1];day=Number(iso[3]);}
+  else{const dt=new Date(s);if(!isNaN(dt.getTime())){mon=dt.toLocaleString("en-US",{month:"short"});day=dt.getDate();}}
+  if(!mon){const m=s.match(/([A-Za-z]{3})[a-z]*\.?\s+(\d{1,2})/);if(m){mon=m[1];day=Number(m[2]);}}
+  if(mon&&day){const hit=SLOTS.find(sl=>sl.indexOf(mon)>=0 && new RegExp("\\b"+day+"\\b").test(sl));if(hit)return hit;}
+  return s;
+}
 function loadRemote(){
   const cb="__bk"+Date.now();
-  window[cb]=function(rows){try{REMOTE=(rows||[]).map(b=>({date:String(b.date),who:String(b.author||b.who||""),title:String(b.topic||b.title||""),format:String(b.format||""),bullets:String(b.bullets||"")}));}catch(e){REMOTE=[];}hydrateMine();renderAll();};
+  window[cb]=function(rows){try{REMOTE=(rows||[]).map(b=>({date:normSlot(b.date),who:String(b.author||b.who||""),title:String(b.topic||b.title||""),format:String(b.format||""),bullets:String(b.bullets||"")}));}catch(e){REMOTE=[];}hydrateMine();renderAll();};
   const sc=document.createElement("script");sc.src=BOOKINGS_URL+"?callback="+cb+"&t="+Date.now();sc.onerror=function(){};document.body.appendChild(sc);
 }
 // Recognize the current person's existing bookings (by name) so their cards show as booked/updatable on any device.
