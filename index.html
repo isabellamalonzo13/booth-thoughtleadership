@@ -292,7 +292,9 @@ body>*:not(#planetBooth):not(.toast){position:relative;z-index:1}
 .ways b{color:#9fe6d6;font-weight:700}
 .mybox{background:linear-gradient(180deg,#1a2b24,#0d1a15);border:1px solid rgba(143,216,201,.35);border-radius:16px;margin:0 0 24px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.4),0 0 40px rgba(88,153,146,.22)}
 .my-top{display:flex;align-items:center;justify-content:space-between;background:#12211c;padding:9px 15px;border-bottom:1px solid rgba(143,216,201,.22)}
-.my-title{font-family:var(--head);font-weight:800;font-size:11px;letter-spacing:.16em;color:#9fe6d6;text-transform:uppercase}
+.my-title{font-family:var(--head);font-weight:800;font-size:11px;letter-spacing:.16em;color:#9fe6d6;text-transform:uppercase;display:inline-flex;align-items:center;gap:8px}
+.my-alien{width:24px;height:26px;flex:0 0 auto;display:inline-flex;line-height:0}
+.my-alien svg{width:100%;height:100%;overflow:visible}
 .my-top .con-lights i{width:7px;height:7px}
 .my-screen{position:relative;padding:16px 18px}
 .my-screen::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(180deg,transparent 0,transparent 3px,rgba(143,216,201,.05) 3px,rgba(143,216,201,.05) 4px)}
@@ -889,7 +891,7 @@ function myBookings(au){
 function renderMyBox(au){
   const el=$('myBox');if(!el)return;
   const list=myBookings(au);
-  const topbar=`<div class="my-top"><span class="my-title">▚ Blog booking status</span><div class="con-lights"><i class="g"></i><i class="a"></i><i class="r"></i></div></div>`;
+  const topbar=`<div class="my-top"><span class="my-title"><span class="my-alien">${AVATARS[au.key]||''}</span>${esc(au.who)}'s blog booking status</span><div class="con-lights"><i class="g"></i><i class="a"></i><i class="r"></i></div></div>`;
   if(!list.length){el.innerHTML=`<div class="mybox empty">${topbar}<div class="my-screen"><p class="mybox-sub">No slot reserved yet. Pick a topic below (or pitch your own up top), choose a date, and it'll show here.</p></div></div>`;return;}
   const cards=list.map((bk,i)=>{
    const b=String(bk.bullets||'');
