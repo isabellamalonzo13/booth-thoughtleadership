@@ -880,18 +880,23 @@ function renderMyBox(au){
       <div class="mybk-top"><span class="mybk-date">🗓️ ${esc(bk.date)}</span>${bk.format?`<span class="mybk-fmt">${esc(bk.format)}</span>`:''}<span class="mybk-badge">✓ Booked</span></div>
       <div class="mybk-title">${esc(bk.title)}</div>
       <div class="mybk-shared"><b>Shared so far</b><br/>${bk.bullets?esc(bk.bullets).replace(/\n/g,'<br/>'):'<span class="mybox-sub">Nothing yet — add your bullet points or a voice-memo link below and Marketing drafts it for you.</span>'}</div>
-      <div class="mybk-addlbl">Add bullets or a voice memo</div>
-      <textarea class="sugtext mybk-add" data-i="${i}" placeholder="Paste your bullet points here…"></textarea>
+      <div class="mybk-addlbl">Share your draft, bullets, or a voice memo</div>
+      <input class="sugtext mybk-draft" data-i="${i}" type="url" placeholder="📄 Link your finished draft (Google Doc, etc.)"/>
+      <textarea class="sugtext mybk-add" data-i="${i}" placeholder="…or paste bullet points here"></textarea>
       <input class="sugtext mybk-voice" data-i="${i}" type="url" placeholder="🎙️ …or paste a voice-memo link (phone recording, Loom, Drive)"/>
       <button class="choose mybk-btn" data-i="${i}">Send to Isabella 🚀</button>
     </div>`).join('');
   el.innerHTML=`<div class="mybox">${topbar}<div class="my-screen"><p class="mybox-sub">Here's what you've reserved. Add or update your bullets or voice memo any time — it appends to what you've already sent.</p>${cards}</div></div>`;
-  el.querySelectorAll('.mybk-btn').forEach(b=>{b.onclick=()=>{const i=+b.dataset.i;const ta=el.querySelector('.mybk-add[data-i="'+i+'"]');const vi=el.querySelector('.mybk-voice[data-i="'+i+'"]');appendMyBullets(au,list[i],ta,vi);};});
+  el.querySelectorAll('.mybk-btn').forEach(b=>{b.onclick=()=>{const i=+b.dataset.i;const ta=el.querySelector('.mybk-add[data-i="'+i+'"]');const vi=el.querySelector('.mybk-voice[data-i="'+i+'"]');const di=el.querySelector('.mybk-draft[data-i="'+i+'"]');appendMyBullets(au,list[i],ta,vi,di);};});
 }
-function appendMyBullets(au,bk,ta,vi){
-  const add=(ta?ta.value.trim():'');const voice=(vi?vi.value.trim():'');
-  if(!add&&!voice){toast("Type your bullets or paste a voice-memo link first.",true);return;}
-  const incoming=(add?add:'')+(add&&voice?'\n':'')+(voice?('🎙️ Voice memo: '+voice):'');
+function appendMyBullets(au,bk,ta,vi,di){
+  const add=(ta?ta.value.trim():'');const voice=(vi?vi.value.trim():'');const draft=(di?di.value.trim():'');
+  const parts=[];
+  if(draft)parts.push('📄 Draft: '+draft);
+  if(add)parts.push(add);
+  if(voice)parts.push('🎙️ Voice memo: '+voice);
+  if(!parts.length){toast("Link your draft, add bullets, or paste a voice-memo link first.",true);return;}
+  const incoming=parts.join('\n');
   const merged=mergeNotes(bk.bullets,incoming);
   if(bk.local&&state[au.key]&&state[au.key][bk.key]){state[au.key][bk.key].bullets=merged;save();}
   REMOTE.forEach(b=>{if(String(b.who).trim().toLowerCase()===String(au.who).trim().toLowerCase()&&String(b.title)===String(bk.title)){b.bullets=merged;}});
@@ -1028,6 +1033,7 @@ function renderGrid(){
         </div>
         <textarea class="sugtext bulletbox" placeholder="Paste your bullet points here (or send them later)" style="display:${fmt==='Bullet points'?'block':'none'}">${rec&&rec.bullets?rec.bullets:''}</textarea>
         <input class="sugtext voicelink" type="url" placeholder="🎙️ …or paste a voice-memo link (phone recording, Loom, Drive)" style="display:${fmt==='Bullet points'?'block':'none'};margin-top:6px" value="${rec&&rec.voice?rec.voice:''}"/>
+        <input class="sugtext draftlink" type="url" placeholder="📄 …or link your finished draft (Google Doc, etc.)" style="display:${fmt?'block':'none'};margin-top:6px" value="${rec&&rec.draft?rec.draft:''}"/>
         <select class="datesel" data-i="${i}">${dateOpts}</select>
         <button class="choose" data-choose="${i}">${btnLabel}</button>
         ${full&&!booked&&!wait?`<div class="hint">🚀 All six Q3 launch slots are booked. Queue this one for the next launch window and it publishes right after Q3.</div>`:''}
@@ -1062,7 +1068,7 @@ function renderGrid(){
     const seg=$('sugSeg');seg.querySelectorAll('button').forEach(b=>b.onclick=()=>{seg.querySelectorAll('button').forEach(z=>z.classList.remove('on'));b.classList.add('on');seg._f=b.dataset.f;const show=(b.dataset.f==='Bullet points')?'block':'none';const sb=$('sugBullets');if(sb)sb.style.display=show;const sv=$('sugVoice');if(sv)sv.style.display=show;});
     $('sugBtn').onclick=()=>suggest();
   }
-  grid.querySelectorAll('.seg[data-i] button').forEach(b=>{b.onclick=()=>{const seg=b.parentElement;seg.querySelectorAll('button').forEach(z=>z.classList.remove('on'));b.classList.add('on');seg._f=b.dataset.f;const card=seg.closest('.card');const show=(b.dataset.f==='Bullet points')?'block':'none';const bx=card&&card.querySelector('.bulletbox');if(bx)bx.style.display=show;const vl=card&&card.querySelector('.voicelink');if(vl)vl.style.display=show;};});
+  grid.querySelectorAll('.seg[data-i] button').forEach(b=>{b.onclick=()=>{const seg=b.parentElement;seg.querySelectorAll('button').forEach(z=>z.classList.remove('on'));b.classList.add('on');seg._f=b.dataset.f;const card=seg.closest('.card');const show=(b.dataset.f==='Bullet points')?'block':'none';const bx=card&&card.querySelector('.bulletbox');if(bx)bx.style.display=show;const vl=card&&card.querySelector('.voicelink');if(vl)vl.style.display=show;const dl=card&&card.querySelector('.draftlink');if(dl)dl.style.display='block';};});
   grid.querySelectorAll('.datesel[data-i]').forEach(sl=>{sl.onchange=()=>{sl._d=sl.value;};});
   grid.querySelectorAll('[data-choose]').forEach(b=>{b.onclick=()=>choose(+b.dataset.choose,b);});
   $('count').textContent=Object.keys(s).length+" selected";
@@ -1071,7 +1077,9 @@ async function choose(i,btn){
   const au=curAuthor;const card=btn.closest('.card');const seg=card.querySelector('.seg'),dsel=card.querySelector('.datesel');
   const bx=card.querySelector('.bulletbox');const bullets=bx?bx.value.trim():'';
   const vl=card.querySelector('.voicelink');const voice=vl?vl.value.trim():'';
-  const outBullets=(voice?('🎙️ Voice memo: '+voice+(bullets?'\n\n':'')):'')+bullets;
+  const dl=card.querySelector('.draftlink');const draft=dl?dl.value.trim():'';
+  const _p=[];if(draft)_p.push('📄 Draft: '+draft);if(bullets)_p.push(bullets);if(voice)_p.push('🎙️ Voice memo: '+voice);
+  const outBullets=_p.join('\n\n');
   state[au.key]=state[au.key]||{};const s=state[au.key];
   const fmt=seg._f||(s[i]&&s[i].format);
   const date=(dsel._d!==undefined?dsel._d:dsel.value)||(s[i]&&s[i].date);
@@ -1080,7 +1088,7 @@ async function choose(i,btn){
   const full=filledCount()>=6;
   if(!date){
     if(full){
-      s[i]={format:fmt,bullets:bullets,voice:voice,waitlist:true};save();renderAll();
+      s[i]={format:fmt,bullets:bullets,voice:voice,draft:draft,waitlist:true};save();renderAll();
       postToBackend({type:'waitlist',author:who,lane:au.who+' — '+au.fld,topic:x.t,format:fmt,bullets:outBullets});
       toast("Queued for the next launch window 🚀 publishing right after Q3.");
       return;
@@ -1089,7 +1097,7 @@ async function choose(i,btn){
   }
   if(dateTaken(date,au.key,i)){toast(date+" is already taken. Pick another date.",true);return;}
   burst(btn);
-  s[i]={format:fmt,date:date,bullets:bullets,voice:voice};save();
+  s[i]={format:fmt,date:date,bullets:bullets,voice:voice,draft:draft};save();
   REMOTE.push({date:date,who:who,title:x.t});
   renderAll();
   postToBackend({type:'booking',author:who,lane:au.who+' — '+au.fld,topic:x.t,format:fmt,date:date,bullets:outBullets});
