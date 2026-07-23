@@ -350,7 +350,8 @@ body>*:not(#planetBooth):not(.toast){position:relative;z-index:1}
 .seg{display:flex;gap:6px}
 .seg button{flex:1;font-family:var(--head);font-weight:600;font-size:12px;padding:8px;border:1px solid var(--line);background:#fff;border-radius:9px;cursor:pointer;color:var(--muted)}
 .seg button.on{background:var(--teal);color:#fff;border-color:var(--teal)}
-.datesel,textarea.sugtext{font-family:var(--body);font-size:13px;padding:9px 11px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--ink);width:100%}
+.datesel,input.sugtext,textarea.sugtext{font-family:var(--body);font-size:13px;padding:10px 13px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);width:100%;box-sizing:border-box;outline:none}
+input.sugtext:focus,textarea.sugtext:focus,.datesel:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(88,153,146,.16)}
 .datesel option{background:#fff;color:var(--ink)}
 textarea.sugtext{resize:vertical;min-height:58px}
 textarea.sugtext::placeholder{color:#9aa6b1}
@@ -880,10 +881,10 @@ function renderMyBox(au){
       <div class="mybk-top"><span class="mybk-date">🗓️ ${esc(bk.date)}</span>${bk.format?`<span class="mybk-fmt">${esc(bk.format)}</span>`:''}<span class="mybk-badge">✓ Booked</span></div>
       <div class="mybk-title">${esc(bk.title)}</div>
       <div class="mybk-shared"><b>Shared so far</b><br/>${bk.bullets?esc(bk.bullets).replace(/\n/g,'<br/>'):'<span class="mybox-sub">Nothing yet — add your bullet points or a voice-memo link below and Marketing drafts it for you.</span>'}</div>
-      <div class="mybk-addlbl">Share your draft, bullets, or a voice memo</div>
-      <input class="sugtext mybk-draft" data-i="${i}" type="url" placeholder="📄 Link your finished draft (Google Doc, etc.)"/>
-      <textarea class="sugtext mybk-add" data-i="${i}" placeholder="…or paste bullet points here"></textarea>
-      <input class="sugtext mybk-voice" data-i="${i}" type="url" placeholder="🎙️ …or paste a voice-memo link (phone recording, Loom, Drive)"/>
+      <div class="mybk-addlbl">Share your work</div>
+      <input class="sugtext mybk-draft" data-i="${i}" type="url" placeholder="📄  Link your draft (Google Doc)"/>
+      <textarea class="sugtext mybk-add" data-i="${i}" placeholder="📝  Paste bullet points…"></textarea>
+      <input class="sugtext mybk-voice" data-i="${i}" type="url" placeholder="🎙️  Voice-memo link (Loom, Drive…)"/>
       <button class="choose mybk-btn" data-i="${i}">Send to Isabella 🚀</button>
     </div>`).join('');
   el.innerHTML=`<div class="mybox">${topbar}<div class="my-screen"><p class="mybox-sub">Here's what you've reserved. Add or update your bullets or voice memo any time — it appends to what you've already sent.</p>${cards}</div></div>`;
@@ -1031,9 +1032,9 @@ function renderGrid(){
           <button data-f="Full draft" class="${fmt==='Full draft'?'on':''}">I'll write it</button>
           <button data-f="Bullet points" class="${fmt==='Bullet points'?'on':''}">I'll send bullets or a 🎙️ voice memo</button>
         </div>
-        <textarea class="sugtext bulletbox" placeholder="Paste your bullet points here (or send them later)" style="display:${fmt==='Bullet points'?'block':'none'}">${rec&&rec.bullets?rec.bullets:''}</textarea>
-        <input class="sugtext voicelink" type="url" placeholder="🎙️ …or paste a voice-memo link (phone recording, Loom, Drive)" style="display:${fmt==='Bullet points'?'block':'none'};margin-top:6px" value="${rec&&rec.voice?rec.voice:''}"/>
-        <input class="sugtext draftlink" type="url" placeholder="📄 …or link your finished draft (Google Doc, etc.)" style="display:${fmt?'block':'none'};margin-top:6px" value="${rec&&rec.draft?rec.draft:''}"/>
+        <textarea class="sugtext bulletbox" placeholder="📝  Paste bullet points…" style="display:${fmt==='Bullet points'?'block':'none'}">${rec&&rec.bullets?rec.bullets:''}</textarea>
+        <input class="sugtext voicelink" type="url" placeholder="🎙️  Voice-memo link (Loom, Drive…)" style="display:${fmt==='Bullet points'?'block':'none'};margin-top:6px" value="${rec&&rec.voice?rec.voice:''}"/>
+        <input class="sugtext draftlink" type="url" placeholder="📄  Link your draft (Google Doc)" style="display:${fmt?'block':'none'};margin-top:6px" value="${rec&&rec.draft?rec.draft:''}"/>
         <select class="datesel" data-i="${i}">${dateOpts}</select>
         <button class="choose" data-choose="${i}">${btnLabel}</button>
         ${full&&!booked&&!wait?`<div class="hint">🚀 All six Q3 launch slots are booked. Queue this one for the next launch window and it publishes right after Q3.</div>`:''}
@@ -1058,8 +1059,8 @@ function renderGrid(){
             <button data-f="Full draft">I'll write it</button>
             <button data-f="Bullet points">I'll send bullets or a 🎙️ voice memo</button>
           </div>
-          <textarea class="sugtext" id="sugBullets" placeholder="Paste your bullet points here (or send them later)" style="display:none"></textarea>
-          <input class="sugtext" id="sugVoice" type="url" placeholder="🎙️ …or paste a voice-memo link (phone recording, Loom, Drive)" style="display:none;margin-top:6px"/>
+          <textarea class="sugtext" id="sugBullets" placeholder="📝  Paste bullet points…" style="display:none"></textarea>
+          <input class="sugtext" id="sugVoice" type="url" placeholder="🎙️  Voice-memo link (Loom, Drive…)" style="display:none;margin-top:6px"/>
           <select class="datesel" id="sugDate"><option value="">Pick a publish date to reserve a slot</option>${sugDateOpts}</select>
           <button class="choose" id="sugBtn">Beam it up, Scotty 🛸🔫</button>
         </div>
