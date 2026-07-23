@@ -424,7 +424,8 @@ textarea.sugtext::placeholder{color:#9aa6b1}
 .insight-row p b{color:#eaf5f1}
 @media(max-width:640px){.insight-row{grid-template-columns:1fr;gap:5px;padding:12px 0}}
 /* suggest-a-topic: full Booth Orbital Feed console */
-.card.suggest{background:linear-gradient(180deg,#1a2b24,#0d1a15)!important;border:1px solid rgba(143,216,201,.35)!important;box-shadow:0 20px 50px rgba(0,0,0,.4), 0 0 40px rgba(88,153,146,.28)!important;padding:0!important;overflow:hidden}
+.card.suggest{background:linear-gradient(180deg,#1a2b24,#0d1a15)!important;border:1px solid rgba(143,216,201,.35)!important;box-shadow:0 20px 50px rgba(0,0,0,.4), 0 0 40px rgba(88,153,146,.28)!important;padding:0!important;overflow:hidden;align-self:start}
+.card.suggest .controls{margin-top:14px}
 .sug-top{display:flex;align-items:center;justify-content:space-between;background:#12211c;padding:8px 14px;border-bottom:1px solid rgba(143,216,201,.22)}
 .sug-title{font-family:var(--head);font-weight:800;font-size:11px;letter-spacing:.16em;color:#9fe6d6;text-transform:uppercase}
 .sug-top .con-lights i{width:7px;height:7px}
@@ -814,6 +815,9 @@ const whoStore="booth_site_who";
 function save(){localStorage.setItem(KEY,JSON.stringify(state));}
 const BOOKINGS_URL="https://script.google.com/macros/s/AKfycbwazvIM3EvPRAZfeGCi8Yp42q_SnAqHCZ0lVAJrKe_m1JuBBsbOojBitGF3xEWdlC_ztg/exec";
 let REMOTE=[];
+const REMOTE_CACHE="booth_remote_cache";
+// Show the last-known bookings instantly (esp. on the home page) while the fresh fetch loads.
+try{const _c=localStorage.getItem(REMOTE_CACHE);if(_c){REMOTE=JSON.parse(_c)||[];}}catch(e){REMOTE=[];}
 function postToBackend(payload){try{const cb="__wr"+Date.now();window[cb]=function(){try{delete window[cb];}catch(e){}};const sc=document.createElement("script");sc.src=BOOKINGS_URL+"?p="+encodeURIComponent(JSON.stringify(payload))+"&callback="+cb+"&t="+Date.now();sc.onload=function(){sc.remove();};sc.onerror=function(){sc.remove();};document.body.appendChild(sc);}catch(e){}}
 // Match any saved date back to its slot label, even if Sheets stored it as a real Date (ISO/full-date string).
 function normSlot(raw){
@@ -830,7 +834,7 @@ function normSlot(raw){
 }
 function loadRemote(){
   const cb="__bk"+Date.now();
-  window[cb]=function(rows){try{REMOTE=(rows||[]).map(b=>({date:normSlot(b.date),who:String(b.author||b.who||""),title:String(b.topic||b.title||""),format:String(b.format||""),bullets:String(b.bullets||"")}));}catch(e){REMOTE=[];}hydrateMine();renderAll();};
+  window[cb]=function(rows){try{REMOTE=(rows||[]).map(b=>({date:normSlot(b.date),who:String(b.author||b.who||""),title:String(b.topic||b.title||""),format:String(b.format||""),bullets:String(b.bullets||"")}));try{localStorage.setItem(REMOTE_CACHE,JSON.stringify(REMOTE));}catch(e2){}}catch(e){REMOTE=[];}hydrateMine();renderAll();};
   const sc=document.createElement("script");sc.src=BOOKINGS_URL+"?callback="+cb+"&t="+Date.now();sc.onerror=function(){};document.body.appendChild(sc);
 }
 // Recognize the current person's existing bookings (by name) so their cards show as booked/updatable on any device.
