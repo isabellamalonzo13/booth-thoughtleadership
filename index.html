@@ -306,7 +306,8 @@ body>*:not(#planetBooth):not(.toast){position:relative;z-index:1}
 .mybk-badge{margin-left:auto;font-size:10.5px;font-weight:700;color:#8fe6b0;text-transform:uppercase;letter-spacing:.05em}
 .mybk-title{font-family:var(--head);font-weight:700;color:#eaf9f3;font-size:15.5px;line-height:1.3;margin-bottom:10px}
 .mybk-shared{font-size:12.5px;color:#cfe6de;line-height:1.55;background:rgba(0,0,0,.28);border:1px solid rgba(143,216,201,.12);border-radius:10px;padding:10px 12px;margin-bottom:12px}
-.mybk-shared b{color:#9fe6d6;font-size:11px;text-transform:uppercase;letter-spacing:.05em;display:inline-block;margin-bottom:3px}
+.mybk-shared b{color:#9fe6d6;font-size:11px;text-transform:uppercase;letter-spacing:.05em;display:inline-block;margin-bottom:6px}
+.mybk-chip{display:inline-block;font-family:var(--head);font-weight:700;font-size:11.5px;color:#8fe6b0;background:rgba(91,191,122,.14);border:1px solid rgba(91,191,122,.4);border-radius:999px;padding:3px 10px;margin:3px 6px 0 0}
 .mybk-addlbl{font-family:var(--head);font-weight:700;color:#9fe6d6;font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin:6px 0 11px;display:flex;align-items:center;gap:7px}
 .mybk-addlbl::before{content:"";flex:0 0 auto;width:14px;height:1px;background:rgba(143,216,201,.55)}
 .mybox .sugtext{background:rgba(143,216,201,.1);border:1px solid rgba(143,216,201,.3);color:#e9f5f1}
@@ -868,27 +869,47 @@ function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'
 function mergeNotes(existing,incoming){existing=String(existing||'').trim();incoming=String(incoming||'').trim();if(!incoming)return existing;if(!existing)return incoming;if(existing.indexOf(incoming)>=0)return existing;if(incoming.indexOf(existing)>=0)return incoming;return existing+'\n\n— added —\n'+incoming;}
 // Everything this lane's author has booked (local state + shared backend rows), de-duped by title.
 function myBookings(au){
-  const list=[],seen={};const s=state[au.key]||{};
-  Object.keys(s).forEach(k=>{const r=s[k];if(r&&r.date){const t=titleFor(au,k);seen[t.toLowerCase()]=true;list.push({title:t,date:r.date,format:r.format||'',bullets:r.bullets||'',key:k,local:true});}});
-  REMOTE.forEach(b=>{if(String(b.who).trim().toLowerCase()!==String(au.who).trim().toLowerCase())return;if(seen[String(b.title).toLowerCase()])return;seen[String(b.title).toLowerCase()]=true;list.push({title:b.title,date:b.date,format:b.format||'',bullets:b.bullets||'',local:false});});
-  return list;
+  // De-dupe by title (across local state + backend) so a booking never shows twice,
+  // even if it's stored under more than one internal key. Keep the richest version.
+  const byTitle={},order=[];
+  function add(e){
+    const key=String(e.title||'').trim().toLowerCase();if(!key)return;
+    if(!byTitle[key]){byTitle[key]=e;order.push(key);return;}
+    const ex=byTitle[key];
+    if((e.bullets||'').length>(ex.bullets||'').length)ex.bullets=e.bullets;
+    if(e.local&&!ex.local){ex.local=true;ex.key=e.key;}
+    if(!ex.date&&e.date)ex.date=e.date;
+    if(!ex.format&&e.format)ex.format=e.format;
+  }
+  const s=state[au.key]||{};
+  Object.keys(s).forEach(k=>{const r=s[k];if(r&&r.date)add({title:titleFor(au,k),date:r.date,format:r.format||'',bullets:r.bullets||'',key:k,local:true});});
+  REMOTE.forEach(b=>{if(String(b.who).trim().toLowerCase()!==String(au.who).trim().toLowerCase())return;add({title:b.title,date:b.date,format:b.format||'',bullets:b.bullets||'',local:false});});
+  return order.map(k=>byTitle[k]);
 }
 function renderMyBox(au){
   const el=$('myBox');if(!el)return;
   const list=myBookings(au);
   const topbar=`<div class="my-top"><span class="my-title">▚ Blog booking status</span><div class="con-lights"><i class="g"></i><i class="a"></i><i class="r"></i></div></div>`;
   if(!list.length){el.innerHTML=`<div class="mybox empty">${topbar}<div class="my-screen"><p class="mybox-sub">No slot reserved yet. Pick a topic below (or pitch your own up top), choose a date, and it'll show here.</p></div></div>`;return;}
-  const cards=list.map((bk,i)=>`
+  const cards=list.map((bk,i)=>{
+   const b=String(bk.bullets||'');
+   const chips=[];
+   if(/📄 Draft:/.test(b))chips.push('📄 Draft received');
+   if(/🎙️ Voice memo:/.test(b))chips.push('🎙️ Voice memo received');
+   const notes=b.replace(/📄 Draft:[^\n]*/g,'').replace(/🎙️ Voice memo:[^\n]*/g,'').replace(/\(Self-pitched topic\)/g,'').replace(/—\s*added[^\n]*—/g,'').trim();
+   if(notes)chips.push('📝 Notes received');
+   const shared=chips.length?chips.map(c=>`<span class="mybk-chip">✓ ${c.replace(/ received$/,'')}</span>`).join(''):'<span class="mybox-sub">Nothing yet — add your draft, bullets, or a voice-memo link below and Marketing drafts it for you.</span>';
+   return `
     <div class="mybk">
       <div class="mybk-top"><span class="mybk-date">🗓️ ${esc(bk.date)}</span>${bk.format?`<span class="mybk-fmt">${esc(bk.format)}</span>`:''}<span class="mybk-badge">✓ Booked</span></div>
       <div class="mybk-title">${esc(bk.title)}</div>
-      <div class="mybk-shared"><b>Shared so far</b><br/>${bk.bullets?esc(bk.bullets).replace(/\n/g,'<br/>'):'<span class="mybox-sub">Nothing yet — add your bullet points or a voice-memo link below and Marketing drafts it for you.</span>'}</div>
+      <div class="mybk-shared"><b>Shared so far</b><br/>${shared}</div>
       <div class="mybk-addlbl">Drop your draft or notes</div>
       <input class="sugtext mybk-draft" data-i="${i}" type="url" placeholder="📄  Link your draft (Google Doc)"/>
       <textarea class="sugtext mybk-add" data-i="${i}" placeholder="📝  Paste bullet points…"></textarea>
       <input class="sugtext mybk-voice" data-i="${i}" type="url" placeholder="🎙️  Voice-memo link (Loom, Drive…)"/>
       <button class="choose mybk-btn" data-i="${i}">Send to Isabella 🚀</button>
-    </div>`).join('');
+    </div>`;}).join('');
   el.innerHTML=`<div class="mybox">${topbar}<div class="my-screen"><p class="mybox-sub">Here's what you've reserved. Add or update your bullets or voice memo any time — it appends to what you've already sent.</p>${cards}</div></div>`;
   el.querySelectorAll('.mybk-btn').forEach(b=>{b.onclick=()=>{const i=+b.dataset.i;const ta=el.querySelector('.mybk-add[data-i="'+i+'"]');const vi=el.querySelector('.mybk-voice[data-i="'+i+'"]');const di=el.querySelector('.mybk-draft[data-i="'+i+'"]');appendMyBullets(au,list[i],ta,vi,di);};});
 }
