@@ -290,6 +290,19 @@ body>*:not(#planetBooth):not(.toast){position:relative;z-index:1}
 .asub{font-family:var(--head);font-weight:700;color:#e2b9e2;font-size:15px;margin:0 0 8px}
 .ways{background:rgba(88,153,146,.14);border:1px solid rgba(88,153,146,.4);border-radius:12px;padding:12px 16px;color:#d8ecff;font-size:14.5px;line-height:1.55;margin:0 0 18px;max-width:760px}
 .ways b{color:#9fe6d6;font-weight:700}
+.mybox{background:linear-gradient(180deg,rgba(88,153,146,.16),rgba(13,75,59,.14));border:1px solid rgba(88,153,146,.5);border-radius:16px;padding:16px 18px;margin:0 0 22px}
+.mybox.empty{background:rgba(88,153,146,.08)}
+.mybox-h{font-family:var(--head);font-weight:800;color:#9fe6d6;font-size:15px;letter-spacing:.02em}
+.mybox-sub{color:#c9dced;font-size:13px;line-height:1.5;margin:5px 0 0}
+.mybk{background:rgba(9,26,21,.35);border:1px solid rgba(88,153,146,.3);border-radius:12px;padding:13px 14px;margin-top:12px}
+.mybk-top{display:flex;gap:8px;align-items:center;margin-bottom:5px}
+.mybk-date{font-family:var(--head);font-weight:700;color:#9fe6d6;font-size:12.5px;background:rgba(88,153,146,.2);padding:2px 9px;border-radius:999px}
+.mybk-fmt{font-size:11px;color:#c9dced;text-transform:uppercase;letter-spacing:.05em}
+.mybk-title{font-family:var(--head);font-weight:700;color:#eaf5f1;font-size:15px;line-height:1.3;margin-bottom:8px}
+.mybk-shared{font-size:13px;color:#dbeaf4;line-height:1.55;background:rgba(0,0,0,.16);border-radius:9px;padding:9px 11px;margin-bottom:10px}
+.mybk .mybk-add{min-height:60px}
+.mybk .mybk-voice{margin-top:6px}
+.mybk .mybk-btn{margin-top:8px}
 .namebar{display:flex;align-items:center;gap:10px;margin:6px 0 18px;flex-wrap:wrap}
 .namebar label{font-size:13px;color:#b6c2dc}
 .namebar input{font-family:var(--body);font-size:14px;padding:9px 13px;border:1px solid var(--line);border-radius:999px;min-width:220px;outline:none;background:#fff;color:var(--ink)}
@@ -814,8 +827,58 @@ function loadRemote(){
 function hydrateMine(){
   const nm=((localStorage.getItem(whoStore))||'').trim().toLowerCase();if(!nm)return;
   const idx={};AUTHORS.forEach(au=>au.topics.forEach((t,i)=>{idx[t.t]={key:au.key,i:i};}));
-  REMOTE.forEach(b=>{if(String(b.who).trim().toLowerCase()!==nm)return;const loc=idx[b.title];if(!loc)return;state[loc.key]=state[loc.key]||{};const cur=state[loc.key][loc.i];if(!cur||!cur.date){state[loc.key][loc.i]={format:b.format||'Full draft',date:b.date,bullets:b.bullets||'',fromServer:true};}});
+  REMOTE.forEach(b=>{
+    if(String(b.who).trim().toLowerCase()!==nm)return;
+    let loc=idx[b.title];
+    if(!loc){
+      // A topic this person booked that isn't in the preset list (e.g. a self-pitched topic) —
+      // add it as a card in their own lane so they can still send bullets / a voice memo.
+      const au=AUTHORS.find(a=>String(a.who).trim().toLowerCase()===nm);if(!au)return;
+      let i=au.topics.findIndex(t=>t.t===b.title);
+      if(i<0){au.topics.push({t:b.title,a:'Your pitched topic. Add bullets or a voice memo any time and Marketing takes it from there.',cat:au.fld,anc:'Your own pitch.',ai:false,pri:'',custom:true});i=au.topics.length-1;}
+      idx[b.title]={key:au.key,i:i};loc=idx[b.title];
+    }
+    state[loc.key]=state[loc.key]||{};const cur=state[loc.key][loc.i];
+    if(!cur||!cur.date){state[loc.key][loc.i]={format:b.format||'Full draft',date:b.date,bullets:b.bullets||'',title:b.title,fromServer:true};}
+  });
   save();
+}
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+// Local mirror of the backend's append-merge, for instant display.
+function mergeNotes(existing,incoming){existing=String(existing||'').trim();incoming=String(incoming||'').trim();if(!incoming)return existing;if(!existing)return incoming;if(existing.indexOf(incoming)>=0)return existing;if(incoming.indexOf(existing)>=0)return incoming;return existing+'\n\n— added —\n'+incoming;}
+// Everything this lane's author has booked (local state + shared backend rows), de-duped by title.
+function myBookings(au){
+  const list=[],seen={};const s=state[au.key]||{};
+  Object.keys(s).forEach(k=>{const r=s[k];if(r&&r.date){const t=titleFor(au,k);seen[t.toLowerCase()]=true;list.push({title:t,date:r.date,format:r.format||'',bullets:r.bullets||'',key:k,local:true});}});
+  REMOTE.forEach(b=>{if(String(b.who).trim().toLowerCase()!==String(au.who).trim().toLowerCase())return;if(seen[String(b.title).toLowerCase()])return;seen[String(b.title).toLowerCase()]=true;list.push({title:b.title,date:b.date,format:b.format||'',bullets:b.bullets||'',local:false});});
+  return list;
+}
+function renderMyBox(au){
+  const el=$('myBox');if(!el)return;
+  const list=myBookings(au);
+  if(!list.length){el.innerHTML=`<div class="mybox empty"><div class="mybox-h">📋 Blog booking status</div><p class="mybox-sub">You haven't reserved a slot yet. Pick a topic below (or pitch your own up top), choose a date, and it'll show here.</p></div>`;return;}
+  const cards=list.map((bk,i)=>`
+    <div class="mybk">
+      <div class="mybk-top"><span class="mybk-date">🗓️ ${esc(bk.date)}</span>${bk.format?`<span class="mybk-fmt">${esc(bk.format)}</span>`:''}</div>
+      <div class="mybk-title">${esc(bk.title)}</div>
+      <div class="mybk-shared"><b>What you've shared so far</b><br/>${bk.bullets?esc(bk.bullets).replace(/\n/g,'<br/>'):'<span class="mybox-sub">Nothing yet — add your bullet points or a voice-memo link below and Marketing drafts it for you.</span>'}</div>
+      <textarea class="sugtext mybk-add" data-i="${i}" placeholder="Add bullet points…"></textarea>
+      <input class="sugtext mybk-voice" data-i="${i}" type="url" placeholder="🎙️ …or paste a voice-memo link (phone recording, Loom, Drive)"/>
+      <button class="choose mybk-btn" data-i="${i}">Send to Isabella 🚀</button>
+    </div>`).join('');
+  el.innerHTML=`<div class="mybox"><div class="mybox-h">📋 Blog booking status</div><p class="mybox-sub">Here's what you've reserved. Add or update your bullets or voice memo any time — it appends to what you've already sent.</p>${cards}</div>`;
+  el.querySelectorAll('.mybk-btn').forEach(b=>{b.onclick=()=>{const i=+b.dataset.i;const ta=el.querySelector('.mybk-add[data-i="'+i+'"]');const vi=el.querySelector('.mybk-voice[data-i="'+i+'"]');appendMyBullets(au,list[i],ta,vi);};});
+}
+function appendMyBullets(au,bk,ta,vi){
+  const add=(ta?ta.value.trim():'');const voice=(vi?vi.value.trim():'');
+  if(!add&&!voice){toast("Type your bullets or paste a voice-memo link first.",true);return;}
+  const incoming=(add?add:'')+(add&&voice?'\n':'')+(voice?('🎙️ Voice memo: '+voice):'');
+  const merged=mergeNotes(bk.bullets,incoming);
+  if(bk.local&&state[au.key]&&state[au.key][bk.key]){state[au.key][bk.key].bullets=merged;save();}
+  REMOTE.forEach(b=>{if(String(b.who).trim().toLowerCase()===String(au.who).trim().toLowerCase()&&String(b.title)===String(bk.title)){b.bullets=merged;}});
+  postToBackend({type:'booking',author:au.who,lane:au.who+' — '+au.fld,topic:bk.title,format:bk.format||'Full draft',date:bk.date,bullets:incoming});
+  toast("Sent to Isabella — thank you! 🚀");
+  renderMyBox(au);renderGrid();
 }
 function toast(m,err){toastEl.textContent=m;toastEl.className="toast show"+(err?" err":"");clearTimeout(toastEl._t);toastEl._t=setTimeout(()=>toastEl.className="toast",3600);}
 function burst(el){
@@ -890,6 +953,9 @@ function renderSlots(){
 }
 function openAuthor(key){
   curAuthor=AUTHORS.find(a=>a.key===key);filter="All";
+  // Identify the person by the lane they open — no name typing needed.
+  try{localStorage.setItem(whoStore,curAuthor.who);}catch(e){}
+  hydrateMine();
   $('homeView').classList.add('hidden');$('authorView').classList.remove('hidden');
   $('aName').innerHTML='<span class="ahead-alien">'+(AVATARS[curAuthor.key]||'')+(curAuthor.key==='chad'?'<span class="howdy">Hey y\'all 🤠</span>':'')+'</span>'+curAuthor.who+"'s topics";$('aField').textContent=curAuthor.fld;
   window.scrollTo(0,0);renderAuthor();renderSlots();
@@ -901,15 +967,14 @@ function renderAuthor(){
   const body=$('authorBody');const au=curAuthor;
   if(!au.topics.length){body.innerHTML=`<div class="soon"><b>Topics for ${au.who}'s lane are being added.</b><br/>Check back soon. Isabella is curating this lane next.</div>`;return;}
   const cats=["All",...Array.from(new Set(au.topics.map(t=>t.cat)))];
-  const who=localStorage.getItem(whoStore)||"";
   body.innerHTML=`
+    <div id="myBox"></div>
     <p class="lead" style="margin-top:-2px">These are tentative working titles. Pick the angle you like and we'll finalize the exact headline with you. Prefer your own idea? Use "Suggest a topic" at the top.</p>
     <p class="lead" style="margin-top:-6px">Short on time? Choose "I'll send bullets" and hand over 15 minutes of bullet points or a quick voice memo, and Marketing drafts the piece for you.</p>
-    <div class="namebar"><label for="who">Your name</label><input id="who" type="text" placeholder="e.g. ${au.who}" value="${who}" autocomplete="off"/></div>
     <div class="toolbar"><div class="chips" id="chips"></div><div class="count" id="count"></div></div>
     <p class="legend"><span class="reclbl">Recommended</span> = the easiest place to start: a definitional piece you can explain in your sleep, no hot take needed (and AI engines pick it up first).</p>
     <div class="grid" id="grid"></div>`;
-  const whoEl=$('who');whoEl.oninput=()=>localStorage.setItem(whoStore,whoEl.value);whoEl.onchange=()=>{localStorage.setItem(whoStore,whoEl.value);hydrateMine();renderAll();};
+  renderMyBox(au);
   const chipsEl=$('chips');
   cats.forEach(c=>{const b=document.createElement('button');b.className='chip'+(c===filter?' active':'');b.textContent=c;b.onclick=()=>{filter=c;renderGrid();};chipsEl.appendChild(b);});
   renderGrid();
@@ -967,12 +1032,14 @@ function renderGrid(){
             <button data-f="Full draft">I'll write it</button>
             <button data-f="Bullet points">I'll send bullets or a 🎙️ voice memo</button>
           </div>
+          <textarea class="sugtext" id="sugBullets" placeholder="Paste your bullet points here (or send them later)" style="display:none"></textarea>
+          <input class="sugtext" id="sugVoice" type="url" placeholder="🎙️ …or paste a voice-memo link (phone recording, Loom, Drive)" style="display:none;margin-top:6px"/>
           <select class="datesel" id="sugDate"><option value="">Pick a publish date to reserve a slot</option>${sugDateOpts}</select>
           <button class="choose" id="sugBtn">Beam it up, Scotty 🛸🔫</button>
         </div>
       </div>`;
     grid.insertBefore(c, grid.firstChild);
-    const seg=$('sugSeg');seg.querySelectorAll('button').forEach(b=>b.onclick=()=>{seg.querySelectorAll('button').forEach(z=>z.classList.remove('on'));b.classList.add('on');seg._f=b.dataset.f;});
+    const seg=$('sugSeg');seg.querySelectorAll('button').forEach(b=>b.onclick=()=>{seg.querySelectorAll('button').forEach(z=>z.classList.remove('on'));b.classList.add('on');seg._f=b.dataset.f;const show=(b.dataset.f==='Bullet points')?'block':'none';const sb=$('sugBullets');if(sb)sb.style.display=show;const sv=$('sugVoice');if(sv)sv.style.display=show;});
     $('sugBtn').onclick=()=>suggest();
   }
   grid.querySelectorAll('.seg[data-i] button').forEach(b=>{b.onclick=()=>{const seg=b.parentElement;seg.querySelectorAll('button').forEach(z=>z.classList.remove('on'));b.classList.add('on');seg._f=b.dataset.f;const card=seg.closest('.card');const show=(b.dataset.f==='Bullet points')?'block':'none';const bx=card&&card.querySelector('.bulletbox');if(bx)bx.style.display=show;const vl=card&&card.querySelector('.voicelink');if(vl)vl.style.display=show;};});
@@ -1015,7 +1082,9 @@ async function suggest(){
   const desc=$('sugText').value.trim();
   if(!titleIn&&!desc){toast("Add a working title or describe your topic first.",true);return;}
   const title=titleIn||tentativeTitle(desc);
-  const notes='(Self-pitched topic)'+(desc?('\n\n'+desc):'');
+  const bl=($('sugBullets')?$('sugBullets').value.trim():'');
+  const vo=($('sugVoice')?$('sugVoice').value.trim():'');
+  const notes='(Self-pitched topic)'+(desc?('\n\n'+desc):'')+(bl?('\n\nBullets:\n'+bl):'')+(vo?('\n\n🎙️ Voice memo: '+vo):'');
   const fmt=($('sugSeg')._f)||"To discuss";
   const date=$('sugDate').value;
   const who=((localStorage.getItem(whoStore))||au.who).trim();
@@ -1024,7 +1093,7 @@ async function suggest(){
     if(full){
       postToBackend({type:'waitlist',author:who,lane:au.who+' — '+au.fld,topic:title,format:fmt,bullets:notes});
       toast("All six Q3 slots are full — your topic is queued for the next window 🚀");
-      $('sugTitle').value="";$('sugText').value="";return;
+      $('sugTitle').value="";$('sugText').value="";if($('sugBullets'))$('sugBullets').value="";if($('sugVoice'))$('sugVoice').value="";return;
     }
     toast("Pick a publish date so your topic reserves a slot.",true);return;
   }
@@ -1033,9 +1102,9 @@ async function suggest(){
   REMOTE.push({date:date,who:who,title:title});renderAll();
   postToBackend({type:'booking',author:who,lane:au.who+' — '+au.fld,topic:title,format:fmt,date:date,bullets:notes});
   toast("Topic added and booked for "+date+". Isabella notified.");
-  $('sugTitle').value="";$('sugText').value="";renderAll();
+  $('sugTitle').value="";$('sugText').value="";if($('sugBullets'))$('sugBullets').value="";if($('sugVoice'))$('sugVoice').value="";renderAll();
 }
-function renderAll(){renderSlots();if(curAuthor)renderGrid();}
+function renderAll(){renderSlots();if(curAuthor){renderGrid();if(document.getElementById('myBox'))renderMyBox(curAuthor);}}
 // nav
 function navGo(sec){goHome();const t=document.getElementById(sec);if(t)setTimeout(()=>t.scrollIntoView({behavior:'smooth',block:'start'}),40);}
 document.querySelectorAll('.navlink').forEach(a=>{a.onclick=(e)=>{e.preventDefault();navGo(a.dataset.sec);};});
