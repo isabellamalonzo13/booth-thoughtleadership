@@ -309,6 +309,9 @@ body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 .mybk-shared{font-size:12.5px;color:#cfe6de;line-height:1.55;background:rgba(0,0,0,.28);border:1px solid rgba(143,216,201,.12);border-radius:10px;padding:10px 12px;margin-bottom:12px}
 .mybk-shared b{color:#9fe6d6;font-size:11px;text-transform:uppercase;letter-spacing:.05em;display:inline-block;margin-bottom:6px}
 .mybk-chip{display:inline-block;font-family:var(--head);font-weight:700;font-size:11.5px;color:#8fe6b0;background:rgba(91,191,122,.14);border:1px solid rgba(91,191,122,.4);border-radius:999px;padding:3px 10px;margin:3px 6px 0 0}
+.mybk-reschedrow{display:flex;align-items:center;gap:10px;margin:12px 0 4px;flex-wrap:wrap}
+.mybk-reslbl{font-family:var(--head);font-weight:700;color:#9fe6d6;font-size:11px;text-transform:uppercase;letter-spacing:.06em;flex:0 0 auto}
+.mybk-reschedrow .mybk-resched{flex:1;min-width:180px;max-width:280px}
 .mybk-addlbl{font-family:var(--head);font-weight:700;color:#9fe6d6;font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin:6px 0 11px;display:flex;align-items:center;gap:7px}
 .mybk-addlbl::before{content:"";flex:0 0 auto;width:14px;height:1px;background:rgba(143,216,201,.55)}
 .mybox .sugtext{background:rgba(143,216,201,.1);border:1px solid rgba(143,216,201,.3);color:#e9f5f1}
@@ -900,11 +903,14 @@ function renderMyBox(au){
    const notes=b.replace(/📄 Draft:[^\n]*/g,'').replace(/🎙️ Voice memo:[^\n]*/g,'').replace(/\(Self-pitched topic\)/g,'').replace(/—\s*added[^\n]*—/g,'').trim();
    if(notes)chips.push('📝 Notes received');
    const shared=chips.length?chips.map(c=>`<span class="mybk-chip">✓ ${c.replace(/ received$/,'')}</span>`).join(''):'<span class="mybox-sub">Nothing yet — add your draft, bullets, or a voice-memo link below and Marketing drafts it for you.</span>';
+   const bm=bookedMap();
+   const dopts=SLOTS.map(d=>{const taken=bm[d]&&d!==bk.date;return `<option value="${d}" ${d===bk.date?'selected':''} ${taken?'disabled':''}>${d}${taken?' · booked':''}</option>`;}).join('');
    return `
     <div class="mybk">
       <div class="mybk-top"><span class="mybk-date">🗓️ ${esc(bk.date)}</span>${bk.format?`<span class="mybk-fmt">${esc(bk.format)}</span>`:''}<span class="mybk-badge">✓ Booked</span></div>
       <div class="mybk-title">${esc(bk.title)}</div>
       <div class="mybk-shared"><b>Shared so far</b><br/>${shared}</div>
+      <div class="mybk-reschedrow"><span class="mybk-reslbl">📅 Reschedule</span><select class="datesel mybk-resched" data-i="${i}">${dopts}</select></div>
       <div class="mybk-addlbl">Drop your draft or notes</div>
       <input class="sugtext mybk-draft" data-i="${i}" type="url" placeholder="📄  Link your draft (Google Doc)"/>
       <textarea class="sugtext mybk-add" data-i="${i}" placeholder="📝  Paste bullet points…"></textarea>
@@ -913,6 +919,20 @@ function renderMyBox(au){
     </div>`;}).join('');
   el.innerHTML=`<div class="mybox">${topbar}<div class="my-screen"><p class="mybox-sub">Here's what you've reserved. Add or update your bullets or voice memo any time — it appends to what you've already sent.</p>${cards}</div></div>`;
   el.querySelectorAll('.mybk-btn').forEach(b=>{b.onclick=()=>{const i=+b.dataset.i;const ta=el.querySelector('.mybk-add[data-i="'+i+'"]');const vi=el.querySelector('.mybk-voice[data-i="'+i+'"]');const di=el.querySelector('.mybk-draft[data-i="'+i+'"]');appendMyBullets(au,list[i],ta,vi,di);};});
+  el.querySelectorAll('.mybk-resched').forEach(sel=>{sel.onchange=()=>{const i=+sel.dataset.i;reschedule(au,list[i],sel.value);};});
+}
+function reschedule(au,bk,newDate){
+  if(!newDate||newDate===bk.date){return;}
+  const bm=bookedMap();
+  if(bm[newDate]&&newDate!==bk.date){toast(newDate+" is already taken. Pick another date.",true);renderMyBox(au);return;}
+  // update any local state entries for this booking
+  const s=state[au.key]||{};Object.keys(s).forEach(k=>{const t=titleFor(au,k);if(String(t)===String(bk.title)&&s[k].date)s[k].date=newDate;});state[au.key]=s;save();
+  // update the shared (REMOTE) copy so it moves immediately everywhere on this device
+  REMOTE.forEach(b=>{if(String(b.who).trim().toLowerCase()===String(au.who).trim().toLowerCase()&&String(b.title)===String(bk.title))b.date=newDate;});
+  // persist to backend (upsert by author+topic just changes the publish date; empty bullets won't overwrite notes)
+  postToBackend({type:'booking',author:au.who,lane:au.who+' — '+au.fld,topic:bk.title,format:bk.format||'Full draft',date:newDate,bullets:''});
+  renderAll();
+  toast("Moved to "+newDate+". Isabella notified.");
 }
 function appendMyBullets(au,bk,ta,vi,di){
   const add=(ta?ta.value.trim():'');const voice=(vi?vi.value.trim():'');const draft=(di?di.value.trim():'');
@@ -945,12 +965,13 @@ function burst(el){
   document.body.appendChild(rk);setTimeout(()=>rk.remove(),1000);
 }
 function titleFor(au,key){const r=state[au.key][key];return (r&&r.title)||(au.topics[key]&&au.topics[key].t)||"Suggested topic";}
-// Only the CURRENT lane's author counts as local/"mine" — never restamp other authors' bookings.
-function localAssignments(){const out=[];const au=curAuthor;if(!au)return out;const s=state[au.key]||{};Object.keys(s).forEach(k=>{if(s[k].date)out.push({au,k,rec:s[k]});});return out;}
-function bookedMap(){const meName=(curAuthor?curAuthor.who:((localStorage.getItem(whoStore))||'')).trim().toLowerCase();const m={};REMOTE.forEach(b=>{if(b.date)m[b.date]={date:b.date,who:b.who,title:b.title,local:false,mine:(!!meName&&String(b.who).trim().toLowerCase()===meName)};});localAssignments().forEach(a=>{m[a.rec.date]={date:a.rec.date,who:a.au.who,title:titleFor(a.au,a.k),local:true,auKey:a.au.key,k:a.k,mine:true};});return m;}
+// The shared backend (REMOTE) is the SINGLE SOURCE OF TRUTH for the calendar — identical on every lane and device.
+// (Local state is only used to prefill your own cards / status box, never to fill the shared calendar.)
+function bookedMap(){const meName=(curAuthor?curAuthor.who:((localStorage.getItem(whoStore))||'')).trim().toLowerCase();const m={};REMOTE.forEach(b=>{if(b.date){const who=b.who;m[b.date]={date:b.date,who:who,title:b.title,local:false,mine:(!!meName&&String(who).trim().toLowerCase()===meName)};}});return m;}
 function filledCount(){return Object.keys(bookedMap()).length;}
 function assignedTo(date){return bookedMap()[date]||null;}
-function dateTaken(date,auKey,exceptKey){const e=bookedMap()[date];if(!e)return false;if(e.local&&e.auKey===auKey&&String(e.k)===String(exceptKey))return false;return true;}
+// A date is "taken" if the shared calendar has it — unless the holder is this same person+topic (so you can update your own).
+function dateTaken(date,who,title){const e=bookedMap()[date];if(!e)return false;if(who&&title&&String(e.who).trim().toLowerCase()===String(who).trim().toLowerCase()&&String(e.title).trim()===String(title).trim())return false;return true;}
 function monster(o){
   const h=o.hue,d=o.dark;
   const arms=`<ellipse cx="7" cy="29" rx="3.4" ry="5" fill="${h}"/><ellipse cx="41" cy="29" rx="3.4" ry="5" fill="${h}"/>`;
@@ -1040,7 +1061,7 @@ function renderGrid(){
     const rec=s[i];const fmt=rec?rec.format:null;const dt=rec&&rec.date?rec.date:"";
     const booked=!!(rec&&rec.date);const wait=!!(rec&&rec.waitlist&&!rec.date);
     const card=document.createElement('div');card.className='card'+(booked?' sel':'')+(wait?' wait':'')+(x.pri==='High'?' hasrec':'');
-    const dateOpts=['<option value="">Pick a publish date…</option>'].concat(SLOTS.map(d=>{const taken=dateTaken(d,au.key,i);return `<option value="${d}" ${dt===d?'selected':''} ${taken?'disabled':''}>${d}${taken?' · booked':''}</option>`;})).join('');
+    const dateOpts=['<option value="">Pick a publish date…</option>'].concat(SLOTS.map(d=>{const taken=dateTaken(d,au.who,x.t);return `<option value="${d}" ${dt===d?'selected':''} ${taken?'disabled':''}>${d}${taken?' · booked':''}</option>`;})).join('');
     let btnLabel;
     if(booked)btnLabel='Sequence engaged ✓ '+dt+' (tap to update)';
     else if(wait)btnLabel='Queued for launch ✓ after Q3 (tap to update)';
@@ -1068,7 +1089,7 @@ function renderGrid(){
   });
   // suggestion card (always shown, at the top)
   {
-    const sugDateOpts=SLOTS.map(d=>{const taken=dateTaken(d,au.key,"__sug__");return `<option value="${d}" ${taken?'disabled':''}>${d}${taken?' · booked':''}</option>`;}).join('');
+    const sugDateOpts=SLOTS.map(d=>{const taken=dateTaken(d);return `<option value="${d}" ${taken?'disabled':''}>${d}${taken?' · booked':''}</option>`;}).join('');
     const c=document.createElement('div');c.className='card suggest';
     c.innerHTML=`
       <div class="sug-top"><span class="sug-title">▚ INCOMING TRANSMISSION</span><div class="con-lights"><i class="g"></i><i class="a"></i><i class="r"></i></div></div>
@@ -1120,7 +1141,7 @@ async function choose(i,btn){
     }
     toast("Pick a publish date first.",true);return;
   }
-  if(dateTaken(date,au.key,i)){toast(date+" is already taken. Pick another date.",true);return;}
+  if(dateTaken(date,who,x.t)){toast(date+" is already taken. Pick another date.",true);return;}
   burst(btn);
   s[i]={format:fmt,date:date,bullets:bullets,voice:voice,draft:draft};save();
   REMOTE.push({date:date,who:who,title:x.t});
@@ -1150,7 +1171,7 @@ async function suggest(){
     }
     toast("Pick a publish date so your topic reserves a slot.",true);return;
   }
-  if(dateTaken(date,au.key,"__sug__")){toast(date+" is already taken. Pick another date.",true);return;}
+  if(dateTaken(date,who,title)){toast(date+" is already taken. Pick another date.",true);return;}
   state[au.key]=state[au.key]||{};state[au.key]["sug"+Date.now()]={format:fmt,date:date,title:title,suggested:true};save();
   REMOTE.push({date:date,who:who,title:title});renderAll();
   postToBackend({type:'booking',author:who,lane:au.who+' — '+au.fld,topic:title,format:fmt,date:date,bullets:notes});
