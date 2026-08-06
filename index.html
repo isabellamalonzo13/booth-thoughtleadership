@@ -885,9 +885,8 @@ function myBookings(au){
     if(!ex.date&&e.date)ex.date=e.date;
     if(!ex.format&&e.format)ex.format=e.format;
   }
-  const s=state[au.key]||{};
-  Object.keys(s).forEach(k=>{const r=s[k];if(r&&r.date)add({title:titleFor(au,k),date:r.date,format:r.format||'',bullets:r.bullets||'',key:k,local:true});});
-  REMOTE.forEach(b=>{if(String(b.who).trim().toLowerCase()!==String(au.who).trim().toLowerCase())return;add({title:b.title,date:b.date,format:b.format||'',bullets:b.bullets||'',local:false});});
+  // Source of truth = the shared backend, so the status box always matches the calendar (never a phantom).
+  REMOTE.forEach(b=>{if(String(b.who).trim().toLowerCase()!==String(au.who).trim().toLowerCase())return;if(!b.date)return;add({title:b.title,date:b.date,format:b.format||'',bullets:b.bullets||'',local:false});});
   return order.map(k=>byTitle[k]);
 }
 function renderMyBox(au){
@@ -1014,9 +1013,8 @@ function renderSlots(){
     SLOTS.forEach(d=>{
       const a=assignedTo(d);const el=document.createElement('div');el.className='slot'+(a?' full':' slot-open');
       const ak=a?(a.auKey||NAMEKEY[(a.who||'').trim().toLowerCase()]):null;
-      el.innerHTML=`<div class="d">${d}</div>`+(a?`<div class="ti">${a.title||'Booked'}</div><div class="au">${ak&&AVATARS[ak]?`<span class="slot-alien">${AVATARS[ak]}</span>`:''}${a.who||''}</div>`+(a.mine?`<span class="x" title="Unschedule">✕</span>`:''):`<div class="open">Open · claim it →</div>`);
-      if(a&&a.mine){el.querySelector('.x').onclick=(e)=>{e.stopPropagation();if(!confirm('Unschedule "'+(a.title||'this post')+'" and free the '+a.date+' slot?'))return;if(a.local&&state[a.auKey])delete state[a.auKey][a.k];REMOTE=REMOTE.filter(b=>b.date!==a.date);save();postToBackend({type:'unbook',author:a.who,topic:a.title});renderAll();toast("Slot cleared.");};}
-      else if(!a){el.onclick=()=>navGo('lanes-sec');}
+      el.innerHTML=`<div class="d">${d}</div>`+(a?`<div class="ti">${a.title||'Booked'}</div><div class="au">${ak&&AVATARS[ak]?`<span class="slot-alien">${AVATARS[ak]}</span>`:''}${a.who||''}</div>`:`<div class="open">Open · claim it →</div>`);
+      if(!a){el.onclick=()=>navGo('lanes-sec');}
       host.appendChild(el);
     });
     $(cid).textContent=`${filledCount()} of 6 slots filled. ${CAP}`;
