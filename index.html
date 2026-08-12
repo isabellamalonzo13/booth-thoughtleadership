@@ -244,11 +244,11 @@ body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 .sched h2{font-family:var(--head);font-weight:700;color:var(--green);font-size:15px;margin:0 0 3px}
 .sched .cap{font-size:12.5px;color:var(--muted);margin:0 0 13px}
 .slots{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
-.slot{background:#fff;border:1px dashed #cdd7de;border-radius:12px;padding:11px 13px;min-height:82px;position:relative}
+.slot{background:#fff;border:1px dashed #cdd7de;border-radius:12px;padding:11px 13px;min-height:82px;position:relative;display:flex;flex-direction:column}
 .slot.full{border-style:solid;border-color:var(--teal);box-shadow:0 4px 14px rgba(88,153,146,.14)}
 .slot .d{font-family:var(--head);font-weight:700;font-size:12px;color:var(--teal);margin-bottom:5px}
 .slot .ti{font-size:12px;color:var(--ink);line-height:1.3}
-.slot .au{font-size:11px;color:var(--muted);margin-top:3px}
+.slot .au{font-size:11px;color:var(--muted);margin-top:auto;padding-top:6px;display:flex;align-items:center}
 .slot .open{font-size:12.5px;color:var(--muted);font-style:italic}
 .slot .x{position:absolute;top:7px;right:9px;cursor:pointer;color:var(--muted);font-size:13px;font-weight:700;line-height:1}
 .slot .x:hover{color:#c0503d}
@@ -670,6 +670,7 @@ textarea.sugtext::placeholder{color:#9aa6b1}
 const NOTIFY_TO="isabella.kubota@hirebooth.com";
 const CAP="Tuesdays, chosen for peak US B2B engagement, all within Q3.";
 const SLOTS=["Tue, Jul 28","Tue, Aug 11","Tue, Aug 25","Tue, Sep 8","Tue, Sep 22","Tue, Sep 29"];
+const AFTERQ3="Q4 (TBD)"; // Q4 pick — Isabella assigns a real date later; never occupies a Q3 slot
 // AEO opportunity scores (0-100) keyed by exact topic title. Populated from HubSpot data; blank = not scored yet.
 const SCORES={
 "What Is an EOR, and When Do You Actually Need One?":73,
@@ -903,7 +904,8 @@ function renderMyBox(au){
    if(notes)chips.push('📝 Notes received');
    const shared=chips.length?chips.map(c=>`<span class="mybk-chip">✓ ${c.replace(/ received$/,'')}</span>`).join(''):'<span class="mybox-sub">Nothing yet — add your draft, bullets, or a voice-memo link below and Marketing drafts it for you.</span>';
    const bm=bookedMap();
-   const dopts=SLOTS.map(d=>{const taken=bm[d]&&d!==bk.date;return `<option value="${d}" ${d===bk.date?'selected':''} ${taken?'disabled':''}>${d}${taken?' · booked':''}</option>`;}).join('');
+   const inSlot=SLOTS.indexOf(bk.date)>=0;
+   const dopts=(!inSlot?`<option value="${esc(bk.date)}" selected>${esc(bk.date)}</option>`:'')+SLOTS.map(d=>{const taken=bm[d]&&d!==bk.date;return `<option value="${d}" ${d===bk.date?'selected':''} ${taken?'disabled':''}>${d}${taken?' · booked':''}</option>`;}).join('')+`<option value="${AFTERQ3}" ${bk.date===AFTERQ3?'selected':''}>🚀 Publish in Q4 — Isabella picks the date</option>`;
    return `
     <div class="mybk">
       <div class="mybk-top"><span class="mybk-date">🗓️ ${esc(bk.date)}</span>${bk.format?`<span class="mybk-fmt">${esc(bk.format)}</span>`:''}<span class="mybk-badge">✓ Booked</span></div>
@@ -966,7 +968,7 @@ function burst(el){
 function titleFor(au,key){const r=state[au.key][key];return (r&&r.title)||(au.topics[key]&&au.topics[key].t)||"Suggested topic";}
 // The shared backend (REMOTE) is the SINGLE SOURCE OF TRUTH for the calendar — identical on every lane and device.
 // (Local state is only used to prefill your own cards / status box, never to fill the shared calendar.)
-function bookedMap(){const meName=(curAuthor?curAuthor.who:((localStorage.getItem(whoStore))||'')).trim().toLowerCase();const m={};REMOTE.forEach(b=>{if(b.date){const who=b.who;m[b.date]={date:b.date,who:who,title:b.title,local:false,mine:(!!meName&&String(who).trim().toLowerCase()===meName)};}});return m;}
+function bookedMap(){const meName=(curAuthor?curAuthor.who:((localStorage.getItem(whoStore))||'')).trim().toLowerCase();const m={};REMOTE.forEach(b=>{if(b.date&&SLOTS.indexOf(b.date)>=0){const who=b.who;m[b.date]={date:b.date,who:who,title:b.title,local:false,mine:(!!meName&&String(who).trim().toLowerCase()===meName)};}});return m;}
 function filledCount(){return Object.keys(bookedMap()).length;}
 function assignedTo(date){return bookedMap()[date]||null;}
 // A date is "taken" if the shared calendar has it — unless the holder is this same person+topic (so you can update your own).
@@ -1059,7 +1061,7 @@ function renderGrid(){
     const rec=s[i];const fmt=rec?rec.format:null;const dt=rec&&rec.date?rec.date:"";
     const booked=!!(rec&&rec.date);const wait=!!(rec&&rec.waitlist&&!rec.date);
     const card=document.createElement('div');card.className='card'+(booked?' sel':'')+(wait?' wait':'')+(x.pri==='High'?' hasrec':'');
-    const dateOpts=['<option value="">Pick a publish date…</option>'].concat(SLOTS.map(d=>{const taken=dateTaken(d,au.who,x.t);return `<option value="${d}" ${dt===d?'selected':''} ${taken?'disabled':''}>${d}${taken?' · booked':''}</option>`;})).join('');
+    const dateOpts=['<option value="">Pick a publish date…</option>'].concat(SLOTS.map(d=>{const taken=dateTaken(d,au.who,x.t);return `<option value="${d}" ${dt===d?'selected':''} ${taken?'disabled':''}>${d}${taken?' · booked':''}</option>`;})).concat([`<option value="${AFTERQ3}" ${dt===AFTERQ3?'selected':''}>🚀 Publish in Q4 — Isabella picks the date</option>`]).join('');
     let btnLabel;
     if(booked)btnLabel='Sequence engaged ✓ '+dt+' (tap to update)';
     else if(wait)btnLabel='Queued for launch ✓ after Q3 (tap to update)';
@@ -1087,7 +1089,7 @@ function renderGrid(){
   });
   // suggestion card (always shown, at the top)
   {
-    const sugDateOpts=SLOTS.map(d=>{const taken=dateTaken(d);return `<option value="${d}" ${taken?'disabled':''}>${d}${taken?' · booked':''}</option>`;}).join('');
+    const sugDateOpts=SLOTS.map(d=>{const taken=dateTaken(d);return `<option value="${d}" ${taken?'disabled':''}>${d}${taken?' · booked':''}</option>`;}).join('')+`<option value="${AFTERQ3}">🚀 Publish in Q4 — Isabella picks the date</option>`;
     const c=document.createElement('div');c.className='card suggest';
     c.innerHTML=`
       <div class="sug-top"><span class="sug-title">▚ INCOMING TRANSMISSION</span><div class="con-lights"><i class="g"></i><i class="a"></i><i class="r"></i></div></div>
@@ -1145,7 +1147,7 @@ async function choose(i,btn){
   REMOTE.push({date:date,who:who,title:x.t});
   renderAll();
   postToBackend({type:'booking',author:who,lane:au.who+' — '+au.fld,topic:x.t,format:fmt,date:date,bullets:outBullets});
-  toast("Scheduled for "+date+". Isabella notified.");
+  toast(date===AFTERQ3?"Got it — this publishes in Q4. Isabella will slot a date. 🚀":"Scheduled for "+date+". Isabella notified.");
 }
 function tentativeTitle(desc){const w=String(desc||'').replace(/\s+/g,' ').trim().split(' ');let t=w.slice(0,8).join(' ');if(w.length>8)t+='…';return t?('Working title: '+t):'Suggested topic (working title TBD)';}
 async function suggest(){
